@@ -5,7 +5,8 @@ RUN apt-get update && \
     apt-get install sudo && \
     sudo apt update && \
     sudo apt -y upgrade && \
-    apt-get -y install python3
+    apt-get -y install python3 && \
+    apt-get -y install git
 
 RUN python3 --version
 
