@@ -6,7 +6,8 @@ RUN apt-get update && \
     sudo apt update && \
     sudo apt -y upgrade && \
     apt-get -y install python3 && \
-    apt-get -y install git
+    apt-get -y install git && \
+    apt-get -y install vim
 
 RUN python3 --version
 
