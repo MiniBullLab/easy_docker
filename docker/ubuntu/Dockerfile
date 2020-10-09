@@ -21,7 +21,9 @@ RUN dpkg -i libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb
 RUN wget http://118.31.19.101:8080/software/gpu/libcudnn7-doc_7.5.1.10-1%2Bcuda10.0_amd64.deb
 RUN dpkg -i libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb  
 
-RUN mkdir /easy/
+RUN wget http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip
+RUN  unzip caffe_ubuntu18.04.zip
 
+RUN mkdir /easy/
 
 WORKDIR /easy
