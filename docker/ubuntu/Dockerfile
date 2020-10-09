@@ -7,8 +7,18 @@ RUN apt update && \
     apt install -y sudo && \
     apt install -y libsm6 libxext6 libxrender-dev libglib2.0-0 && \
     apt install -y python3-pip && \
-    pip3 install --upgrade pip
+    pip3 install --upgrade pip 
+
+RUN wget http://118.31.19.101:8080/software/gpu/libcudnn7_7.5.1.10-1%2Bcuda10.0_amd64.deb
+RUN dpkg -i libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb 
+
+RUN wget http://118.31.19.101:8080/software/gpu/libcudnn7-dev_7.5.1.10-1%2Bcuda10.0_amd64.deb 
+RUN dpkg -i libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb
+
+RUN wget http://118.31.19.101:8080/software/gpu/libcudnn7-doc_7.5.1.10-1%2Bcuda10.0_amd64.deb
+RUN dpkg -i libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb  
 
 RUN mkdir /easy/
+
 
 WORKDIR /easy
