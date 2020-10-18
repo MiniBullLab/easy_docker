@@ -51,6 +51,15 @@ RUN wget http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip
 RUN unzip caffe_ubuntu18.04.zip
 WORKDIR /caffe
 RUN echo "Build caffe..." && make
+RUN cd python/ && pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+RUN make pycaffe
+
+WORKDIR /root
+RUN  ls -a && echo "Add caffe python path to .bashrc:" && \
+    echo "export PYTHONPATH=/caffe/python:\$PYTHONPATH">>.bashrc && \
+    /bin/bash -c "source /root/.bashrc" 
+RUN echo "/root/.bash content:" && cat -n .bashrc
+
 # RUN cd ./caffe/ && ls -a && make 
 #RUN cd ./python && ls
 # RUN wget http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz
@@ -60,5 +69,4 @@ RUN echo "Build caffe..." && make
 #    ./ubuntuToolChain-2.1.7-20190815.ubuntu-18.04
 
 RUN mkdir /easy/
-
 WORKDIR /easy
