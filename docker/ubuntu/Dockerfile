@@ -60,8 +60,6 @@ RUN  ls -a && echo "Add caffe python path to .bashrc:" && \
     /bin/bash -c "source /root/.bashrc" 
 RUN echo "/root/.bash content:" && cat -n .bashrc
 
-# RUN cd ./caffe/ && ls -a && make 
-#RUN cd ./python && ls
 # RUN wget http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz
 # RUN tar -zxvf Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz -C ./ 
 # RUN ls -a
