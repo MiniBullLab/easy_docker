@@ -55,7 +55,7 @@ RUN cd python/ && pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r re
 RUN make pycaffe
 
 WORKDIR /root
-RUN  ls -a && echo "Add caffe python path to .bashrc:" && \
+RUN ls -a && echo "Add caffe python path to .bashrc:" && \
     echo "export PYTHONPATH=/caffe/python:\$PYTHONPATH">>.bashrc && \
     /bin/bash -c "source /root/.bashrc" 
 RUN echo "/root/.bash content:" && cat -n .bashrc
