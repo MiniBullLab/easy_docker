@@ -41,7 +41,6 @@ RUN apt-get install -y libgflags-dev
 RUN apt-get install -y libgoogle-glog-dev
 RUN apt-get install -y liblmdb-dev
 RUN apt-get install -y libcv-dev
-
 RUN apt-get install -y python3-dev
 RUN apt-get install -y python3-numpy
 RUN apt-get install -y python3-scipy
