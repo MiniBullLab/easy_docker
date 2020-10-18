@@ -24,11 +24,16 @@ RUN wget http://118.31.19.101:8080/software/gpu/libcudnn7-doc_7.5.1.10-1%2Bcuda1
 RUN dpkg -i libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb  && \
     rm libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb
 
-RUN wget http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip
-RUN unzip caffe_ubuntu18.04.zip
-RUN add-apt-repository --yes ppa:timsc/opencv-3.4
-RUN apt-get update
-RUN apt-get install -y build-essential cmake git pkg-config libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler libatlas-base-dev libboost-all-dev libgflags-dev libgoogle-glog-dev liblmdb-dev python3-dev python3-numpy python3-scipy libopencv-dev libcv-dev python3-skimage libopenblas-dev
+RUN wget http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz
+RUN tar -zxvf Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz -C ./ 
+RUN ls -a
+
+
+# RUN wget http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip
+# RUN unzip caffe_ubuntu18.04.zip
+# RUN add-apt-repository --yes ppa:timsc/opencv-3.4
+# RUN apt-get update
+# RUN apt-get install -y build-essential cmake git pkg-config libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler libatlas-base-dev libboost-all-dev libgflags-dev libgoogle-glog-dev liblmdb-dev python3-dev python3-numpy python3-scipy libopencv-dev libcv-dev python3-skimage libopenblas-dev
 
 RUN mkdir /easy/
 
