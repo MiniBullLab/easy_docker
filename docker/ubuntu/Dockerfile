@@ -27,7 +27,8 @@ RUN dpkg -i libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb  && \
 RUN wget http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz
 RUN tar -zxvf Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz -C ./ 
 RUN ls -a
-
+#RUN cd Ubuntu-18.04/ && \
+#    ./ubuntuToolChain-2.1.7-20190815.ubuntu-18.04
 
 # RUN wget http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip
 # RUN unzip caffe_ubuntu18.04.zip
