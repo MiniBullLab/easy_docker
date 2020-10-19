@@ -60,11 +60,15 @@ RUN ls -a && echo "Add caffe python path to .bashrc:" && \
     /bin/bash -c "source /root/.bashrc" 
 RUN echo "/root/.bash content:" && cat -n .bashrc
 
-# RUN wget http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz
-# RUN tar -zxvf Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz -C ./ 
-# RUN ls -a
+WORKDIR /
+RUN mkdir amba/ 
+WORKDIR /amba/
+RUN wget http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz
+RUN tar -zxvf Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz -C ./ && \
+    ls -a
 #RUN cd Ubuntu-18.04/ && \
 #    ./ubuntuToolChain-2.1.7-20190815.ubuntu-18.04
 
+WORKDIR /
 RUN mkdir /easy/
 WORKDIR /easy
