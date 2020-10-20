@@ -23,7 +23,7 @@ function main() {
       -e DOCKER_GRP_ID=$GRP_ID \
       -v /home/$USER/easy:/easy easy_ubuntu
 
-   docker run -it --shm-size="2g" -v ${easy_path}:/easy easy_ubuntu
+   docker run -it --shm-size="2g" --gpus=all -v ${easy_path}:/easy easy_ubuntu
 }
 
 main
