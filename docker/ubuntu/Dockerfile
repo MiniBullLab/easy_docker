@@ -4,7 +4,7 @@ RUN apt-get update
 RUN apt-get install -y git && \
     apt-get install -y wget && \
     apt-get install -y cmake && \
-    apt-get install -y sudo && \ 
+    apt-get install -y sudo && \
     apt-get install -y vim && \
     apt-get install -y unzip 
 RUN apt-get install -y libsm6 libxext6 libxrender-dev libglib2.0-0 && \
