@@ -77,6 +77,10 @@ RUN tar -zxvf Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz -C ./ && \
     ./ubuntuToolChain-2.1.7-20190815.ubuntu-18.04 && \
     echo "\n Install Ambarella success"
 
+RUN pip3 uninstall torch
+RUN pip3 install https://download.pytorch.org/whl/cu100/torch-1.0.1-cp36-cp36m-linux_x86_64.whl
+RUN echo "\n Install PyTorch success"
+
 WORKDIR /
-RUN mkdir /easy/
+RUN mkdir /easy
 WORKDIR /easy

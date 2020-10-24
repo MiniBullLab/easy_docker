@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+easy_path=/home/${USER}/easy_data
+
 function main() {
    USER_ID=$(id -u)
    USER=$(whoami)
@@ -12,16 +14,16 @@ function main() {
    echo "Current group id:" $GRP_IDP
    echo "Current group name:"$GRP
 
-   if [ ! -d "/home/$USER/easy" ]; then
-      echo "easy_path not exist, create dir /home/$USER/easy"
-      mkdir "/home/$USER/easy"
+   if [ ! -d $easy_path ]; then
+      echo "easy_path not exist, create dir ${easy_path}"
+      mkdir $easy_path
    fi
 
-   docker run -it --shm-size=1g \
+   docker run -it --shm-size=2g \
       -e DOCKER_USER_ID=$USER_ID \
       -e DOCKER_GRP="$GRP" \
       -e DOCKER_GRP_ID=$GRP_ID \
-      -v /home/$USER/easy:/easy easy_ubuntu
+      -v ${easy_path}:/easy easy_ubuntu
 
    docker run -it --shm-size="2g" --gpus=all -v ${easy_path}:/easy easy_ubuntu
 }
