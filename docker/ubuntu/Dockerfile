@@ -81,6 +81,8 @@ RUN pip3 uninstall torch
 RUN pip3 install https://download.pytorch.org/whl/cu100/torch-1.0.1-cp36-cp36m-linux_x86_64.whl
 RUN echo "\n Install PyTorch success"
 
+RUN echo "export PYTHONPATH=/easy/easy_ai:$PYTHONPATH">>/etc/profile
+
 WORKDIR /
 RUN mkdir /easy
 WORKDIR /easy

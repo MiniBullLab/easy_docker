@@ -1,3 +1,3 @@
-[submodule "src/HV_YOLO"]
-	path = src/HV_YOLO
-	url = git@github.com:MiniBullLab/HV_YOLO.git
+[submodule "src/easy_ai"]
+	path = src/easy_ai
+	url = git@github.com:MiniBullLab/easy_ai.git

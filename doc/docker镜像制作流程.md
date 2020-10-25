@@ -2,7 +2,17 @@
 
 ### 安装
 
-本机需要安装`docker`以及`docker-compose`，如何安装见doc目录。
+本机需要安装`docker`以及`docker-compose`。
+* 安装docker
+
+    ```
+    cd scripts
+    ./docker_install.sh
+    ```
+
+* 安装docker-compose
+    
+    [docker-compose](./ubuntu18.04安装docker-compose.md)
 
 ### 使用
 
@@ -30,4 +40,11 @@ $ make bash
 
 # 进入到docker镜像后，克隆对应代码在src目录，进行编译和启动
 $ cd /src/
+
+# docker镜像commit
+docker ps
+docker commit --author "lipeijie" --message "update cudnn" 98d602eb1f9c easy_ubuntu:latest
+
+# docker镜像打包
+docker save -o easy_ubuntu.tar nvidia/cuda:10.0-devel-ubuntu18.04 easy_ubuntu:latest
 ``` 
