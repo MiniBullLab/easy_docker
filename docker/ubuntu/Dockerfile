@@ -14,6 +14,9 @@ RUN apt-get install -y libsm6 libxext6 libxrender-dev libglib2.0-0 && \
     pip3 install --upgrade pip
 
 # cudnn安装
+RUN dpkg --purge libcudnn7-doc
+RUN dpkg --purge libcudnn7-dev
+RUN dpkg --purge libcudnn7
 RUN wget http://118.31.19.101:8080/software/gpu/libcudnn7_7.5.1.10-1%2Bcuda10.0_amd64.deb
 RUN dpkg -i libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb && \
     rm libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb
