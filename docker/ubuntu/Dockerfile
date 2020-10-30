@@ -10,15 +10,19 @@ RUN pip3 install -q --upgrade pip
 RUN dpkg --purge libcudnn7-doc
 RUN dpkg --purge libcudnn7-dev
 RUN dpkg --purge libcudnn7
-RUN wget http://118.31.19.101:8080/software/gpu/libcudnn7_7.5.1.10-1%2Bcuda10.0_amd64.deb
+RUN curl -O http://118.31.19.101:8080/software/gpu/libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb
 RUN dpkg -i libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb && \
     rm libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb
-RUN wget http://118.31.19.101:8080/software/gpu/libcudnn7-dev_7.5.1.10-1%2Bcuda10.0_amd64.deb
+RUN curl -O http://118.31.19.101:8080/software/gpu/libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb
 RUN dpkg -i libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb && \
     rm libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb
-RUN wget http://118.31.19.101:8080/software/gpu/libcudnn7-doc_7.5.1.10-1%2Bcuda10.0_amd64.deb
+RUN curl -O http://118.31.19.101:8080/software/gpu/libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb
 RUN dpkg -i libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb && \
     rm libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb
+
+RUN echo "\ncudnn version:" && \
+    find /usr -name "*cudnn*" && \
+    echo "\n"
 
 # caffe所需依赖
 RUN add-apt-repository --yes ppa:timsc/opencv-3.4
