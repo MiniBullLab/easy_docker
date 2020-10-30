@@ -1,17 +1,10 @@
 FROM nvidia/cuda:10.0-devel-ubuntu18.04
 
 # 系统所需依赖更新
-RUN apt-get update
-RUN apt-get install -y git && \
-    apt-get install -y wget && \
-    apt-get install -y cmake && \
-    apt-get install -y sudo && \
-    apt-get install -y vim && \
-    apt-get install -y unzip
-RUN apt-get install -y libsm6 libxext6 libxrender-dev libglib2.0-0 && \
-    apt-get install -y software-properties-common && \
-    apt-get install -y python3-pip && \
-    pip3 install --upgrade pip
+RUN apt-get -qq update
+RUN apt-get install -qq git wget cmake sudo vim unzip curl
+RUN apt-get install -qq libsm6 libxext6 libxrender-dev libglib2.0-0 software-properties-common python3-pip 
+RUN pip3 install -q --upgrade pip
 
 # cudnn安装
 RUN dpkg --purge libcudnn7-doc
