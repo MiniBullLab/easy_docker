@@ -42,13 +42,13 @@ RUN  echo "\n    Begin install cudnn..." && \
 # caffe安装
 RUN echo "\n    Begin install caffe..." && \
     cd /opt && \
-    axel -n 10 -o caffe.zip http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip && \
+    curl -o caffe.zip http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip && \
     unzip caffe.zip && \
     cd /opt/caffe && \
     make && \
     cd /opt/caffe/python && \
     pip install --ignore-installed leveldb && \
-    pip3 install -q -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt && \
     cd /opt/caffe && make pycaffe && \
     pip3 install python-dateutil --upgrade && \
     echo "export PYTHONPATH=/opt/caffe/python:\$PYTHONPATH">>/etc/profile && \
