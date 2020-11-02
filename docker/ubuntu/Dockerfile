@@ -1,88 +1,86 @@
 FROM nvidia/cuda:10.0-devel-ubuntu18.04
 
 # 系统所需依赖更新
-RUN apt-get -qq update
-RUN apt-get install -qq git wget cmake sudo vim unzip curl
-RUN apt-get install -qq libsm6 libxext6 libxrender-dev libglib2.0-0 software-properties-common python3-pip 
-RUN pip3 install -q --upgrade pip
+RUN apt-get -qq update && apt-get install -qq software-properties-common && \
+    add-apt-repository --yes ppa:timsc/opencv-3.4 && \
+    apt-get -qq update && \
+    apt-get install -qq git wget cmake sudo vim unzip curl axel \
+    libsm6 libxext6 libxrender-dev libglib2.0-0 software-properties-common python3-pip && \
+    pip3 install -q --upgrade pip && \
+    # caffe所需依赖
+    DEBIAN_FRONTEND=noninteractive apt-get install -qq -y --no-install-recommends tzdata && \
+    apt-get install -qq -y build-essential pkg-config libprotobuf-dev \
+    libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler \
+    libatlas-base-dev libboost-all-dev libgflags-dev libgoogle-glog-dev \
+    liblmdb-dev libcv-dev python3-dev python3-numpy python3-scipy \
+    libopenblas-dev libopencv-dev python3-skimage
+
+# amba安装
+RUN echo "\n    Begin install Ambarella...\n" && \
+    mkdir amba && \
+    cd /amba && \
+    curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz && \
+    tar -zxvf Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz -C ./ && \
+    cd /amba/Ubuntu-18.04/ && \
+    ./ubuntuToolChain-2.1.7-20190815.ubuntu-18.04 && \
+    echo "\n    Install Ambarella success\n"
 
 # cudnn安装
-RUN dpkg --purge libcudnn7-doc
-RUN dpkg --purge libcudnn7-dev
-RUN dpkg --purge libcudnn7
-RUN curl -O http://118.31.19.101:8080/software/gpu/libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb
-RUN dpkg -i libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb && \
-    rm libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb
-RUN curl -O http://118.31.19.101:8080/software/gpu/libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb
-RUN dpkg -i libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb && \
-    rm libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb
-RUN curl -O http://118.31.19.101:8080/software/gpu/libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb
-RUN dpkg -i libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb && \
-    rm libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb
-
-RUN echo "\ncudnn version:" && \
-    find /usr -name "*cudnn*" && \
-    echo "\n"
-
-# caffe所需依赖
-RUN add-apt-repository --yes ppa:timsc/opencv-3.4
-RUN apt-get update
-RUN apt-get install -y build-essential
-RUN apt-get install -y pkg-config
-RUN apt-get install -y libprotobuf-dev
-RUN apt-get install -y libleveldb-dev
-RUN apt-get install -y libsnappy-dev
-RUN apt-get install -y libhdf5-serial-dev
-RUN apt-get install -y protobuf-compiler
-RUN apt-get install -y libatlas-base-dev
-RUN apt-get install -y libboost-all-dev
-RUN apt-get install -y libgflags-dev
-RUN apt-get install -y libgoogle-glog-dev
-RUN apt-get install -y liblmdb-dev
-RUN apt-get install -y libcv-dev
-RUN apt-get install -y python3-dev
-RUN apt-get install -y python3-numpy
-RUN apt-get install -y python3-scipy
-RUN apt-get install -y libopenblas-dev
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
-RUN apt-get install -y libopencv-dev
-RUN apt-get install -y python3-skimage
+RUN  echo "\n    Begin install cudnn..." && \
+    dpkg --purge libcudnn7-doc && \
+    dpkg --purge libcudnn7-dev && \
+    dpkg --purge libcudnn7 && \
+    curl -o libcudnn.deb http://118.31.19.101:8080/software/gpu/libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb  \ 
+    -o libcudnn-dev.deb http://118.31.19.101:8080/software/gpu/libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb \
+    -o libcudnn-doc.deb http://118.31.19.101:8080/software/gpu/libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb && \
+    dpkg -i libcudnn.deb && \
+    dpkg -i libcudnn-dev.deb && \
+    dpkg -i libcudnn-doc.deb && \
+    rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb && \
+    echo "\n    Install cudnn success\n"
 
 # caffe安装
-WORKDIR /opt
-RUN wget http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip
-RUN unzip caffe_ubuntu18.04.zip
-WORKDIR /opt/caffe
-RUN echo "\nCaffe unzip file list:" && ls -C && echo "\n"
-RUN echo "\nBegin build caffe...\n" && make
-RUN /usr/bin/python3 -m pip install --upgrade pip
-RUN cd python/ && pip3 install -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt
-RUN make pycaffe
-RUN echo "\nBuild caffe success.\n"
-WORKDIR /
-RUN echo "\nOld /etc/profile file content:" && cat -n /etc/profile && echo "\n"
+RUN echo "\n    Begin install caffe..." && \
+    cd /opt && \
+    axel -n 10 -o caffe.zip http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip && \
+    unzip caffe.zip && \
+    cd /opt/caffe && \
+    make && \
+    cd /opt/caffe/python && \
+    pip install --ignore-installed leveldb && \
+    pip3 install -q -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt && \
+    cd /opt/caffe && make pycaffe && \
+    pip3 install python-dateutil --upgrade && \
+    echo "export PYTHONPATH=/opt/caffe/python:\$PYTHONPATH">>/etc/profile && \
+    /bin/bash -c "source /etc/profile" && \
+    echo "\n    Install caffe success"
+
+# 安装PyTorch
+RUN echo "\n    Begin install PyTorch..." && \
+    pip3 uninstall torch && \
+    curl -O http://118.31.19.101:8080/software/easyai/torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
+    pip3 install torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
+    rm torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
+    echo "\n    Install PyTorch success\n"
+
+# 安装easy_ai
+RUN echo "\n    Begin install easy_ai..." && \
+    curl -O http://118.31.19.101:8080/software/easyai/easyai-0.3-py2.py3-none-any.whl  \
+    -O http://118.31.19.101:8080/software/easyai/easy_converter-0.2-py2.py3-none-any.whl  \
+    -O http://118.31.19.101:8080/software/easyai/easy_tools-0.2-py2.py3-none-any.whl && \ 
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple easyai-0.3-py2.py3-none-any.whl && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple easy_converter-0.2-py2.py3-none-any.whl && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple easy_tools-0.2-py2.py3-none-any.whl && \
+    rm easyai-0.3-py2.py3-none-any.whl && \
+    rm easy_converter-0.2-py2.py3-none-any.whl && \
+    rm easy_tools-0.2-py2.py3-none-any.whl && \
+    echo "export PYTHONPATH=/easy/easy_ai:$PYTHONPATH">>/etc/profile && \
+    /bin/bash -c "source /etc/profile" && \
+    echo "\n    Install easy_ai success\n"
+
 RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/profile && \
     echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/profile && \
-    echo "export PYTHONPATH=/opt/caffe/python:\$PYTHONPATH">>/etc/profile && \
     /bin/bash -c "source /etc/profile"
-RUN echo "\nNew /etc/profile content:" && cat -n /etc/profile && echo "\n"
 
-WORKDIR /
-RUN echo "\n Begin install Ambarella...\n"
-RUN mkdir amba
-WORKDIR /amba
-RUN wget http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz
-RUN tar -zxvf Ambarella_Toolchain_CNNGen_Ubuntu-18.04.tar.gz -C ./ && \
-    cd Ubuntu-18.04/ && \
-    ./ubuntuToolChain-2.1.7-20190815.ubuntu-18.04 && \
-    echo "\n Install Ambarella success"
-
-RUN pip3 uninstall torch
-RUN pip3 install https://download.pytorch.org/whl/cu100/torch-1.0.1-cp36-cp36m-linux_x86_64.whl
-RUN echo "\n Install PyTorch success"
-
-RUN echo "export PYTHONPATH=/easy/easy_ai:$PYTHONPATH">>/etc/profile
-
-WORKDIR /
 RUN mkdir /easy
 WORKDIR /easy
