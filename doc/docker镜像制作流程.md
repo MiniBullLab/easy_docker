@@ -21,6 +21,14 @@
 systemctl start docker
 ```
 
+ 删除机器上其他docker镜像
+
+```
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q)
+```
+
 `git clone` easy_docker项目到本地，然后：
 ```shell
 # 进入到easy_docker的docker目录
