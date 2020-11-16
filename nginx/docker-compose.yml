@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+    nginx:
+      build:
+        context: ./nginx
+      volumes:
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf 
+        - "/easy:/usr/share/nginx/files"  
+      ports:
+        - "8080:80"
+      tty: true

@@ -4,9 +4,4 @@ services:
     ubuntu:
       build:
         context: ./ubuntu
-        args:
-          - UBUNTU_VERSION=${UBUNTU_VERSION}
-
-      volumes:
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
       tty: true
