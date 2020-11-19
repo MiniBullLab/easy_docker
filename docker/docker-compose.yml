@@ -7,5 +7,5 @@ services:
       tty: true
     workspace:
       build:
-        contect: ./workspace
+        context: ./workspace
       tty: true
