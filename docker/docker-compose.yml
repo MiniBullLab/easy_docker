@@ -5,3 +5,7 @@ services:
       build:
         context: ./ubuntu
       tty: true
+    workspace:
+      build:
+        contect: ./workspace
+      tty: true
