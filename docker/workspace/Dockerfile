@@ -9,6 +9,18 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     apt-get install -y git wget cmake sudo vim unzip curl axel \
     libsm6 libxext6 libxrender-dev libglib2.0-0 software-properties-common python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip 
+
+# 安装Cmake
+RUN apt-get install -y libssl-dev && \
+    apt-get remove -y cmake && \
+    curl -L -O https://github.com/Kitware/CMake/archive/v3.19.0.tar.gz && \
+    tar -vxf v3.19.0.tar.gz && \
+    cd CMake-3.19.0/ && \
+    ./bootstrap && \
+    make && \
+    sudo make install && \
+    cmake --version
+
 # caffe所需依赖
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
     apt-get install -y build-essential pkg-config libprotobuf-dev \
