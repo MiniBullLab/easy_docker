@@ -9,3 +9,7 @@ services:
       build:
         context: ./workspace
       tty: true
+    runtime:
+      build:
+        context: ./runtime
+      tty: true
