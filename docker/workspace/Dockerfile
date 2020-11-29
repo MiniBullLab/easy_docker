@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     libsm6 libxext6 libxrender-dev libglib2.0-0 software-properties-common python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip 
 
+RUN apt-get install -y libasio-dev libtinyxml2-dev libncurses5-dev autoconf automake libtool
+
 # 安装Cmake
 RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake && \
@@ -21,8 +23,16 @@ RUN apt-get install -y libssl-dev && \
     sudo make install && \
     cmake --version
 
-RUN apt-get install -y libasio-dev libtinyxml2-dev libncurses5-dev autoconf automake libtool
-
+RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
+RUN unzip v3.3.0.zip 
+RUN cd protobuf-3.3.0/ && \
+    ls && \
+    ./autogen.sh && \
+    ./configure && \
+    make && \ 
+    make check && \
+    sudo make install && \
+    sudo ldconfig
 
 
 # # caffe所需依赖
