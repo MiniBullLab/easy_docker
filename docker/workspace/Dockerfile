@@ -34,6 +34,20 @@ RUN cd protobuf-3.3.0/ && \
     sudo make install && \
     sudo ldconfig
 
+RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+RUN tar -vxf release-1.10.0.tar.gz
+RUN ls
+RUN cd googletest-release-1.10.0 && \
+    mkdir google_test_build && \
+    cd google_test_build/ && \
+    cmake /googletest-release-1.10.0/ 
+RUN cd googletest-release-1.10.0 && \
+    ls && \
+    cd google_test_build/ && \
+    make && \
+    sudo make install
+
+
 
 # # caffe所需依赖
 # RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
