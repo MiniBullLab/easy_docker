@@ -1,15 +1,24 @@
 #!/bin/bash
 #docker-ce
-sudo apt-get remove docker docker-engine docker.io containerd runc
-sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo apt-key fingerprint 0EBFCD88
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) \
-  stable"
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+uname -r
+sudo yum update
+sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+yum list docker-ce --showduplicates | sort -r
+sudo yum install docker-ce docker-ce-cli containerd.io
+
+sudo systemctl start docker
+sudo systemctl enable docker
 
 # add user
 sudo groupadd docker
@@ -17,14 +26,20 @@ sudo gpasswd -a ${USER} docker
 sudo service docker restart
 newgrp docker
 
+docker version
+systemctl enable docker    # 设置开机启动
+systemctl start docker    # 启动docker
+systemctl status docker   # 查看状态
+
 #nvidia-docker
-sudo apt-get purge -y nvidia-docker
-curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+sudo yum remove nvidia-docker
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | \
-  sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-sudo apt-get update
-sudo apt-get install -y nvidia-docker2
+curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | \
+  sudo tee /etc/yum.repos.d/nvidia-docker.repo
+DIST=$(sed -n 's/releasever=//p' /etc/yum.conf)
+DIST=${DIST:-$(. /etc/os-release; echo $VERSION_ID)}
+sudo yum -y makecache
+sudo yum install -y nvidia-docker2
 sudo pkill -SIGHUP dockerd
 
 #nvidia-docker register

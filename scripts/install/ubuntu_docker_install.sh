@@ -11,11 +11,19 @@ sudo add-apt-repository \
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
+sudo systemctl start docker
+sudo systemctl enable docker
+
 # add user
 sudo groupadd docker
 sudo gpasswd -a ${USER} docker
 sudo service docker restart
 newgrp docker
+
+docker version
+systemctl enable docker    # 设置开机启动
+systemctl start docker    # 启动docker
+systemctl status docker   # 查看状态
 
 #nvidia-docker
 sudo apt-get purge -y nvidia-docker
