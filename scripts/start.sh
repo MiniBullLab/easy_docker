@@ -6,16 +6,16 @@ IMAGE_NAME=easy_runtime
 DOCKER_CMD=docker
 
 function main() {
+   GRP_ID=$(id -g)
+   GRP_NAME=$(id -gn)
    USER_ID=$(id -u)
    USER_NAME=$(whoami)
-   #GRP_NAME=$(id -g -n)
-   #GRP_ID=$(id --group)
 
    echo "Starting docker container..."
    echo "Current user id:" $USER_ID
    echo "Current user name:" $USER
-   #echo "Current group id:" $GRP_IDP
-   #echo "Current group name:"$GRP
+   echo "Current group id:" $GRP_ID
+   echo "Current group name:" $GRP_NAME
 
    if [ ! -d $easy_path ]; then
       echo "easy_path not exist, create dir ${easy_path}"
@@ -37,7 +37,12 @@ function main() {
 
    ${DOCKER_CMD} run -it -d --privileged --name $RUNTIME_DOCKER \
       -e DOCKER_IMG=$IMAGE_NAME \
-      $IMAGE_NAME \ /bin/bash
+      -e DOCKER_USER=$USER_NAME \
+      -e DOCKER_USER_ID=$USER_ID \
+      -e DOCKER_GRP=$GRP_NAME \
+      -e DOCKER_GRP_ID=$GRP_ID \
+      $IMAGE_NAME \
+      /bin/bash
 
    if [ $? -ne 0 ];then
         echo "Failed to start docker container \"${RUNTIME_DOCKER}\" based on image: $IMAGE_NAME"
