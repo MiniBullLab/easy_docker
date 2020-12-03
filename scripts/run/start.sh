@@ -41,6 +41,7 @@ function main() {
       -e DOCKER_USER_ID=$USER_ID \
       -e DOCKER_GRP=$GRP_NAME \
       -e DOCKER_GRP_ID=$GRP_ID \
+      -v ${easy_path}:/easy \
       $IMAGE_NAME \
       /bin/bash
 
