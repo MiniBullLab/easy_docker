@@ -56,7 +56,7 @@ function main() {
       echo "Docker user create success"
    fi
 
-   echo "Finished setting up Apollo docker environment. Now you can enter with: \nbash docker/scripts/dev_into.sh"
+   echo "Finished setting up EasyAi docker environment. Now you can enter with: \nbash docker_into.sh"
 }
 
 main
