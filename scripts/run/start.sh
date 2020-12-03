@@ -41,7 +41,7 @@ function main() {
       -e DOCKER_USER_ID=$USER_ID \
       -e DOCKER_GRP=$GRP_NAME \
       -e DOCKER_GRP_ID=$GRP_ID \
-      -v ${easy_path}:/easy \
+      -v ${easy_path}:/easy_ai \
       $IMAGE_NAME \
       /bin/bash
 
@@ -51,9 +51,13 @@ function main() {
    fi
 
    if [ "${USER}" != "root" ]; then
-      echo "Runtime is not root"
-        #docker exec $APOLLO_DEV bash -c '/apollo/scripts/docker_adduser.sh'
+      echo "Runtime is not root, begin to create user..."
+      docker exec $RUNTIME_DOCKER bash -c '/scripts/add_user.sh'
+      echo "Docker user create success"
    fi
+
+   echo "Finished setting up Apollo docker environment. Now you can enter with: \nbash docker/scripts/dev_into.sh"
+   
    # docker run -it --shm-size=2g \
    #    -e DOCKER_USER_ID=$USER_ID \
    #    -e DOCKER_GRP="$GRP" \
