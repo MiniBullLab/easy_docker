@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     apt-get update && \
     apt-get install -y git wget cmake sudo vim unzip curl axel \
     libsm6 libxext6 libxrender-dev libglib2.0-0 software-properties-common python3-pip && \
-    pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip 
+    pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip
 
 RUN apt-get install -y libasio-dev libtinyxml2-dev libncurses5-dev autoconf automake libtool
 
