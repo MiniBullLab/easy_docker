@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-easy_path=/Users/${USER}/easy_data
+easy_path=/home/${USER}/easy_data
 
 IMAGE_NAME=easy_runtime
 DOCKER_CMD=docker
 
 function main() {
    GRP_ID=$(id -g)
-   GRP_NAME=$(id -gn)
+   GRP_NAME=$(id -g -n)
    USER_ID=$(id -u)
    USER_NAME=$(whoami)
 
