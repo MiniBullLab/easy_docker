@@ -6,8 +6,8 @@
 * 安装docker
 
     ```
-    cd scripts
-    ./docker_install.sh
+    cd scripts/install
+    ./xxx_docker_install.sh
     ```
 
 * 安装docker-compose
@@ -36,18 +36,6 @@ $ cd ~/easy_docker/docker
 
 # docker镜像编译
 $ make build
-
-# docker镜像初始化及其启动
-$ make up
-
-# docker镜像启动
-$ make start
-
-# 进入docker镜像
-$ make bash
-
-# 进入到docker镜像后，克隆对应代码在src目录，进行编译和启动
-$ cd /src/
 
 # docker镜像commit
 docker ps

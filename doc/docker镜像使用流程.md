@@ -31,8 +31,18 @@
     docker load -i easy_xxx.tar
     ```
 
+* 启动docker镜像
+
+    ```
+    ./scripts/run/docker_start.sh
+    ```
 * 进入docker镜像
 
     ```
-    ./scripts/docker_start.sh
+    ./scripts/run/docker_into.sh
+    ```
+* 启动docker镜像
+
+    ```
+    ./scripts/run/docker_stop.sh
     ```
