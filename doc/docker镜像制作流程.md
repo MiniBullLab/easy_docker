@@ -39,8 +39,8 @@ $ make build
 
 # docker镜像commit
 docker ps
-docker commit --author "lipeijie" --message "update cudnn" 98d602eb1f9c easy_ubuntu:latest
+docker commit --author "lipeijie" --message "update cudnn" 98d602eb1f9c easy_runtime:latest
 
 # docker镜像打包
-docker save -o easy_ubuntu.tar nvidia/cuda:10.0-devel-ubuntu18.04 easy_ubuntu:latest
+docker save -o easy_runtime.tar nvidia/cuda:10.0-devel-ubuntu18.04 easy_runtime:latest
 ``` 
