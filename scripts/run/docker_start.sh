@@ -24,14 +24,14 @@ function main() {
 
    RUNTIME_DOCKER="easy_runtime_${USER_NAME}"
    docker ps -a --format "{{.Names}}" | grep "$RUNTIME_DOCKER" 1>/dev/null
-    
-    # 判断上次命令是否执行成功?表示上一次的执行结果
-    if [ $? == 0 ]; then
-        echo "${RUNTIME_DOCKER} is running, stop and remove ..."
-        docker stop $RUNTIME_DOCKER 1>/dev/null
-        docker rm -v -f $RUNTIME_DOCKER 1>/dev/null
-        echo "${RUNTIME_DOCKER} stop and remove success..."
-    fi
+
+   # 判断上次命令是否执行成功?表示上一次的执行结果
+   if [ $? == 0 ]; then
+      echo "${RUNTIME_DOCKER} is running, stop and remove ..."
+      docker stop $RUNTIME_DOCKER 1>/dev/null
+      docker rm -v -f $RUNTIME_DOCKER 1>/dev/null
+      echo "${RUNTIME_DOCKER} stop and remove success..."
+   fi
 
    echo "Starting docker container ${RUNTIME_DOCKER} ..."
 
@@ -45,9 +45,9 @@ function main() {
       $IMAGE_NAME \
       /bin/bash
 
-   if [ $? -ne 0 ];then
-        echo "Failed to start docker container \"${RUNTIME_DOCKER}\" based on image: $IMAGE_NAME"
-        exit 1
+   if [ $? -ne 0 ]; then
+      echo "Failed to start docker container \"${RUNTIME_DOCKER}\" based on image: $IMAGE_NAME"
+      exit 1
    fi
 
    if [ "${USER}" != "root" ]; then
@@ -61,7 +61,7 @@ function main() {
    if [ $? == 0 ]; then
       echo "Check senseshield failed."
       docker stop $RUNTIME_DOCKER 1>/dev/null
-      docker rm -v -f $RUNTIME_DOCKER 1>/dev/null 
+      docker rm -v -f $RUNTIME_DOCKER 1>/dev/null
    else
       echo "Finished setting up EasyAi docker environment. Now you can enter with: \nbash docker_into.sh"
    fi
