@@ -56,6 +56,8 @@ function main() {
       echo "Docker user create success"
    fi
 
+   echo "Check senseshield..."
+   docker exec $RUNTIME_DOCKER ps -aux | grep sense
    echo "Finished setting up EasyAi docker environment. Now you can enter with: \nbash docker_into.sh"
 }
 
