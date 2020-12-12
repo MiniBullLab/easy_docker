@@ -41,7 +41,7 @@
     ```
     ./scripts/run/docker_into.sh
     ```
-* 启动docker镜像
+* 停止docker镜像
 
     ```
     ./scripts/run/docker_stop.sh
