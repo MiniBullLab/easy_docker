@@ -58,7 +58,13 @@ function main() {
 
    echo "Check senseshield..."
    docker exec $RUNTIME_DOCKER ps -aux | grep sense
-   echo "Finished setting up EasyAi docker environment. Now you can enter with: \nbash docker_into.sh"
+   if [ $? == 0 ]; then
+      echo "Check senseshield failed."
+      docker stop $RUNTIME_DOCKER 1>/dev/null
+      docker rm -v -f $RUNTIME_DOCKER 1>/dev/null 
+   else
+      echo "Finished setting up EasyAi docker environment. Now you can enter with: \nbash docker_into.sh"
+   fi
 }
 
 main
