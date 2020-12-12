@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-easy_path=/home/${USER}/easy_data
+easy_path = /home/${USER}/easy_data
 
-IMAGE_NAME=easy_runtime
-DOCKER_CMD=docker
+IMAGE_NAME = easy_runtime
+DOCKER_CMD = docker
 
 function main() {
-   GRP_ID=$(id -g)
-   GRP_NAME=$(id -g -n)
-   USER_ID=$(id -u)
-   USER_NAME=$(whoami)
+   GRP_ID = $(id -g)
+   GRP_NAME = $(id -g -n)
+   USER_ID = $(id -u)
+   USER_NAME = $(whoami)
 
    echo "Starting docker container..."
    echo "Current user id:" $USER_ID
@@ -22,14 +22,14 @@ function main() {
       mkdir $easy_path
    fi
 
-   RUNTIME_DOCKER="easy_runtime_${USER_NAME}"
-   docker ps -a --format "{{.Names}}" | grep "$RUNTIME_DOCKER" 1>/dev/null
+   RUNTIME_DOCKER = "easy_runtime_${USER_NAME}"
+   docker ps -a --format "{{.Names}}" | grep "$RUNTIME_DOCKER" 1> /dev/null
 
    # 判断上次命令是否执行成功?表示上一次的执行结果
    if [ $? == 0 ]; then
       echo "${RUNTIME_DOCKER} is running, stop and remove ..."
-      docker stop $RUNTIME_DOCKER 1>/dev/null
-      docker rm -v -f $RUNTIME_DOCKER 1>/dev/null
+      docker stop $RUNTIME_DOCKER 1> /dev/null
+      docker rm -v -f $RUNTIME_DOCKER 1> /dev/null
       echo "${RUNTIME_DOCKER} stop and remove success..."
    fi
 
@@ -60,8 +60,8 @@ function main() {
    docker exec $RUNTIME_DOCKER ps -aux | grep sense
    if [ $? == 0 ]; then
       echo "Check senseshield failed."
-      docker stop $RUNTIME_DOCKER 1>/dev/null
-      docker rm -v -f $RUNTIME_DOCKER 1>/dev/null
+      docker stop $RUNTIME_DOCKER 1> /dev/null
+      docker rm -v -f $RUNTIME_DOCKER 1> /dev/null
    else
       echo "Finished setting up EasyAi docker environment. Now you can enter with: \nbash docker_into.sh"
    fi
