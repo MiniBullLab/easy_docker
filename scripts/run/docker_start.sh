@@ -57,6 +57,7 @@ function main() {
    fi
 
    echo "Check senseshield..."
+   docker exec $RUNTIME_DOCKER sudo /usr/lib/senseshield/senseshield
    docker exec $RUNTIME_DOCKER ps -aux | grep sense
    if [ $? -ne 0 ]; then
       echo "Check senseshield failed."
