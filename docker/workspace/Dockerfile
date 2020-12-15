@@ -15,37 +15,37 @@ RUN apt-get install -y libasio-dev libtinyxml2-dev libncurses5-dev autoconf auto
 # 安装Cmake
 RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake && \
-    curl -L -O https://github.com/Kitware/CMake/archive/v3.19.0.tar.gz && \
-    tar -vxf v3.19.0.tar.gz && \
-    cd CMake-3.19.0/ && \
+    curl -L -O https://github.com/Kitware/CMake/archive/v3.14.0.tar.gz && \
+    tar -vxf v3.14.0.tar.gz && \
+    cd CMake-3.14.0/ && \
     ./bootstrap && \
     make && \
     sudo make install && \
     cmake --version
 
-RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
-RUN unzip v3.3.0.zip 
-RUN cd protobuf-3.3.0/ && \
-    ls && \
-    ./autogen.sh && \
-    ./configure && \
-    make && \ 
-    make check && \
-    sudo make install && \
-    sudo ldconfig
+# RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
+# RUN unzip v3.3.0.zip 
+# RUN cd protobuf-3.3.0/ && \
+#     ls && \
+#     ./autogen.sh && \
+#     ./configure && \
+#     make && \ 
+#     make check && \
+#     sudo make install && \
+#     sudo ldconfig
 
-RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-RUN tar -vxf release-1.10.0.tar.gz
-RUN ls
-RUN cd googletest-release-1.10.0 && \
-    mkdir google_test_build && \
-    cd google_test_build/ && \
-    cmake /googletest-release-1.10.0/ 
-RUN cd googletest-release-1.10.0 && \
-    ls && \
-    cd google_test_build/ && \
-    make && \
-    sudo make install
+# RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+# RUN tar -vxf release-1.10.0.tar.gz
+# RUN ls
+# RUN cd googletest-release-1.10.0 && \
+#     mkdir google_test_build && \
+#     cd google_test_build/ && \
+#     cmake /googletest-release-1.10.0/ 
+# RUN cd googletest-release-1.10.0 && \
+#     ls && \
+#     cd google_test_build/ && \
+#     make && \
+#     sudo make install
 
 
 
