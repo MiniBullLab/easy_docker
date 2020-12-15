@@ -6,7 +6,7 @@ RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml
 RUN apt-get update && apt-get install -y software-properties-common && \
     add-apt-repository --yes ppa:timsc/opencv-3.4 && \
     apt-get update && \
-    apt-get install -y git wget cmake sudo vim unzip curl axel \
+    apt-get install -y git wget sudo vim unzip curl axel \
     libsm6 libxext6 libxrender-dev libglib2.0-0 software-properties-common python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip
 
@@ -22,6 +22,12 @@ RUN apt-get install -y libssl-dev && \
     make && \
     sudo make install && \
     cmake --version
+RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
+    apt update
+RUN apt-get install -y build-essential git libgtk2.0-dev pkg-config \ 
+    libavcodec-dev libavformat-dev libswscale-dev \
+    python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev \
+    libtiff-dev libjasper-dev libdc1394-22-dev
 
 # RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
 # RUN unzip v3.3.0.zip 
