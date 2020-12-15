@@ -102,5 +102,3 @@ RUN curl -o senseshield.deb http://118.31.19.101:8080/software/dongle/senseshiel
 
 RUN mkdir /easy_ai
 WORKDIR /easy_ai
-
-CMD [ "./usr/lib/senseshield/senseshield" ]
