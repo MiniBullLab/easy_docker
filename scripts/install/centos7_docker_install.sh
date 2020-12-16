@@ -31,16 +31,17 @@ systemctl enable docker    # 设置开机启动
 systemctl start docker    # 启动docker
 systemctl status docker   # 查看状态
 
-#nvidia-docker
-sudo yum remove nvidia-docker
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | \
-  sudo tee /etc/yum.repos.d/nvidia-docker.repo
+#nvidia-docker2
+sudo yum remove nvidia-docker*
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+   && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
 DIST=$(sed -n 's/releasever=//p' /etc/yum.conf)
 DIST=${DIST:-$(. /etc/os-release; echo $VERSION_ID)}
 sudo yum -y makecache
 sudo yum install -y nvidia-docker2
+sudo yum install nvidia-container-runtime
 sudo pkill -SIGHUP dockerd
+sudo systemctl restart docker
 
 #nvidia-docker register
 sudo mkdir -p /etc/systemd/system/docker.service.d
@@ -52,8 +53,7 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 
-Daemon configuration file
-
+# Daemon configuration file
 sudo tee /etc/docker/daemon.json <<EOF
 {
     "runtimes": {
