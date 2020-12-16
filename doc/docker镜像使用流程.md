@@ -3,10 +3,15 @@
 ### 安装
 
 * 安装docker
+    
+    目前支持操作系统为：
+    * ubuntu18.04
+    * centos7
 
+    具体安装：
     ```
     cd scripts
-    ./docker_install.sh
+    ./xxx_docker_install.sh
     ```
 
 ### 使用

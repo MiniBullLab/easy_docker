@@ -27,8 +27,6 @@ sudo service docker restart
 newgrp docker
 
 docker version
-systemctl enable docker    # 设置开机启动
-systemctl start docker    # 启动docker
 systemctl status docker   # 查看状态
 
 #nvidia-docker

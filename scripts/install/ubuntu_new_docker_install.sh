@@ -13,8 +13,8 @@ sudo apt-get update
 apt-cache madison docker-ce
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
-sudo systemctl start docker
-sudo systemctl enable docker
+sudo systemctl start docker # 启动docker
+sudo systemctl enable docker # 设置开机启动
 
 # add user
 sudo groupadd docker
@@ -23,8 +23,6 @@ sudo service docker restart
 newgrp docker
 
 docker version
-systemctl enable docker    # 设置开机启动
-systemctl start docker    # 启动docker
 systemctl status docker   # 查看状态
 
 #nvidia-docker
