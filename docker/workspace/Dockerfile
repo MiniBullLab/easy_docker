@@ -24,10 +24,38 @@ RUN apt-get install -y libssl-dev && \
     cmake --version
 RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     apt update
-RUN apt-get install -y build-essential git libgtk2.0-dev pkg-config \ 
+RUN apt-get install -y build-essential git libgtk2.0-dev pkg-config \
     libavcodec-dev libavformat-dev libswscale-dev \
     python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev \
     libtiff-dev libjasper-dev libdc1394-22-dev
+
+RUN curl -o opencv3.4.6.zip https://codeload.github.com/opencv/opencv/zip/3.4.6
+RUN unzip opencv3.4.6.zip
+RUN cd opencv-3.4.6 && \
+    ls && \
+    mkdir build && \
+    cd build && \
+    cmake \
+    -D CMAKE_BUILD_TYPE=RELEASE \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D OPENCV_EXTRA_MODULES_PATH=../opencv_contrib-3.3.0/modules/ \
+    -D CUDA_CUDA_LIBRARY=/usr/local/cuda/lib64/stubs/libcuda.so \
+    -D CUDA_ARCH_BIN=7.5 \
+    -D CUDA_ARCH_PTX="" \
+    -D WITH_CUDA=ON \
+    -D WITH_TBB=ON \
+    -D BUILD_NEW_PYTHON_SUPPORT=ON \
+    -D WITH_V4L=ON \
+    -D INSTALL_C_EXAMPLES=ON \
+    -D INSTALL_PYTHON_EXAMPLES=ON \
+    -D BUILD_EXAMPLES=ON \
+    -D WITH_QT=ON \
+    -D WITH_OPENGL=ON \
+    -D ENABLE_FAST_MATH=1 \
+    -D CUDA_FAST_MATH=1 \
+    -D WITH_CUBLAS=1 \
+    -D WITH_NVCUVID=ON \
+    -D BUILD_opencv_cudacodec=OFF ..
 
 # RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
 # RUN unzip v3.3.0.zip 
