@@ -34,14 +34,15 @@ RUN curl -L -o opencv_contrib.zip https://github.com/opencv/opencv_contrib/archi
 RUN unzip opencv.zip && \
     unzip opencv_contrib.zip && \
     mv opencv-3.4.6 opencv && \
-    mv opencv_contrib-3.4.6 opencv_contrib
+    mv opencv_contrib-3.4.6 opencv_contrib && \
+    ls
 RUN cd opencv && \
     mkdir build && \
     cd build && \
     cmake \
     -D CMAKE_BUILD_TYPE=RELEASE \
     -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D OPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules/ \
+    -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules/ \
     -D CUDA_CUDA_LIBRARY=/usr/local/cuda/lib64/stubs/libcuda.so \
     -D CUDA_ARCH_BIN=7.5 \
     -D CUDA_ARCH_PTX="" \
