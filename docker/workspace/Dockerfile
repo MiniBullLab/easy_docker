@@ -29,6 +29,7 @@ RUN apt-get install -y build-essential git libgtk2.0-dev pkg-config \
     python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev \
     libtiff-dev libjasper-dev libdc1394-22-dev
 
+RUN apt-get install -y libcurl4-gnutls-dev zlib1g-dev
 RUN curl -o opencv.zip https://codeload.github.com/opencv/opencv/zip/3.4.6 
 RUN curl -L -o opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/3.4.6.zip
 RUN unzip opencv.zip && \
@@ -36,6 +37,7 @@ RUN unzip opencv.zip && \
     mv opencv-3.4.6 opencv && \
     mv opencv_contrib-3.4.6 opencv_contrib && \
     ls
+RUN pip3 install numpy
 RUN cd opencv && \
     mkdir build && \
     cd build && \
@@ -53,13 +55,16 @@ RUN cd opencv && \
     -D INSTALL_C_EXAMPLES=ON \
     -D INSTALL_PYTHON_EXAMPLES=ON \
     -D BUILD_EXAMPLES=ON \
-    # -D WITH_QT=ON \
+    # -D WITH_QT=ON \ 
     -D WITH_OPENGL=ON \
     -D ENABLE_FAST_MATH=1 \
     -D CUDA_FAST_MATH=1 \
     -D WITH_CUBLAS=1 \
     -D WITH_NVCUVID=ON \
-    -D BUILD_opencv_cudacodec=OFF ..
+    -D BUILD_opencv_cudacodec=OFF .. && \
+    make -j && \
+    sudo make install
+RUN pkg-config --modversion opencv
 
 # RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
 # RUN unzip v3.3.0.zip 
