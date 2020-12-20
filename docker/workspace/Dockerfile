@@ -29,15 +29,14 @@ RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security ma
 RUN apt-get install build-essential
 RUN apt-get install -y libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 # 处理图像所需的包
-RUN apt-get install -y python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev         
+RUN apt-get install -y python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev
 RUN apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev liblapacke-dev
 # 处理视频所需的包
 RUN apt-get install -y libxvidcore-dev libx264-dev
 # 优化opencv功能
-RUN apt-get install -y libatlas-base-dev gfortran          
+RUN apt-get install -y libatlas-base-dev gfortran
 RUN apt-get install -y ffmpeg
 RUN apt-get purge -y libopencv*
-
 
 RUN echo "\n    Begin install OpenCV...\n" && \
     mkdir opencv && \
@@ -66,9 +65,12 @@ RUN cd /opencv/opencv && \
     -D WITH_V4L=ON \
     -D WITH_CUDA=ON \
     -D WITH_TBB=ON \
-    # -D WITH_QT=ON \ 
+    # -D WITH_QT=ON \
     -D WITH_OPENCL=OFF \
     -D WITH_OPENGL=ON \
+    -D WITH_OPENCL_SVM=OFF \
+    -D WITH_OPENCLAMDFFT=OFF \
+    -D WITH_OPENCLAMDBLAS=OFF \
     -D WITH_CUBLAS=ON \
     -D WITH_NVCUVID=ON \
     -D BUILD_opencv_cudacodec=OFF \
