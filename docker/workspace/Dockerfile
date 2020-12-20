@@ -27,15 +27,15 @@ RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security ma
 
 # opencv依赖
 RUN apt-get install build-essential
-RUN apt-get install libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+RUN apt-get install -y libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 # 处理图像所需的包
-RUN apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev         
-RUN apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev liblapacke-dev
+RUN apt-get install -y python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev         
+RUN apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev liblapacke-dev
 # 处理视频所需的包
-RUN apt-get install libxvidcore-dev libx264-dev
+RUN apt-get install -y libxvidcore-dev libx264-dev
 # 优化opencv功能
-RUN apt-get install libatlas-base-dev gfortran          
-RUN apt-get install ffmpeg
+RUN apt-get install -y libatlas-base-dev gfortran          
+RUN apt-get install -y ffmpeg
 RUN echo "\n    Begin install OpenCV...\n" && \
     mkdir opencv && \
     cd /opencv && \
