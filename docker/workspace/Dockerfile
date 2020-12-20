@@ -39,8 +39,10 @@ RUN apt-get install -y ffmpeg
 RUN echo "\n    Begin install OpenCV...\n" && \
     mkdir opencv && \
     cd /opencv && \
-    curl -o opencv.zip http://118.31.19.101:8080/software/utility/opencv-3.4.6.zip  && \
-    curl -L -o opencv_contrib.zip http://118.31.19.101:8080/software/utility/opencv_contrib-3.4.6.zip
+    curl -o opencv.zip https://codeload.github.com/opencv/opencv/zip/3.4.6 && \
+    curl -L -o opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/3.4.6.zip
+
+
 RUN unzip opencv.zip && \
     unzip opencv_contrib.zip && \
     mv opencv-3.4.6 opencv && \
