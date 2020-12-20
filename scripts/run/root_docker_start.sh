@@ -5,5 +5,5 @@ if [ ! -d $easy_path ];then
 else
    echo $easy_path
 fi
-docker run -it --shm-size="2g" --gpus=all -v ${easy_path}:/easy easy_ubuntu
+docker run -it --shm-size="2g" --gpus=all -v ${easy_path}:/easy easy_runtime
 

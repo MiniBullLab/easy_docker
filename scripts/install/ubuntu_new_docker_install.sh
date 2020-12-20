@@ -11,7 +11,7 @@ sudo add-apt-repository \
   stable"
 sudo apt-get update
 apt-cache madison docker-ce
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
 sudo systemctl start docker # 启动docker
 sudo systemctl enable docker # 设置开机启动
@@ -33,7 +33,7 @@ distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
 curl -s -L https://nvidia.github.io/nvidia-container-runtime/$distribution/nvidia-container-runtime.list | \
   sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list
 sudo apt-get update
-sudo apt-get install nvidia-container-runtime
+sudo apt-get install -y nvidia-container-runtime
 sudo systemctl restart docker
 
 #nvidia-docker register

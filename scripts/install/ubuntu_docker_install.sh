@@ -9,7 +9,7 @@ sudo add-apt-repository \
   $(lsb_release -cs) \
   stable"
 sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
 sudo systemctl start docker # 设置开机启动
 sudo systemctl enable docker # 设置开机启动
@@ -31,7 +31,13 @@ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.li
   sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 sudo apt-get update
 sudo apt-get install -y nvidia-docker2
-sudo apt-get install nvidia-container-runtime
+curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \
+  sudo apt-key add -
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+curl -s -L https://nvidia.github.io/nvidia-container-runtime/$distribution/nvidia-container-runtime.list | \
+  sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list
+sudo apt-get update
+sudo apt-get install -y nvidia-container-runtime
 sudo pkill -SIGHUP dockerd
 sudo systemctl restart docker
 
