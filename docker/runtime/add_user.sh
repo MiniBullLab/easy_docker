@@ -6,7 +6,7 @@ echo "Add group in image success"
 
 echo "Begin add user in image, id=${DOCKER_USER} name=${DOCKER_USER_ID}"
 adduser --disabled-password --force-badname --gecos '' "$DOCKER_USER" \
-    --uid "$DOCKER_USER_ID" --gid "$DOCKER_GRP_ID" 2>/dev/null
+    --uid "$DOCKER_USER_ID" --gid "$DOCKER_GRP_ID"
 echo "Add user in image success"
 
 usermod -aG sudo "$DOCKER_USER"
