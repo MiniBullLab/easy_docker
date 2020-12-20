@@ -4,10 +4,9 @@ RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml
 
 # 系统所需依赖更新
 RUN apt-get update && apt-get install -y software-properties-common && \
-    add-apt-repository --yes ppa:timsc/opencv-3.4 && \
     apt-get update && \
     apt-get install -y git wget sudo vim unzip curl axel \
-    libsm6 libxext6 libxrender-dev libglib2.0-0 software-properties-common python3-pip && \
+    libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip
 
 RUN apt-get install -y libasio-dev libtinyxml2-dev libncurses5-dev autoconf automake libtool
@@ -22,27 +21,37 @@ RUN apt-get install -y libssl-dev && \
     make && \
     sudo make install && \
     cmake --version
+
 RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     apt update
-RUN apt-get install -y build-essential git libgtk2.0-dev pkg-config \
-    libavcodec-dev libavformat-dev libswscale-dev \
-    python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev \
-    libtiff-dev libjasper-dev libdc1394-22-dev
 
-RUN apt-get install -y libcurl4-gnutls-dev zlib1g-dev
-RUN curl -o opencv.zip https://codeload.github.com/opencv/opencv/zip/3.4.6 
-RUN curl -L -o opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/3.4.6.zip
+# opencv依赖
+RUN apt-get install build-essential
+RUN apt-get install libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+# 处理图像所需的包
+RUN apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev         
+RUN apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev liblapacke-dev
+# 处理视频所需的包
+RUN apt-get install libxvidcore-dev libx264-dev
+# 优化opencv功能
+RUN apt-get install libatlas-base-dev gfortran          
+RUN apt-get install ffmpeg
+RUN echo "\n    Begin install OpenCV...\n" && \
+    mkdir opencv && \
+    cd /opencv && \
+    curl -o opencv.zip http://118.31.19.101:8080/software/utility/opencv-3.4.6.zip  && \
+    curl -L -o opencv_contrib.zip http://118.31.19.101:8080/software/utility/opencv_contrib-3.4.6.zip
 RUN unzip opencv.zip && \
     unzip opencv_contrib.zip && \
     mv opencv-3.4.6 opencv && \
     mv opencv_contrib-3.4.6 opencv_contrib && \
     ls
-RUN pip3 install numpy
+
 RUN cd opencv && \
     mkdir build && \
     cd build && \
     cmake \
-    -D CMAKE_BUILD_TYPE=RELEASE \
+    -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_INSTALL_PREFIX=/usr/local \
     -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules/ \
     -D CUDA_CUDA_LIBRARY=/usr/local/cuda/lib64/stubs/libcuda.so \
@@ -50,10 +59,9 @@ RUN cd opencv && \
     -D CUDA_ARCH_PTX="" \
     -D WITH_CUDA=ON \
     -D WITH_TBB=ON \
-    -D BUILD_NEW_PYTHON_SUPPORT=ON \
+    -D BUILD_NEW_PYTHON_SUPPORT=OFF \
     -D WITH_V4L=ON \
     -D INSTALL_C_EXAMPLES=ON \
-    -D INSTALL_PYTHON_EXAMPLES=ON \
     -D BUILD_EXAMPLES=ON \
     # -D WITH_QT=ON \ 
     -D WITH_OPENGL=ON \
