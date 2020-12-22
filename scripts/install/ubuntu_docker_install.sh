@@ -20,7 +20,7 @@ sudo usermod -aG docker ${USER}
 #newgrp docker
 sudo service docker restart
 
-docker version
+sudo docker version
 
 #nvidia-docker2
 sudo apt-get purge -y nvidia-container-runtime nvidia-docker*
