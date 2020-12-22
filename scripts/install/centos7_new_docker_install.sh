@@ -24,10 +24,9 @@ sudo systemctl enable docker
 sudo groupadd docker
 sudo gpasswd -a ${USER} docker
 sudo service docker restart
-newgrp docker
+# newgrp docker
 
 docker version
-systemctl status docker   # 查看状态
 
 #nvidia-docker
 sudo apt-get purge -y nvidia-container-runtime

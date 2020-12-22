@@ -18,10 +18,9 @@ sudo systemctl enable docker # 设置开机启动
 sudo groupadd docker
 sudo gpasswd -a ${USER} docker
 sudo service docker restart
-newgrp docker
+#newgrp docker
 
 docker version
-systemctl status docker   # 查看状态
 
 #nvidia-docker2
 sudo apt-get purge -y nvidia-container-runtime nvidia-docker*
@@ -31,13 +30,6 @@ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.li
   sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 sudo apt-get update
 sudo apt-get install -y nvidia-docker2
-curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \
-  sudo apt-key add -
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-curl -s -L https://nvidia.github.io/nvidia-container-runtime/$distribution/nvidia-container-runtime.list | \
-  sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list
-sudo apt-get update
-sudo apt-get install -y nvidia-container-runtime
 sudo pkill -SIGHUP dockerd
 sudo systemctl restart docker
 

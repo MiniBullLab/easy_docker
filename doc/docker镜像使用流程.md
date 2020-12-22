@@ -22,6 +22,13 @@
     systemctl start docker
     ```
 
+* 查看docker服务状态:
+ 
+    ```shell
+    systemctl status docker
+    ```
+
+
 * 删除机器上其他docker镜像
 
     ```

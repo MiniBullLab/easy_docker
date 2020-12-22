@@ -24,10 +24,9 @@ sudo systemctl enable docker # 设置开机启动
 sudo groupadd docker
 sudo gpasswd -a ${USER} docker
 sudo service docker restart
-newgrp docker
+# newgrp docker
 
 docker version
-systemctl status docker   # 查看状态
 
 #nvidia-docker2
 sudo yum remove nvidia-docker*
