@@ -13,14 +13,14 @@ sudo apt-get update
 apt-cache madison docker-ce
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-sudo systemctl start docker # 启动docker
-sudo systemctl enable docker # 设置开机启动
+sudo systemctl start docker
+sudo systemctl enable docker
 
 # add user
 sudo groupadd docker
-sudo gpasswd -a ${USER} docker
-sudo service docker restart
+sudo usermod -aG docker ${USER}
 # newgrp docker
+sudo service docker restart
 
 docker version
 

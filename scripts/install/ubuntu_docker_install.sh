@@ -11,18 +11,20 @@ sudo add-apt-repository \
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-sudo systemctl start docker # 设置开机启动
-sudo systemctl enable docker # 设置开机启动
+sudo systemctl start docker
+sudo systemctl enable docker
 
 # add user
 sudo groupadd docker
 sudo usermod -aG docker ${USER}
+#newgrp docker
 sudo service docker restart
 
 docker version
 
 #nvidia-docker2
 sudo apt-get purge -y nvidia-container-runtime nvidia-docker*
+sudo apt -y autoremove
 curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
 curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | \

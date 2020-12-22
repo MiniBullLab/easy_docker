@@ -22,9 +22,9 @@ sudo systemctl enable docker # 设置开机启动
 
 # add user
 sudo groupadd docker
-sudo gpasswd -a ${USER} docker
-sudo service docker restart
-# newgrp docker
+sudo usermod -aG docker ${USER}
+nnewgrp docker
+sudo systemctl restart docker
 
 docker version
 
