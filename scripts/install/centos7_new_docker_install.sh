@@ -20,13 +20,7 @@ sudo yum install docker-ce docker-ce-cli containerd.io
 sudo systemctl start docker
 sudo systemctl enable docker
 
-# add user
-sudo groupadd docker
-sudo gpasswd -a ${USER} docker
-sudo service docker restart
-# newgrp docker
-
-docker version
+sudo docker version
 
 #nvidia-docker
 sudo apt-get purge -y nvidia-container-runtime
@@ -64,5 +58,11 @@ sudo tee /etc/docker/daemon.json <<EOF
 }
 EOF
 sudo pkill -SIGHUP dockerd
+
+# add user
+sudo groupadd docker
+sudo usermod -aG docker ${USER}
+newgrp docker
+systemctl restart docker
 
 

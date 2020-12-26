@@ -20,13 +20,7 @@ sudo yum install docker-ce docker-ce-cli containerd.io
 sudo systemctl start docker  # 启动docker
 sudo systemctl enable docker # 设置开机启动
 
-# add user
-sudo groupadd docker
-sudo usermod -aG docker ${USER}
-nnewgrp docker
-sudo systemctl restart docker
-
-docker version
+sudo docker version
 
 #nvidia-docker2
 sudo yum remove nvidia-docker*
@@ -36,9 +30,10 @@ DIST=$(sed -n 's/releasever=//p' /etc/yum.conf)
 DIST=${DIST:-$(. /etc/os-release; echo $VERSION_ID)}
 sudo yum -y makecache
 sudo yum install -y nvidia-docker2
-sudo yum install nvidia-container-runtime
 sudo pkill -SIGHUP dockerd
 sudo systemctl restart docker
+
+nvidia-docker -v
 
 #nvidia-docker register
 sudo mkdir -p /etc/systemd/system/docker.service.d
@@ -62,5 +57,11 @@ sudo tee /etc/docker/daemon.json <<EOF
 }
 EOF
 sudo pkill -SIGHUP dockerd
+
+# add user
+sudo groupadd docker
+sudo usermod -aG docker ${USER}
+nnewgrp docker
+systemctl restart docker
 
 

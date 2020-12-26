@@ -14,12 +14,6 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 sudo systemctl start docker
 sudo systemctl enable docker
 
-# add user
-sudo groupadd docker
-sudo usermod -aG docker ${USER}
-#newgrp docker
-sudo service docker restart
-
 sudo docker version
 
 #nvidia-docker2
@@ -33,6 +27,8 @@ sudo apt-get update
 sudo apt-get install -y nvidia-docker2
 sudo pkill -SIGHUP dockerd
 sudo systemctl restart docker
+
+nvidia-docker -v
 
 #nvidia-docker register
 sudo mkdir -p /etc/systemd/system/docker.service.d
@@ -56,5 +52,11 @@ sudo tee /etc/docker/daemon.json <<EOF
 }
 EOF
 sudo pkill -SIGHUP dockerd
+
+# add user
+sudo groupadd docker
+sudo usermod -aG docker ${USER}
+newgrp docker
+service docker restart
 
 
