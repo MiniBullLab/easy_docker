@@ -11,12 +11,12 @@ RUN apt-get update && apt-get install -y software-properties-common && \
 
 RUN apt-get install -y autoconf automake libtool build-essential libasio-dev libtinyxml2-dev libncurses5-dev 
 # 安装Cmake
-RUN apt-get install -y libssl-dev && \
+RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
     apt-get remove -y cmake && \
     curl -L -O https://github.com/Kitware/CMake/archive/v3.14.0.tar.gz && \
     tar -vxf v3.14.0.tar.gz && \
     cd CMake-3.14.0/ && \
-    ./bootstrap && \
+    ./bootstrap --system-curl && \
     make && \
     sudo make install && \
     cmake --version
