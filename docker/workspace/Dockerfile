@@ -24,29 +24,29 @@ RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
 RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     apt update
 
-RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
-RUN unzip v3.3.0.zip 
-RUN cd protobuf-3.3.0/ && \
-    ls && \
-    ./autogen.sh && \
-    ./configure && \
-    make && \ 
-    make check && \
-    sudo make install && \
-    sudo ldconfig
+# RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
+# RUN unzip v3.3.0.zip 
+# RUN cd protobuf-3.3.0/ && \
+#     ls && \
+#     ./autogen.sh && \
+#     ./configure && \
+#     make && \ 
+#     make check && \
+#     sudo make install && \
+#     sudo ldconfig
 
-RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-RUN tar -vxf release-1.10.0.tar.gz
-RUN ls
-RUN cd googletest-release-1.10.0 && \
-    mkdir google_test_build && \
-    cd google_test_build/ && \
-    cmake /googletest-release-1.10.0/ 
-RUN cd googletest-release-1.10.0 && \
-    ls && \
-    cd google_test_build/ && \
-    make && \
-    sudo make install
+# RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+# RUN tar -vxf release-1.10.0.tar.gz
+# RUN ls
+# RUN cd googletest-release-1.10.0 && \
+#     mkdir google_test_build && \
+#     cd google_test_build/ && \
+#     cmake /googletest-release-1.10.0/ 
+# RUN cd googletest-release-1.10.0 && \
+#     ls && \
+#     cd google_test_build/ && \
+#     make && \
+#     sudo make install
 
 # opencv依赖
 RUN apt-get install -y libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
