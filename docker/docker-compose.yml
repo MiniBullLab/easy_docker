@@ -3,7 +3,7 @@ version: '3'
 services:
     runtime:
       build:
-        context: ./runtime
+        context: ./workspace
       tty: true
     # ubuntu:
     #   build:
