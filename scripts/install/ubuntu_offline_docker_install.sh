@@ -66,5 +66,6 @@ sudo groupadd docker
 sudo usermod -aG docker ${USER}
 sudo systemctl restart docker
 sudo chmod a+rw /var/run/docker.sock
+sudo chgrp docker /var/run/docker.sock
 
 
