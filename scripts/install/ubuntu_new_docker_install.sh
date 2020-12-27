@@ -55,7 +55,7 @@ sudo pkill -SIGHUP dockerd
 # add user
 sudo groupadd docker
 sudo usermod -aG docker ${USER}
-newgrp docker
-sudo service docker restart
+sudo systemctl restart docker
+sudo chmod a+rw /var/run/docker.sock
 
 

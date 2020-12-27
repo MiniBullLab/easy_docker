@@ -9,8 +9,7 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip
 
-RUN apt-get install -y libasio-dev libtinyxml2-dev libncurses5-dev autoconf automake libtool
-
+RUN apt-get install -y autoconf automake libtool build-essential libasio-dev libtinyxml2-dev libncurses5-dev 
 # 安装Cmake
 RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake && \
@@ -25,11 +24,34 @@ RUN apt-get install -y libssl-dev && \
 RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     apt update
 
+RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
+RUN unzip v3.3.0.zip 
+RUN cd protobuf-3.3.0/ && \
+    ls && \
+    ./autogen.sh && \
+    ./configure && \
+    make && \ 
+    make check && \
+    sudo make install && \
+    sudo ldconfig
+
+RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+RUN tar -vxf release-1.10.0.tar.gz
+RUN ls
+RUN cd googletest-release-1.10.0 && \
+    mkdir google_test_build && \
+    cd google_test_build/ && \
+    cmake /googletest-release-1.10.0/ 
+RUN cd googletest-release-1.10.0 && \
+    ls && \
+    cd google_test_build/ && \
+    make && \
+    sudo make install
+
 # opencv依赖
-RUN apt-get install build-essential
 RUN apt-get install -y libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 # 处理图像所需的包
-RUN apt-get install -y python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev
+RUN apt-get install -y python-dev python-numpy python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev
 RUN apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev liblapacke-dev
 # 处理视频所需的包
 RUN apt-get install -y libxvidcore-dev libx264-dev
@@ -38,73 +60,49 @@ RUN apt-get install -y libatlas-base-dev gfortran
 RUN apt-get install -y ffmpeg
 RUN apt-get purge -y libopencv*
 
-RUN echo "\n    Begin install OpenCV...\n" && \
-    mkdir opencv && \
-    cd /opencv && \
-    curl -o opencv.zip http://118.31.19.101:8080/software/utility/opencv-3.4.6.zip  && \
-    curl -o opencv_contrib.zip http://118.31.19.101:8080/software/utility/opencv_contrib-3.4.6.zip && \
-    unzip opencv.zip && \
-    unzip opencv_contrib.zip && \
-    mv opencv-3.4.6 opencv && \
-    mv opencv_contrib-3.4.6 opencv_contrib && \
-    ls
+# RUN echo "\n    Begin install OpenCV...\n" && \
+#     mkdir opencv && \
+#     cd /opencv && \
+#     curl -o opencv.zip http://118.31.19.101:8080/software/utility/opencv-3.4.6.zip  && \
+#     curl -o opencv_contrib.zip http://118.31.19.101:8080/software/utility/opencv_contrib-3.4.6.zip && \
+#     unzip opencv.zip && \
+#     unzip opencv_contrib.zip && \
+#     mv opencv-3.4.6 opencv && \
+#     mv opencv_contrib-3.4.6 opencv_contrib && \
+#     ls
 
-RUN cd /opencv/opencv && \
-    mkdir build && \
-    cd build && \
-    cmake \
-    -D CMAKE_BUILD_TYPE=Release \
-    -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules/ \
-    -D BUILD_EXAMPLES=ON \
-    -D BUILD_opencv_java=OFF \
-    -D BUILD_opencv_python2=OFF \
-    -D BUILD_opencv_python3=OFF \
-    -D BUILD_NEW_PYTHON_SUPPORT=OFF \
-    -D ENABLE_PRECOMPILED_HEADERS=OFF \
-    -D WITH_V4L=ON \
-    -D WITH_CUDA=ON \
-    -D WITH_TBB=ON \
-    # -D WITH_QT=ON \
-    -D WITH_OPENCL=OFF \
-    -D WITH_OPENGL=ON \
-    -D WITH_OPENCL_SVM=OFF \
-    -D WITH_OPENCLAMDFFT=OFF \
-    -D WITH_OPENCLAMDBLAS=OFF \
-    -D WITH_CUBLAS=ON \
-    -D WITH_NVCUVID=ON \
-    -D BUILD_opencv_cudacodec=OFF \
-    -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
-    -D CUDA_ARCH_BIN=7.5 \
-    -D CUDA_ARCH_PTX="" \
-    -D INSTALL_C_EXAMPLES=ON .. && \
-    make -j && \
-    sudo make install
-RUN pkg-config --modversion opencv
-
-# RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
-# RUN unzip v3.3.0.zip 
-# RUN cd protobuf-3.3.0/ && \
-#     ls && \
-#     ./autogen.sh && \
-#     ./configure && \
-#     make && \ 
-#     make check && \
-#     sudo make install && \
-#     sudo ldconfig
-
-# RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-# RUN tar -vxf release-1.10.0.tar.gz
-# RUN ls
-# RUN cd googletest-release-1.10.0 && \
-#     mkdir google_test_build && \
-#     cd google_test_build/ && \
-#     cmake /googletest-release-1.10.0/ 
-# RUN cd googletest-release-1.10.0 && \
-#     ls && \
-#     cd google_test_build/ && \
-#     make && \
+# RUN cd /opencv/opencv && \
+#     mkdir build && \
+#     cd build && \
+#     cmake \
+#     -D CMAKE_BUILD_TYPE=Release \
+#     -D CMAKE_INSTALL_PREFIX=/usr/local \
+#     -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules/ \
+#     -D BUILD_EXAMPLES=ON \
+#     -D BUILD_opencv_java=OFF \
+#     -D BUILD_opencv_python2=OFF \
+#     -D BUILD_opencv_python3=OFF \
+#     -D BUILD_NEW_PYTHON_SUPPORT=OFF \
+#     -D ENABLE_PRECOMPILED_HEADERS=OFF \
+#     -D WITH_V4L=ON \
+#     -D WITH_CUDA=ON \
+#     -D WITH_TBB=ON \
+#     # -D WITH_QT=ON \
+#     -D WITH_OPENCL=OFF \
+#     -D WITH_OPENGL=ON \
+#     -D WITH_OPENCL_SVM=OFF \
+#     -D WITH_OPENCLAMDFFT=OFF \
+#     -D WITH_OPENCLAMDBLAS=OFF \
+#     -D WITH_CUBLAS=ON \
+#     -D WITH_NVCUVID=ON \
+#     -D BUILD_opencv_cudacodec=OFF \
+#     -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
+#     -D CUDA_ARCH_BIN=7.5 \
+#     -D CUDA_ARCH_PTX="" \
+#     -D INSTALL_C_EXAMPLES=ON .. && \
+#     make -j && \
 #     sudo make install
+# RUN pkg-config --modversion opencv
 
 
 
