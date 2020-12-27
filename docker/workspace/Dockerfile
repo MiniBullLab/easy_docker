@@ -60,49 +60,49 @@ RUN apt-get install -y libatlas-base-dev gfortran
 RUN apt-get install -y ffmpeg
 RUN apt-get purge -y libopencv*
 
-# RUN echo "\n    Begin install OpenCV...\n" && \
-#     mkdir opencv && \
-#     cd /opencv && \
-#     curl -o opencv.zip http://118.31.19.101:8080/software/utility/opencv-3.4.6.zip  && \
-#     curl -o opencv_contrib.zip http://118.31.19.101:8080/software/utility/opencv_contrib-3.4.6.zip && \
-#     unzip opencv.zip && \
-#     unzip opencv_contrib.zip && \
-#     mv opencv-3.4.6 opencv && \
-#     mv opencv_contrib-3.4.6 opencv_contrib && \
-#     ls
+RUN echo "\n    Begin install OpenCV...\n" && \
+    mkdir opencv && \
+    cd /opencv && \
+    curl -o opencv.zip http://118.31.19.101:8080/software/utility/opencv-3.4.6.zip  && \
+    curl -o opencv_contrib.zip http://118.31.19.101:8080/software/utility/opencv_contrib-3.4.6.zip && \
+    unzip opencv.zip && \
+    unzip opencv_contrib.zip && \
+    mv opencv-3.4.6 opencv && \
+    mv opencv_contrib-3.4.6 opencv_contrib && \
+    ls
 
-# RUN cd /opencv/opencv && \
-#     mkdir build && \
-#     cd build && \
-#     cmake \
-#     -D CMAKE_BUILD_TYPE=Release \
-#     -D CMAKE_INSTALL_PREFIX=/usr/local \
-#     -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules/ \
-#     -D BUILD_EXAMPLES=ON \
-#     -D BUILD_opencv_java=OFF \
-#     -D BUILD_opencv_python2=OFF \
-#     -D BUILD_opencv_python3=OFF \
-#     -D BUILD_NEW_PYTHON_SUPPORT=OFF \
-#     -D ENABLE_PRECOMPILED_HEADERS=OFF \
-#     -D WITH_V4L=ON \
-#     -D WITH_CUDA=ON \
-#     -D WITH_TBB=ON \
-#     # -D WITH_QT=ON \
-#     -D WITH_OPENCL=OFF \
-#     -D WITH_OPENGL=ON \
-#     -D WITH_OPENCL_SVM=OFF \
-#     -D WITH_OPENCLAMDFFT=OFF \
-#     -D WITH_OPENCLAMDBLAS=OFF \
-#     -D WITH_CUBLAS=ON \
-#     -D WITH_NVCUVID=ON \
-#     -D BUILD_opencv_cudacodec=OFF \
-#     -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
-#     -D CUDA_ARCH_BIN=7.5 \
-#     -D CUDA_ARCH_PTX="" \
-#     -D INSTALL_C_EXAMPLES=ON .. && \
-#     make -j && \
-#     sudo make install
-# RUN pkg-config --modversion opencv
+RUN cd /opencv/opencv && \
+    mkdir build && \
+    cd build && \
+    cmake \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules/ \
+    -D BUILD_EXAMPLES=ON \
+    -D BUILD_opencv_java=OFF \
+    -D BUILD_opencv_python2=OFF \
+    -D BUILD_opencv_python3=OFF \
+    -D BUILD_NEW_PYTHON_SUPPORT=OFF \
+    -D ENABLE_PRECOMPILED_HEADERS=OFF \
+    -D WITH_V4L=ON \
+    -D WITH_CUDA=ON \
+    -D WITH_TBB=ON \
+    # -D WITH_QT=ON \
+    -D WITH_OPENCL=OFF \
+    -D WITH_OPENGL=ON \
+    -D WITH_OPENCL_SVM=OFF \
+    -D WITH_OPENCLAMDFFT=OFF \
+    -D WITH_OPENCLAMDBLAS=OFF \
+    -D WITH_CUBLAS=ON \
+    -D WITH_NVCUVID=ON \
+    -D BUILD_opencv_cudacodec=OFF \
+    -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
+    -D CUDA_ARCH_BIN=7.5 \
+    -D CUDA_ARCH_PTX="" \
+    -D INSTALL_C_EXAMPLES=ON .. && \
+    make -j && \
+    sudo make install
+RUN pkg-config --modversion opencv
 
 
 
