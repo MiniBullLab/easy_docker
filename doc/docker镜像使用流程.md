@@ -14,6 +14,8 @@
     ./xxx_docker_install.sh
     ```
 
+* 重启系统或者注销用户
+
 ### 使用
 
 * 首先需要启动`docker`服务：
