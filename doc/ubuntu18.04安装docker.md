@@ -117,7 +117,18 @@ docker-ce | 5:19.03.12~3-0~ubuntu-bionic | https://download.docker.com/linux/ubu
  docker-ce | 18.03.1~ce~3-0~ubuntu | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
 ```
 
+上述输出内容的第二列`5:19.03.12~3-0~ubuntu-bionic`即表示当前主持的`docker`版本。
+
+
 - 安装19.03.12版本docker
+
+选择需要安装的版本，执行命令即可：
+```shell
+$ sudo apt-get install docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> containerd.io
+```
+其中，`<VERSION_STRING>`即上述中的版本字符串。
+
+这里我们安装19.03.12版本：
 ```shell 
 # 输入
 $ sudo apt install docker-ce=5:19.03.12~3-0~ubuntu-bionic docker-ce-cli=5:19.03.12~3-0~ubuntu-bionic containerd.io
@@ -126,7 +137,7 @@ $ sudo apt install docker-ce=5:19.03.12~3-0~ubuntu-bionic docker-ce-cli=5:19.03.
 - 测试docker是否安装成功
 ```shell 
 # 输入
-$ sudo docker run hello-world 
+$ sudo docker run hello-world
 
 # 输出hello world表示安装成功
 Unable to find image 'hello-world:latest' locally
