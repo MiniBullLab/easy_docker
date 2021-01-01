@@ -43,7 +43,7 @@ $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 OK
 ```
 
-- 验证是否拥有带质问的密钥
+- 验证是否拥有带指纹的密钥
 ```shell 
 # 输入
 $ sudo apt-key fingerprint 0EBFCD88
