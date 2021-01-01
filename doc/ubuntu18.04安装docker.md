@@ -126,7 +126,7 @@ docker-ce | 5:19.03.12~3-0~ubuntu-bionic | https://download.docker.com/linux/ubu
 ```shell
 $ sudo apt-get install docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> containerd.io
 ```
-其中，`<VERSION_STRING>`即上述中的版本字符串。
+其中`<VERSION_STRING>`即上述中的版本字符串。
 
 这里我们安装19.03.12版本：
 ```shell 
@@ -166,4 +166,15 @@ Share images, automate workflows, and more with a free Docker ID:
 
 For more examples and ideas, visit:
  https://docs.docker.com/get-started/
+```
+
+- 查看已经安装的docker版本
+
+在终端中输入：
+```shell
+# 输入
+$ docker --version
+
+# 输出
+Docker version 19.03.12, build 831ebea
 ```
