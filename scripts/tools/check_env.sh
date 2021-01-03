@@ -21,7 +21,7 @@ function checkDockerInstall() {
 
 # 检测docker权限
 function checkDockerPermission() {
-   docker info | grep "ERROR"
+   docker info | grep "ERROR: Got permission denied while trying to connect to the Docker daemon socket" 1>/dev/null 2>&1
    # shellcheck disable=SC2181
    if [ $? == 0 ]; then
       envCheckFailedAndExit $ERR_CODE_DOCKER_NOT_HAVE_PERMISSION
