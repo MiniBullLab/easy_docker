@@ -7,6 +7,7 @@ ERR_CODE_NVIDIA_DOCKER_NOT_INSTALL=10003
 
 # 运行环境检测失败，打印错误码并且退出
 function envCheckFailedAndExit() {
+   echo "EasyAI runtime environment error."
    echo "Error code: $1"
    exit 1
 }
@@ -38,9 +39,11 @@ function checkDockerPermission() {
 }
 
 function main() {
-   checkDockerInstall
-   checkDockerPermission
-   checkNvidiaDocker
+   echo "Begin check EasyAI runtime environment..."
+   checkDockerInstall 1>/dev/null
+   checkDockerPermission 1>/dev/null
+   checkNvidiaDocker 1>/dev/null
+   echo "EasyAI runtime environment OK"
 }
 
 main
