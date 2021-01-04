@@ -31,6 +31,7 @@ function checkNvidiaDocker() {
 # 检测docker权限
 function checkDockerPermission() {
    checkResult=$(docker info --format '{{json .}}' | grep "ERROR: Got permission denied while trying to connect to the Docker daemon socket")
+   echo "$checkResult"
    # shellcheck disable=SC2181
    if [ -z "$checkResult" ]; then
       envCheckFailedAndExit $ERR_CODE_DOCKER_SOCKET_PERMISSION
