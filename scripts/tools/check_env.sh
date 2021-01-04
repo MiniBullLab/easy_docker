@@ -21,7 +21,7 @@ function checkDockerInstall() {
 }
 
 function checkNvidiaDocker() {
-   nvidia-docker -v 1>/dev/null 2>&1
+   nvidia-docker -v | grep 'Docker version' 1>/dev/null 2>&1
    # shellcheck disable=SC2181
    if [ $? == 0 ]; then
       envCheckFailedAndExit $ERR_CODE_NVIDIA_DOCKER_NOT_INSTALL
