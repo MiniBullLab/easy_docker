@@ -31,7 +31,7 @@ function checkNvidiaDocker() {
 
 # 检测docker权限
 function checkDockerPermission() {
-   docker info | grep "ERROR: Got permission denied while trying to connect to the Docker daemon socket" 1>/dev/null 2>&1
+   docker info --format '{{json .}}' | grep "ERROR: Got permission denied while trying to connect to the Docker daemon socket" 1>/dev/null 2>&1
    # shellcheck disable=SC2181
    if [ $? == 0 ]; then
       envCheckFailedAndExit $ERR_CODE_DOCKER_SOCKET_PERMISSION
@@ -40,9 +40,9 @@ function checkDockerPermission() {
 
 function main() {
    echo "Begin check EasyAI runtime environment..."
-   checkDockerInstall 1>/dev/null
-   checkDockerPermission 1>/dev/null
-   checkNvidiaDocker 1>/dev/null
+   checkDockerInstall
+   checkDockerPermission
+   checkNvidiaDocker
    echo "EasyAI runtime environment OK"
 }
 
