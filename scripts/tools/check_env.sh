@@ -7,8 +7,7 @@ ERR_CODE_NVIDIA_DOCKER_NOT_INSTALL=10003
 
 # 运行环境检测失败，打印错误码并且退出
 function envCheckFailedAndExit() {
-   echo "EasyAI runtime environment error."
-   echo "Error code: $1"
+   echo "EasyAI runtime environment error. Code=$1"
    exit 1
 }
 
