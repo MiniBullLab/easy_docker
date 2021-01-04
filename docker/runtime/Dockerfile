@@ -2,8 +2,6 @@ FROM nvidia/cuda:10.0-devel-ubuntu18.04
 
 RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 
-COPY add_user.sh /scripts/
-
 # 系统所需依赖更新
 RUN apt-get update && apt-get install -y software-properties-common && \
     add-apt-repository --yes ppa:timsc/opencv-3.4 && \
@@ -100,6 +98,8 @@ RUN chmod +x /usr/local/lib/python3.6/dist-packages/easy_tools/train_scripts/* &
 RUN curl -o senseshield.deb http://118.31.19.101:8080/software/dongle/senseshield-2.3.0.45988-x86_64.deb && \
     dpkg -i senseshield.deb && \
     rm senseshield.deb
+
+COPY add_user.sh /scripts/
 
 RUN mkdir /easy_ai
 WORKDIR /easy_ai
