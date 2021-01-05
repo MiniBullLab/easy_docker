@@ -16,17 +16,17 @@
 
 * 重启系统或者注销用户
 
+
 ### 使用
 
 首先需要启动`docker`服务：
 ```shell
 systemctl start docker
-docker-compose up
 ```
 
  删除机器上其他docker镜像
 
-```
+```shell
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker rmi $(docker images -q)
