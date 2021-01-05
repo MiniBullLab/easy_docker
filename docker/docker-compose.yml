@@ -5,11 +5,11 @@ services:
       build:
         context: ./runtime
       tty: true
+    workspace:
+      build:
+        context: ./workspace
+      tty: true
     # ubuntu:
     #   build:
     #     context: ./ubuntu
-    #   tty: true
-    # workspace:
-    #   build:
-    #     context: ./workspace
     #   tty: true

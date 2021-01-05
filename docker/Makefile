@@ -1,7 +1,10 @@
-.PHONY: build up start stop down status bash
+.PHONY: build up start stop down status workspace
 
 build:
-	docker-compose build
+	docker-compose build runtime
+
+workspace:
+	docker-compose build workspace
 
 up:
 	docker-compose up -d
@@ -17,6 +20,3 @@ down:
 
 status:
 	docker-compose ps
-
-bash:
-	docker-compose exec ubuntu /bin/bash
