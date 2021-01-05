@@ -11,12 +11,12 @@ RUN apt-get update && apt-get install -y software-properties-common && \
 
 RUN apt-get install -y autoconf automake libtool build-essential libasio-dev libtinyxml2-dev libncurses5-dev 
 # 安装Cmake
-RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
+RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake && \
     curl -L -O https://github.com/Kitware/CMake/archive/v3.14.0.tar.gz && \
     tar -vxf v3.14.0.tar.gz && \
     cd CMake-3.14.0/ && \
-    ./bootstrap --system-curl && \
+    ./bootstrap && \
     make && \
     sudo make install && \
     cmake --version
@@ -24,29 +24,66 @@ RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
 RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     apt update
 
-# RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
-# RUN unzip v3.3.0.zip 
-# RUN cd protobuf-3.3.0/ && \
-#     ls && \
-#     ./autogen.sh && \
-#     ./configure && \
-#     make && \ 
-#     make check && \
-#     sudo make install && \
-#     sudo ldconfig
+# 安装protobuf
+RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
+RUN unzip v3.3.0.zip 
+RUN cd protobuf-3.3.0/ && \
+    ls && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr/local && \
+    make && \ 
+    make check && \
+    sudo make install && \
+    echo "export LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc" && \
+    sudo ldconfig
+RUN pkg-config --cflags --libs protobuf
 
-# RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-# RUN tar -vxf release-1.10.0.tar.gz
-# RUN ls
-# RUN cd googletest-release-1.10.0 && \
-#     mkdir google_test_build && \
-#     cd google_test_build/ && \
-#     cmake /googletest-release-1.10.0/ 
-# RUN cd googletest-release-1.10.0 && \
-#     ls && \
-#     cd google_test_build/ && \
-#     make && \
-#     sudo make install
+# 安装googletest
+RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+RUN tar -vxf release-1.10.0.tar.gz
+RUN ls
+RUN cd googletest-release-1.10.0 && \
+    mkdir google_test_build && \
+    cd google_test_build/ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON ../ && \
+    make -j8 && \
+    sudo make install && \
+    sudo ldconfig
+
+# 安装gflags
+RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz
+RUN tar -vxf v2.2.0.tar.gz
+RUN ls
+RUN cd gflags-2.2.0 && \
+    mkdir gflags_build && \
+    cd gflags_build/ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=gflags ../ && \
+    make -j8 && \
+    sudo make install && \
+    sudo ldconfig
+
+# 安装glog
+RUN curl -L -O https://github.com/google/glog/archive/v0.3.5.tar.gz
+RUN tar -vxf v0.3.5.tar.gz
+RUN ls
+RUN cd glog-0.3.5 && \
+    ./configure && \
+    make -j8 && \
+    sudo make install && \
+    sudo ldconfig
+
+# 安装poco
+RUN curl -L -O https://github.com/pocoproject/poco/archive/poco-1.8.0-release.tar.gz
+RUN tar -vxf poco-1.8.0-release.tar.gz
+RUN ls
+RUN cd poco-poco-1.8.0-release && \
+    mkdir cmake-build && \
+    cd cmake-build && \
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && \
+    cmake --build . --config Releases && \
+    sudo cmake --build . --target install && \
+    sudo ldconfig
 
 # opencv依赖
 RUN apt-get install -y libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
@@ -56,7 +93,7 @@ RUN apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev 
 # 处理视频所需的包
 RUN apt-get install -y libxvidcore-dev libx264-dev
 # 优化opencv功能
-RUN apt-get install -y libatlas-base-dev gfortran
+RUN apt-get install -y libatlas-base-dev gfortran libeigen3-dev
 RUN apt-get install -y ffmpeg
 RUN apt-get purge -y libopencv*
 
@@ -87,6 +124,7 @@ RUN cd /opencv/opencv && \
     -D WITH_V4L=ON \
     -D WITH_CUDA=ON \
     -D WITH_TBB=ON \
+    -D WITH_EIGEN=ON \
     # -D WITH_QT=ON \
     -D WITH_OPENCL=OFF \
     -D WITH_OPENGL=ON \
@@ -95,15 +133,13 @@ RUN cd /opencv/opencv && \
     -D WITH_OPENCLAMDBLAS=OFF \
     -D WITH_CUBLAS=ON \
     -D WITH_NVCUVID=ON \
-    -D BUILD_opencv_cudacodec=OFF \
     -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
     -D CUDA_ARCH_BIN=7.5 \
     -D CUDA_ARCH_PTX="" \
     -D INSTALL_C_EXAMPLES=ON .. && \
-    make -j && \
+    make -j8 && \
     sudo make install
 RUN pkg-config --modversion opencv
-
 
 
 # # caffe所需依赖
@@ -191,5 +227,5 @@ RUN pkg-config --modversion opencv
 # RUN echo "export PATH=/usr/local/lib/python3.6/dist-packages/easy_tools/train_scripts:\$PATH">>/etc/bash.bashrc && \
 #     /bin/bash -c "source /etc/bash.bashrc"
 
-RUN mkdir /easy
-WORKDIR /easy
+RUN mkdir /easy_ai
+WORKDIR /easy_ai
