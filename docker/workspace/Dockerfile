@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip
 
-RUN apt-get install -y autoconf automake libtool build-essential libasio-dev libtinyxml2-dev libncurses5-dev 
+RUN apt-get install -y autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev
 # 安装Cmake
 RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake && \
@@ -85,8 +85,26 @@ RUN cd poco-poco-1.8.0-release && \
     sudo cmake --build . --target install && \
     sudo ldconfig
 
+RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/bash.bashrc && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc"
+
+# cudnn安装
+RUN  echo "\n    Begin install cudnn..." && \
+    dpkg --purge libcudnn7-doc && \
+    dpkg --purge libcudnn7-dev && \
+    dpkg --purge libcudnn7 && \
+    curl -o libcudnn.deb http://118.31.19.101:8080/software/gpu/libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb  \ 
+    -o libcudnn-dev.deb http://118.31.19.101:8080/software/gpu/libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb \
+    -o libcudnn-doc.deb http://118.31.19.101:8080/software/gpu/libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb && \
+    dpkg -i libcudnn.deb && \
+    dpkg -i libcudnn-dev.deb && \
+    dpkg -i libcudnn-doc.deb && \
+    rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb && \
+    echo "\n    Install cudnn success\n"
+
 # opencv依赖
-RUN apt-get install -y libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+RUN apt-get install -y libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev
 # 处理图像所需的包
 RUN apt-get install -y python-dev python-numpy python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev
 RUN apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev liblapacke-dev
@@ -139,52 +157,44 @@ RUN cd /opencv/opencv && \
     -D INSTALL_C_EXAMPLES=ON .. && \
     make -j8 && \
     sudo make install
-RUN pkg-config --modversion opencv
+RUN echo '/usr/local/lib' | sudo tee -a /etc/ld.so.conf.d/opencv.conf && \
+    sudo ldconfig && \
+    printf "#OpenCV\nPKG_CONFIG_PATH=\$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig\nexport PKG_CONFIG_PATH\n">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc" && \
+    pkg-config --modversion opencv
 
+# caffe所需依赖
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
+    apt-get install -y libleveldb-dev libsnappy-dev libhdf5-serial-dev \
+    liblmdb-dev python3-scipy libopenblas-dev python3-skimage
 
-# # caffe所需依赖
-# RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
-#     apt-get install -y build-essential pkg-config libprotobuf-dev \
-#     libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler \
-#     libatlas-base-dev libboost-all-dev libgflags-dev libgoogle-glog-dev \
-#     liblmdb-dev libcv-dev python3-dev python3-numpy python3-scipy \
-#     libopenblas-dev libopencv-dev python3-skimage
+# caffe安装
+RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple scikit-image==0.17.2 && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple python-dateutil==2.7.3
+RUN echo "\n    Begin install caffe..." && \
+    cd /opt && \
+    curl -o caffe.zip http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip && \
+    unzip caffe.zip && \
+    cd /opt/caffe/python && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple -r requirements.txt && \
+    cd /opt/caffe && \
+    make all && \
+    make pycaffe && \
+    echo "export PYTHONPATH=/opt/caffe/python:\$PYTHONPATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc" && \
+    rm -rf /opt/caffe.zip && \
+    echo "\n    Install caffe success"
 
-# # cudnn安装
-# RUN  echo "\n    Begin install cudnn..." && \
-#     dpkg --purge libcudnn7-doc && \
-#     dpkg --purge libcudnn7-dev && \
-#     dpkg --purge libcudnn7 && \
-#     curl -o libcudnn.deb http://118.31.19.101:8080/software/gpu/libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb  \ 
-#     -o libcudnn-dev.deb http://118.31.19.101:8080/software/gpu/libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb \
-#     -o libcudnn-doc.deb http://118.31.19.101:8080/software/gpu/libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb && \
-#     dpkg -i libcudnn.deb && \
-#     dpkg -i libcudnn-dev.deb && \
-#     dpkg -i libcudnn-doc.deb && \
-#     rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb && \
-#     echo "\n    Install cudnn success\n"
+ARG QT_VERSION=5.12.0
+ARG QT_URL="https://download.qt.io/official_releases/qt/__QT_MAJMIN__/${QT_VERSION}/qt-opensource-linux-x64-${QT_VERSION}.run"
+ARG QT_SHA256="0cd82c80287a783bd5db1339b6184803d57517c9450ffe16f505254853f0a41f"
 
-# RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/bash.bashrc && \
-#     echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
-#     /bin/bash -c "source /etc/bash.bashrc"
-
-# # caffe安装
-# RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
-#     pip3 install -i https://mirrors.aliyun.com/pypi/simple scikit-image==0.17.2 && \
-#     pip3 install -i https://mirrors.aliyun.com/pypi/simple python-dateutil==2.7.3
-# RUN echo "\n    Begin install caffe..." && \
-#     cd /opt && \
-#     curl -o caffe.zip http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip && \
-#     unzip caffe.zip && \
-#     cd /opt/caffe/python && \
-#     pip3 install -i https://mirrors.aliyun.com/pypi/simple -r requirements.txt && \
-#     cd /opt/caffe && \
-#     make all && \
-#     make pycaffe && \
-#     echo "export PYTHONPATH=/opt/caffe/python:\$PYTHONPATH">>/etc/bash.bashrc && \
-#     /bin/bash -c "source /etc/bash.bashrc" && \
-#     rm -rf /opt/caffe.zip && \
-#     echo "\n    Install caffe success"
+ENV DEBIAN_FRONTEND=noninteractive \
+    QT_PATH=/opt/Qt \
+    QT_BIN_PACKAGE=gcc_64
+ENV QT_DESKTOP ${QT_PATH}/${QT_VERSION}/${QT_BIN_PACKAGE}
+ENV PATH $QT_DESKTOP/bin:$PATH
 
 # # amba安装
 # RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple onnx==1.5 && \
