@@ -102,6 +102,7 @@ function main() {
    USER_NAME=$(whoami)
    echo "Group id=$GRP_ID name=$GRP_NAME"
    echo "User id=$USER_ID name=$USER"
+   echo ""
 
    checkRuntimeEnvironment
 
