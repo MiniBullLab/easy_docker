@@ -45,7 +45,7 @@ function checkDockerIsRunning() {
 
 # 检测docker socket权限
 function checkDockerPermission() {
-   checkResult=$(docker info --format '{{json .}}' | grep "ERROR: Got permission denied while trying to connect to the Docker daemon socket")
+   checkResult=$(docker info --format '{{json .}}' | grep "Got permission denied while trying to connect to the Docker daemon socket")
    if [ -n "$checkResult" ]; then
       envCheckFailedAndExit $ERR_CODE_DOCKER_SOCKET_PERMISSION
    fi
