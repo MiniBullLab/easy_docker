@@ -96,13 +96,14 @@ function createDockerUser() {
 }
 
 function main() {
-   checkRuntimeEnvironment
-
    GRP_ID=$(id -g)
    GRP_NAME=$(id -g -n)
    USER_ID=$(id -u)
    USER_NAME=$(whoami)
-   echo "Group id=$GRP_ID name=$GRP_NAME, User id=$USER_ID name=$USER"
+   echo "Group id=$GRP_ID name=$GRP_NAME"
+   echo "User id=$USER_ID name=$USER"
+
+   checkRuntimeEnvironment
 
    if [ ! -d "$easy_path" ]; then
       echo "easy_path not exist, create dir ${easy_path}"
