@@ -66,7 +66,6 @@ function startSenseshield() {
    echo "Begin start senseshield..."
    docker exec "$RUNTIME_DOCKER" sudo /usr/lib/senseshield/senseshield
    docker exec "$RUNTIME_DOCKER" ps -aux | grep sense
-
    # shellcheck disable=SC2181
    if [ $? -ne 0 ]; then
       echo "Start senseshield failed."
@@ -74,6 +73,8 @@ function startSenseshield() {
       docker rm -v -f "$RUNTIME_DOCKER" 1>/dev/null
       exit 1
    fi
+   echo "Start senseshield success."
+   echo ""
 }
 
 function createDockerUser() {
