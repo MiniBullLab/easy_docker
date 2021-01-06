@@ -1,11 +1,58 @@
 #!/usr/bin/env bash
 
+# 错误码
+ERR_CODE_DOCKER_NOT_INSTALL=10001
+ERR_CODE_DOCKER_SOCKET_PERMISSION=10002
+ERR_CODE_NVIDIA_DOCKER_NOT_INSTALL=10003
+
 easy_path=/home/${USER}/easy_data
 
 IMAGE_NAME=easy_runtime
 DOCKER_CMD=docker
 
+# 运行环境检测失败，打印错误码并且退出
+function envCheckFailedAndExit() {
+   echo "EasyAI runtime environment error. Code=$1"
+   exit 1
+}
+
+# 检测Docker是否安装
+function checkDockerInstall() {
+   docker --version | grep "Docker version" 1>/dev/null 2>&1
+   # shellcheck disable=SC2181
+   if [ $? != 0 ]; then
+      envCheckFailedAndExit $ERR_CODE_DOCKER_NOT_INSTALL
+   fi
+}
+
+# 检测nvidia-docker是否安装
+function checkNvidiaDocker() {
+   nvidia-docker -v | grep 'Docker version' 1>/dev/null 2>&1
+   # shellcheck disable=SC2181
+   if [ $? != 0 ]; then
+      envCheckFailedAndExit $ERR_CODE_NVIDIA_DOCKER_NOT_INSTALL
+   fi
+}
+
+# 检测docker socket权限
+function checkDockerPermission() {
+   checkResult=$(docker info --format '{{json .}}' | grep "ERROR: Got permission denied while trying to connect to the Docker daemon socket")
+   if [ -n "$checkResult" ]; then
+      envCheckFailedAndExit $ERR_CODE_DOCKER_SOCKET_PERMISSION
+   fi
+}
+
+function checkRuntimeEnvironment() {
+   echo "Begin check EasyAI runtime environment..."
+   checkDockerInstall
+   checkDockerPermission
+   checkNvidiaDocker
+   echo "EasyAI runtime environment OK"
+}
+
 function main() {
+   checkRuntimeEnvironment
+
    GRP_ID=$(id -g)
    GRP_NAME=$(id -g -n)
    USER_ID=$(id -u)
@@ -23,13 +70,13 @@ function main() {
    fi
 
    RUNTIME_DOCKER="easy_runtime_${USER_NAME}"
-   docker ps -a --format "{{.Names}}" | grep "$RUNTIME_DOCKER" 1> /dev/null
+   docker ps -a --format "{{.Names}}" | grep "$RUNTIME_DOCKER" 1>/dev/null
 
    # 判断上次命令是否执行成功?表示上一次的执行结果
    if [ $? == 0 ]; then
       echo "${RUNTIME_DOCKER} is running, stop and remove ..."
-      docker stop $RUNTIME_DOCKER 1> /dev/null
-      docker rm -v -f $RUNTIME_DOCKER 1> /dev/null
+      docker stop $RUNTIME_DOCKER 1>/dev/null
+      docker rm -v -f $RUNTIME_DOCKER 1>/dev/null
       echo "${RUNTIME_DOCKER} stop and remove success..."
    fi
 
@@ -61,8 +108,8 @@ function main() {
    docker exec $RUNTIME_DOCKER ps -aux | grep sense
    if [ $? -ne 0 ]; then
       echo "Check senseshield failed."
-      docker stop $RUNTIME_DOCKER 1> /dev/null
-      docker rm -v -f $RUNTIME_DOCKER 1> /dev/null
+      docker stop $RUNTIME_DOCKER 1>/dev/null
+      docker rm -v -f $RUNTIME_DOCKER 1>/dev/null
    else
       echo "Finished setting up EasyAi docker environment. Now you can enter with: \nbash docker_into.sh"
    fi
