@@ -52,6 +52,7 @@ function checkDockerPermission() {
    fi
 }
 
+# 检测运行环境
 function checkRuntimeEnvironment() {
    echo "Begin check EasyAI runtime environment..."
    checkDockerInstall
@@ -62,6 +63,7 @@ function checkRuntimeEnvironment() {
    echo ""
 }
 
+# 启动加密狗
 function startSenseshield() {
    echo "Begin start senseshield..."
    docker exec "$RUNTIME_DOCKER" sudo /usr/lib/senseshield/senseshield
@@ -76,6 +78,7 @@ function startSenseshield() {
    echo ""
 }
 
+# 在docker容器中创建对应的非root用户
 function createDockerUser() {
    if [ "${USER}" != "root" ]; then
       echo ""
@@ -99,12 +102,7 @@ function main() {
    GRP_NAME=$(id -g -n)
    USER_ID=$(id -u)
    USER_NAME=$(whoami)
-
-   echo "Starting docker container..."
-   # echo "Current user id:" $USER_ID
-   # echo "Current user name:" $USER
-   # echo "Current group id:" $GRP_ID
-   # echo "Current group name:" $GRP_NAME
+   echo "Group id=$GRP_ID name=$GRP_NAME, User id=$USER_ID name=$USER"
 
    if [ ! -d "$easy_path" ]; then
       echo "easy_path not exist, create dir ${easy_path}"
