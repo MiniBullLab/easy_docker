@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # 错误码
-ERR_CODE_DOCKER_NOT_INSTALL=10001
-ERR_CODE_DOCKER_SOCKET_PERMISSION=10002
-ERR_CODE_NVIDIA_DOCKER_NOT_INSTALL=10003
-ERR_CODE_DOCKER_NOT_RUNNING=10004
+ERR_MSG_DOCKER_NOT_INSTALL="Docker not installed."
+ERR_MSG_DOCKER_SOCKET_PERMISSION="Docker socket permission deny."
+ERR_MSG_NVIDIA_DOCKER_NOT_INSTALL="Nvidia docker not installed"
+ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
 
 easy_path=/home/${USER}/easy_data
 
@@ -13,7 +13,7 @@ DOCKER_CMD=docker
 
 # 运行环境检测失败，打印错误码并且退出
 function envCheckFailedAndExit() {
-   echo "EasyAI runtime environment error. Code=$1"
+   echo "EasyAI runtime environment error. Error msg: $1"
    exit 1
 }
 
@@ -22,7 +22,7 @@ function checkDockerInstall() {
    docker --version | grep "Docker version" 1>/dev/null 2>&1
    # shellcheck disable=SC2181
    if [ $? != 0 ]; then
-      envCheckFailedAndExit $ERR_CODE_DOCKER_NOT_INSTALL
+      envCheckFailedAndExit "$ERR_MSG_DOCKER_NOT_INSTALL"
    fi
 }
 
@@ -31,7 +31,7 @@ function checkNvidiaDocker() {
    nvidia-docker -v | grep 'Docker version' 1>/dev/null 2>&1
    # shellcheck disable=SC2181
    if [ $? != 0 ]; then
-      envCheckFailedAndExit $ERR_CODE_NVIDIA_DOCKER_NOT_INSTALL
+      envCheckFailedAndExit "$ERR_MSG_NVIDIA_DOCKER_NOT_INSTALL"
    fi
 }
 
@@ -39,7 +39,7 @@ function checkNvidiaDocker() {
 function checkDockerIsRunning() {
    checkResult=$(docker info --format '{{json .}}' | grep "Is the docker daemon running")
    if [ -n "$checkResult" ]; then
-      envCheckFailedAndExit $ERR_CODE_DOCKER_NOT_RUNNING
+      envCheckFailedAndExit "$ERR_MSG_DOCKER_NOT_RUNNING"
    fi
 }
 
@@ -47,7 +47,7 @@ function checkDockerIsRunning() {
 function checkDockerPermission() {
    checkResult=$(docker info --format '{{json .}}' | grep "Got permission denied while trying to connect to the Docker daemon socket")
    if [ -n "$checkResult" ]; then
-      envCheckFailedAndExit $ERR_CODE_DOCKER_SOCKET_PERMISSION
+      envCheckFailedAndExit "$ERR_MSG_DOCKER_SOCKET_PERMISSION"
    fi
 }
 
@@ -81,8 +81,7 @@ function main() {
 
    RUNTIME_DOCKER="easy_runtime_${USER_NAME}"
    docker ps -a --format "{{.Names}}" | grep "$RUNTIME_DOCKER" 1>/dev/null
-
-   # 判断上次命令是否执行成功?表示上一次的执行结果
+   # shellcheck disable=SC2181
    if [ $? == 0 ]; then
       echo "${RUNTIME_DOCKER} is running, stop and remove ..."
       docker stop $RUNTIME_DOCKER 1>/dev/null
@@ -102,6 +101,7 @@ function main() {
       $IMAGE_NAME \
       /bin/bash
 
+   # shellcheck disable=SC2181
    if [ $? -ne 0 ]; then
       echo "Failed to start docker container \"${RUNTIME_DOCKER}\" based on image: $IMAGE_NAME"
       exit 1
