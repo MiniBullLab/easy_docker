@@ -36,12 +36,16 @@ function checkDockerPermission() {
    fi
 }
 
-function main() {
+function checkRuntimeEnvironment() {
    echo "Begin check EasyAI runtime environment..."
    checkDockerInstall
    checkDockerPermission
    checkNvidiaDocker
    echo "EasyAI runtime environment OK"
+}
+
+function main() {
+   checkRuntimeEnvironment
 }
 
 main
