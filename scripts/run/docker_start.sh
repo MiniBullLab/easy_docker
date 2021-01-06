@@ -13,7 +13,6 @@ DOCKER_CMD=docker
 
 # 运行环境检测失败，打印错误码并且退出
 function envCheckFailedAndExit() {
-   echo ""
    echo "EasyAI runtime environment error."
    echo "Error msg: $1"
    exit 1
