@@ -62,6 +62,20 @@ function checkRuntimeEnvironment() {
    echo ""
 }
 
+function startSenseshield() {
+   echo "Begin start senseshield..."
+   docker exec "$RUNTIME_DOCKER" sudo /usr/lib/senseshield/senseshield
+   docker exec "$RUNTIME_DOCKER" ps -aux | grep sense
+
+   # shellcheck disable=SC2181
+   if [ $? -ne 0 ]; then
+      echo "Start senseshield failed."
+      docker stop "$RUNTIME_DOCKER" 1>/dev/null
+      docker rm -v -f "$RUNTIME_DOCKER" 1>/dev/null
+      exit 1
+   fi
+}
+
 function main() {
    checkRuntimeEnvironment
 
@@ -113,21 +127,12 @@ function main() {
    if [ "${USER}" != "root" ]; then
       echo ""
       echo "Current user is not root, begin to create user..."
-      docker exec $RUNTIME_DOCKER bash -c '/scripts/add_user.sh'
-      echo "Docker user create success"
+      docker exec "$RUNTIME_DOCKER" bash -c '/scripts/add_user.sh'
       echo ""
    fi
 
-   echo "Check senseshield..."
-   docker exec $RUNTIME_DOCKER sudo /usr/lib/senseshield/senseshield
-   docker exec $RUNTIME_DOCKER ps -aux | grep sense
-   if [ $? -ne 0 ]; then
-      echo "Check senseshield failed."
-      docker stop $RUNTIME_DOCKER 1>/dev/null
-      docker rm -v -f $RUNTIME_DOCKER 1>/dev/null
-   else
-      echo "Finished setting up EasyAi docker environment. Now you can enter with: \nbash docker_into.sh"
-   fi
+   echo "Finished setting up EasyAi docker environment."
+   echo "Now you can enter with: bash docker_into.sh"
 }
 
 main
