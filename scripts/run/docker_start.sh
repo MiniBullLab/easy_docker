@@ -59,6 +59,7 @@ function checkRuntimeEnvironment() {
    checkDockerIsRunning
    checkNvidiaDocker
    echo "EasyAI runtime environment OK"
+   echo ""
 }
 
 function main() {
@@ -70,10 +71,10 @@ function main() {
    USER_NAME=$(whoami)
 
    echo "Starting docker container..."
-   echo "Current user id:" $USER_ID
-   echo "Current user name:" $USER
-   echo "Current group id:" $GRP_ID
-   echo "Current group name:" $GRP_NAME
+   # echo "Current user id:" $USER_ID
+   # echo "Current user name:" $USER
+   # echo "Current group id:" $GRP_ID
+   # echo "Current group name:" $GRP_NAME
 
    if [ ! -d $easy_path ]; then
       echo "easy_path not exist, create dir ${easy_path}"
@@ -84,10 +85,11 @@ function main() {
    docker ps -a --format "{{.Names}}" | grep "$RUNTIME_DOCKER" 1>/dev/null
    # shellcheck disable=SC2181
    if [ $? == 0 ]; then
-      echo "${RUNTIME_DOCKER} is running, stop and remove ..."
+      echo "${RUNTIME_DOCKER} is running, stop and remove..."
       docker stop $RUNTIME_DOCKER 1>/dev/null
       docker rm -v -f $RUNTIME_DOCKER 1>/dev/null
-      echo "${RUNTIME_DOCKER} stop and remove success..."
+      echo "${RUNTIME_DOCKER} stop and remove success"
+      echo ""
    fi
 
    echo "Starting docker container ${RUNTIME_DOCKER} ..."
@@ -109,9 +111,11 @@ function main() {
    fi
 
    if [ "${USER}" != "root" ]; then
-      echo "Runtime is not root, begin to create user..."
+      echo ""
+      echo "Current user is not root, begin to create user..."
       docker exec $RUNTIME_DOCKER bash -c '/scripts/add_user.sh'
       echo "Docker user create success"
+      echo ""
    fi
 
    echo "Check senseshield..."
