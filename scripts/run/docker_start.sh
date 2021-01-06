@@ -4,6 +4,7 @@
 ERR_CODE_DOCKER_NOT_INSTALL=10001
 ERR_CODE_DOCKER_SOCKET_PERMISSION=10002
 ERR_CODE_NVIDIA_DOCKER_NOT_INSTALL=10003
+ERR_CODE_DOCKER_NOT_RUNNING=10004
 
 easy_path=/home/${USER}/easy_data
 
@@ -34,6 +35,14 @@ function checkNvidiaDocker() {
    fi
 }
 
+# 检验docker是否在运行
+function checkDockerIsRunning() {
+   checkResult=$(docker info --format '{{json .}}' | grep "Is the docker daemon running")
+   if [ -n "$checkResult" ]; then
+      envCheckFailedAndExit $ERR_CODE_DOCKER_NOT_RUNNING
+   fi
+}
+
 # 检测docker socket权限
 function checkDockerPermission() {
    checkResult=$(docker info --format '{{json .}}' | grep "ERROR: Got permission denied while trying to connect to the Docker daemon socket")
@@ -46,6 +55,7 @@ function checkRuntimeEnvironment() {
    echo "Begin check EasyAI runtime environment..."
    checkDockerInstall
    checkDockerPermission
+   checkDockerIsRunning
    checkNvidiaDocker
    echo "EasyAI runtime environment OK"
 }
