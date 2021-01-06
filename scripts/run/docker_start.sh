@@ -76,6 +76,15 @@ function startSenseshield() {
    fi
 }
 
+function createDockerUser() {
+   if [ "${USER}" != "root" ]; then
+      echo ""
+      echo "Current user is not root, begin to create user..."
+      docker exec "$1" bash -c '/scripts/add_user.sh'
+      echo ""
+   fi
+}
+
 function main() {
    checkRuntimeEnvironment
 
@@ -100,36 +109,31 @@ function main() {
    # shellcheck disable=SC2181
    if [ $? == 0 ]; then
       echo "${RUNTIME_DOCKER} is running, stop and remove..."
-      docker stop $RUNTIME_DOCKER 1>/dev/null
-      docker rm -v -f $RUNTIME_DOCKER 1>/dev/null
+      docker stop "$RUNTIME_DOCKER" 1>/dev/null
+      docker rm -v -f "$RUNTIME_DOCKER" 1>/dev/null
       echo "${RUNTIME_DOCKER} stop and remove success"
       echo ""
    fi
 
    echo "Starting docker container ${RUNTIME_DOCKER} ..."
 
-   ${DOCKER_CMD} run -it --shm-size="2g" --gpus=all -d --privileged --name $RUNTIME_DOCKER \
+   ${DOCKER_CMD} run -it --shm-size="2g" --gpus=all -d --privileged --name "$RUNTIME_DOCKER" \
       -e DOCKER_IMG=$IMAGE_NAME \
-      -e DOCKER_USER=$USER_NAME \
-      -e DOCKER_USER_ID=$USER_ID \
-      -e DOCKER_GRP=$GRP_NAME \
-      -e DOCKER_GRP_ID=$GRP_ID \
-      -v ${easy_path}:/easy_ai \
+      -e DOCKER_USER="$USER_NAME" \
+      -e DOCKER_USER_ID="$USER_ID" \
+      -e DOCKER_GRP="$GRP_NAME" \
+      -e DOCKER_GRP_ID="$GRP_ID" \
+      -v "${easy_path}":/easy_ai \
       $IMAGE_NAME \
       /bin/bash
-
    # shellcheck disable=SC2181
    if [ $? -ne 0 ]; then
       echo "Failed to start docker container \"${RUNTIME_DOCKER}\" based on image: $IMAGE_NAME"
       exit 1
    fi
 
-   if [ "${USER}" != "root" ]; then
-      echo ""
-      echo "Current user is not root, begin to create user..."
-      docker exec "$RUNTIME_DOCKER" bash -c '/scripts/add_user.sh'
-      echo ""
-   fi
+   createDockerUser "$RUNTIME_DOCKER"
+   startSenseshield
 
    echo "Finished setting up EasyAi docker environment."
    echo "Now you can enter with: bash docker_into.sh"
