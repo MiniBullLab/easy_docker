@@ -79,9 +79,16 @@ function startSenseshield() {
 function createDockerUser() {
    if [ "${USER}" != "root" ]; then
       echo ""
-      echo "Current user is not root, begin to create user..."
+      echo "Current user is not root, begin to create docker user..."
       docker exec "${RUNTIME_DOCKER}" bash -c '/scripts/add_user.sh'
-      echo ""
+      # shellcheck disable=SC2181
+      if [ $? == 0 ]; then
+         echo "Create docker user success"
+         echo ""
+      else
+         echo "Create docker user failed"
+         exit 1
+      fi
    fi
 }
 

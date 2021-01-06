@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-echo "Begin run add_user.sh ..."
 echo ""
 echo "Add group in container, id=${DOCKER_GRP_ID} name=${DOCKER_GRP}"
 addgroup --gid "$DOCKER_GRP_ID" "$DOCKER_GRP"
@@ -20,6 +19,3 @@ cp -r /etc/skel/. /home/${DOCKER_USER}
 # Set user files ownership to current user, such as .bashrc, .profile, etc.
 chown ${DOCKER_USER}:${DOCKER_GRP} /home/${DOCKER_USER}
 ls -ad /home/${DOCKER_USER}/.??* | xargs chown -R ${DOCKER_USER}:${DOCKER_GRP}
-
-echo "Run add_user.sh success."
-echo ""
