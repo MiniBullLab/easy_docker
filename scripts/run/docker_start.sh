@@ -3,7 +3,7 @@
 # 错误码
 ERR_MSG_DOCKER_NOT_INSTALL="Docker not installed."
 ERR_MSG_DOCKER_SOCKET_PERMISSION="Docker socket permission deny."
-ERR_MSG_NVIDIA_DOCKER_NOT_INSTALL="Nvidia docker not installed"
+ERR_MSG_NVIDIA_DOCKER_NOT_INSTALL="Nvidia docker not installed."
 ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
 
 easy_path=/home/${USER}/easy_data
