@@ -65,9 +65,8 @@ function checkRuntimeEnvironment() {
 function startSenseshield() {
    echo "Begin start senseshield..."
    docker exec "$RUNTIME_DOCKER" sudo /usr/lib/senseshield/senseshield
-   docker exec "$RUNTIME_DOCKER" ps -aux | grep sense
-   # shellcheck disable=SC2181
-   if [ $? -ne 0 ]; then
+   ps_result=$(docker exec "$RUNTIME_DOCKER" ps -aux | grep senseshield)
+   if [ -n "$ps_result" ]; then
       echo "Start senseshield failed."
       docker stop "$RUNTIME_DOCKER" 1>/dev/null
       docker rm -v -f "$RUNTIME_DOCKER" 1>/dev/null
@@ -81,7 +80,7 @@ function createDockerUser() {
    if [ "${USER}" != "root" ]; then
       echo ""
       echo "Current user is not root, begin to create user..."
-      docker exec "$1" bash -c '/scripts/add_user.sh'
+      docker exec "${RUNTIME_DOCKER}" bash -c '/scripts/add_user.sh'
       echo ""
    fi
 }
@@ -100,9 +99,9 @@ function main() {
    # echo "Current group id:" $GRP_ID
    # echo "Current group name:" $GRP_NAME
 
-   if [ ! -d $easy_path ]; then
+   if [ ! -d "$easy_path" ]; then
       echo "easy_path not exist, create dir ${easy_path}"
-      mkdir $easy_path
+      mkdir "$easy_path"
    fi
 
    RUNTIME_DOCKER="easy_runtime_${USER_NAME}"
@@ -133,7 +132,7 @@ function main() {
       exit 1
    fi
 
-   createDockerUser "$RUNTIME_DOCKER"
+   createDockerUser
    startSenseshield
 
    echo "Finished setting up EasyAi docker environment."
