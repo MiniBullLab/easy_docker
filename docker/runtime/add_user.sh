@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
 
-echo ""
 echo "Add group in container, id=${DOCKER_GRP_ID} name=${DOCKER_GRP}"
 addgroup --gid "$DOCKER_GRP_ID" "$DOCKER_GRP"
 echo "Add group success."
-
-echo ""
 echo "Add user in container, id=${DOCKER_USER} name=${DOCKER_USER_ID}"
 adduser --disabled-password --force-badname --gecos '' "$DOCKER_USER" \
     --uid "$DOCKER_USER_ID" --gid "$DOCKER_GRP_ID"
 echo "Add user success."
-echo ""
 
 usermod -aG sudo "$DOCKER_USER"
 echo '%sudo ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers

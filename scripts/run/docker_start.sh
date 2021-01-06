@@ -66,7 +66,7 @@ function startSenseshield() {
    echo "Begin start senseshield..."
    docker exec "$RUNTIME_DOCKER" sudo /usr/lib/senseshield/senseshield
    ps_result=$(docker exec "$RUNTIME_DOCKER" ps -aux | grep senseshield)
-   if [ -n "$ps_result" ]; then
+   if [ -z "$ps_result" ]; then
       echo "Start senseshield failed."
       docker stop "$RUNTIME_DOCKER" 1>/dev/null
       docker rm -v -f "$RUNTIME_DOCKER" 1>/dev/null
@@ -83,10 +83,10 @@ function createDockerUser() {
       docker exec "${RUNTIME_DOCKER}" bash -c '/scripts/add_user.sh'
       # shellcheck disable=SC2181
       if [ $? == 0 ]; then
-         echo "Create docker user success"
+         echo "Create docker user success."
          echo ""
       else
-         echo "Create docker user failed"
+         echo "Create docker user failed."
          exit 1
       fi
    fi
