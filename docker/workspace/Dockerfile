@@ -5,7 +5,7 @@ RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml
 # 系统所需依赖更新
 RUN apt-get update && apt-get install -y software-properties-common && \
     apt-get update && \
-    apt-get install -y git wget sudo vim unzip curl axel \
+    apt-get install -y git wget sudo vim unzip curl axel gcc g++ \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip
 
@@ -157,11 +157,13 @@ RUN cd /opencv/opencv && \
     -D INSTALL_C_EXAMPLES=ON .. && \
     make -j8 && \
     sudo make install
+
 RUN echo '/usr/local/lib' | sudo tee -a /etc/ld.so.conf.d/opencv.conf && \
     sudo ldconfig && \
     printf "#OpenCV\nPKG_CONFIG_PATH=\$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig\nexport PKG_CONFIG_PATH\n">>/etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc" && \
-    pkg-config --modversion opencv
+    pkg-config --modversion opencv && \
+    rm -rf /opencv /opencv_contrib
 
 # caffe所需依赖
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
@@ -186,15 +188,33 @@ RUN echo "\n    Begin install caffe..." && \
     rm -rf /opt/caffe.zip && \
     echo "\n    Install caffe success"
 
-ARG QT_VERSION=5.12.0
-ARG QT_URL="https://download.qt.io/official_releases/qt/__QT_MAJMIN__/${QT_VERSION}/qt-opensource-linux-x64-${QT_VERSION}.run"
-ARG QT_SHA256="0cd82c80287a783bd5db1339b6184803d57517c9450ffe16f505254853f0a41f"
+# Qt5安装
+RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 mesa-common-dev libglu1-mesa-dev libglib2.0-0 freeglut3-dev
+# RUN add-apt-repository -y ppa:beineri/opt-qt-5.12.0-bionic
+# RUN apt-get update && apt-get -y install \
+#     qt512-meta-full\
+#     qt512websockets
+# RUN echo "source /opt/qt512/bin/qt512-env.sh" >> /etc/profile
+# RUN echo "export QMAKESPEC=/opt/qt512/mkspecs/linux-g++" >> /etc/profile
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    QT_PATH=/opt/Qt \
-    QT_BIN_PACKAGE=gcc_64
-ENV QT_DESKTOP ${QT_PATH}/${QT_VERSION}/${QT_BIN_PACKAGE}
-ENV PATH $QT_DESKTOP/bin:$PATH
+RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.zip && \
+    unzip qt-everywhere-src-5.12.0.zip && \
+    cd qt-everywhere-src-5.12.0 && \
+    ls && \
+    ./configure -confirm-license \
+    -prefix /opt/qt5 -opensource -confirm-license -gstreamer 1.0 -egl -icu -glib -fontconfig -qt-zlib -qt-pcre -qt-libpng -qt-libjpeg \
+    -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests
+
+# COPY qt-installer-nonintaractive.qs /qt-noninteractive.qs
+# RUN curl -O https://download.qt.io/archive/qt/5.12/5.12.0/qt-opensource-linux-x64-5.12.0.run && \
+#     chmod +x qt-opensource-linux-x64-5.12.0.run && \
+#     ./qt-opensource-linux-x64-5.12.0.run --script /qt-noninteractive.qs --platform minimal 
+# ARG QT_VERSION=5.12.0
+# ENV DEBIAN_FRONTEND=noninteractive \
+#     QT_PATH=/opt/Qt \
+#     QT_BIN_PACKAGE=gcc_64
+# ENV QT_DESKTOP ${QT_PATH}/${QT_VERSION}/${QT_BIN_PACKAGE}
+# ENV PATH $QT_DESKTOP/bin:$PATH
 
 # # amba安装
 # RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple onnx==1.5 && \
