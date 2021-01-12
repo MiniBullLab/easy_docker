@@ -197,7 +197,7 @@ RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 mesa-commo
 # RUN echo "source /opt/qt512/bin/qt512-env.sh" >> /etc/profile
 # RUN echo "export QMAKESPEC=/opt/qt512/mkspecs/linux-g++" >> /etc/profile
 
-RUN curl -O http://download.qt.io/archive/qt/5.12/5.12.0/single/qt-everywhere-src-5.12.0.tar.xz && \
+RUN curl -L -O http://download.qt.io/archive/qt/5.12/5.12.0/single/qt-everywhere-src-5.12.0.tar.xz && \
     ls
 
 # RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.zip 
