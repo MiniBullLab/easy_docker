@@ -199,7 +199,7 @@ RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 mesa-commo
 RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.zip 
 RUN unzip qt-everywhere-src-5.12.0.zip && \
     cd qt-everywhere-src-5.12.0 && \
-    ls && \
+    pwd && \
     ./configure -confirm-license -prefix /opt/qt5 -opensource -confirm-license -gstreamer 1.0 -egl -icu -glib -fontconfig -qt-zlib -qt-pcre -qt-libpng -qt-libjpeg -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests
 
 # COPY qt-installer-nonintaractive.qs /qt-noninteractive.qs
