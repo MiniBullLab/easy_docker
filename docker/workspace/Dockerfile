@@ -199,6 +199,8 @@ RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 mesa-commo
 
 RUN curl -L -O http://download.qt.io/archive/qt/5.12/5.12.0/single/qt-everywhere-src-5.12.0.tar.xz && \
     ls
+RUN tar -xvJf qt-everywhere-src-5.12.0.tar.xz && \
+    ls
 
 # RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.zip 
 # RUN unzip -a qt-everywhere-src-5.12.0.zip
