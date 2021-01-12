@@ -196,12 +196,17 @@ RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 mesa-commo
 #     qt512websockets
 # RUN echo "source /opt/qt512/bin/qt512-env.sh" >> /etc/profile
 # RUN echo "export QMAKESPEC=/opt/qt512/mkspecs/linux-g++" >> /etc/profile
-RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.zip 
-RUN unzip -a qt-everywhere-src-5.12.0.zip
-RUN cd qt-everywhere-src-5.12.0 && \
-    pwd && \
-    ls -a | grep configure && \
-    ./configure -confirm-license -prefix /qt-everywhere-src-5.12.0/qtbase -opensource -confirm-license -gstreamer 1.0 -egl -icu -glib -fontconfig -qt-zlib -qt-pcre -qt-libpng -qt-libjpeg -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests
+
+RUN curl -O http://download.qt.io/archive/qt/5.12/5.12.0/single/qt-everywhere-src-5.12.0.tar.xz && \
+    ls
+
+# RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.zip 
+# RUN unzip -a qt-everywhere-src-5.12.0.zip
+# RUN cd qt-everywhere-src-5.12.0 && \
+#     pwd && \
+#     ls -a | grep configure && \
+#     ./configure -confirm-license -prefix /qt-everywhere-src-5.12.0/qtbase -opensource -confirm-license -gstreamer 1.0 -egl -icu -glib -fontconfig -qt-zlib -qt-pcre -qt-libpng -qt-libjpeg -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests
+
 
 # COPY qt-installer-nonintaractive.qs /qt-noninteractive.qs
 # RUN curl -O https://download.qt.io/archive/qt/5.12/5.12.0/qt-opensource-linux-x64-5.12.0.run && \
