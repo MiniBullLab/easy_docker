@@ -19,16 +19,16 @@ RUN apt-get install -y libssl-dev && \
     ./bootstrap && \
     make && \
     sudo make install && \
-    cmake --version
+    cmake --version && \
+    rm -rf /v3.14.0.tar.gz  /CMake-3.14.0
 
 RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     apt update
 
 # 安装protobuf
-RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
-RUN unzip v3.3.0.zip 
+RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip && \
+    unzip v3.3.0.zip 
 RUN cd protobuf-3.3.0/ && \
-    ls && \
     ./autogen.sh && \
     ./configure --prefix=/usr/local && \
     make && \ 
@@ -36,54 +36,55 @@ RUN cd protobuf-3.3.0/ && \
     sudo make install && \
     echo "export LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc" && \
-    sudo ldconfig
-RUN pkg-config --cflags --libs protobuf
+    sudo ldconfig && \
+    pkg-config --cflags --libs protobuf && \
+    rm -rf /v3.3.0.zip /protobuf-3.3.0
 
 # 安装googletest
-RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-RUN tar -vxf release-1.10.0.tar.gz
-RUN ls
+RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -vxf release-1.10.0.tar.gz
 RUN cd googletest-release-1.10.0 && \
     mkdir google_test_build && \
     cd google_test_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON -G "Unix Makefiles" ../ && \
     make -j8 && \
     sudo make install && \
-    sudo ldconfig
+    sudo ldconfig && \
+    rm -rf /release-1.10.0.tar.gz /googletest-release-1.10.0
 
 # 安装gflags
-RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz
-RUN tar -vxf v2.2.0.tar.gz
-RUN ls
+RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz && \
+    tar -vxf v2.2.0.tar.gz
 RUN cd gflags-2.2.0 && \
     mkdir gflags_build && \
     cd gflags_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=gflags ../ && \
     make -j8 && \
     sudo make install && \
-    sudo ldconfig
+    sudo ldconfig && \
+    rm -rf /v2.2.0.tar.gz /gflags-2.2.0
 
 # 安装glog
-RUN curl -L -O https://github.com/google/glog/archive/v0.3.5.tar.gz
-RUN tar -vxf v0.3.5.tar.gz
-RUN ls
+RUN curl -L -O https://github.com/google/glog/archive/v0.3.5.tar.gz && \
+    tar -vxf v0.3.5.tar.gz
 RUN cd glog-0.3.5 && \
     ./configure && \
     make -j8 && \
     sudo make install && \
-    sudo ldconfig
+    sudo ldconfig && \
+    rm -rf /v0.3.5.tar.gz /glog-0.3.5
 
 # 安装poco
-RUN curl -L -O https://github.com/pocoproject/poco/archive/poco-1.8.0-release.tar.gz
-RUN tar -vxf poco-1.8.0-release.tar.gz
-RUN ls
+RUN curl -L -O https://github.com/pocoproject/poco/archive/poco-1.8.0-release.tar.gz && \
+    tar -vxf poco-1.8.0-release.tar.gz
 RUN cd poco-poco-1.8.0-release && \
     mkdir cmake-build && \
     cd cmake-build && \
     cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && \
     cmake --build . --config Releases && \
     sudo cmake --build . --target install && \
-    sudo ldconfig
+    sudo ldconfig && \
+    rm -rf /poco-1.8.0-release.tar.gz /poco-poco-1.8.0-release 
 
 # 安装foonathan_memory_vendor
 # RUN curl -L -O  http://118.31.19.101:8080/software/utility/foonathan_memory_vendor-master.zip && \
@@ -99,27 +100,27 @@ RUN cd poco-poco-1.8.0-release && \
 
 # 安装Fast-CDR
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-CDR.zip && \
-    unzip Fast-CDR.zip && \
-    ls
+    unzip Fast-CDR.zip
 RUN cd Fast-CDR && \
     mkdir CDR_build && \
     cd CDR_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON ../ && \
     make -j8 && \
     sudo make install && \
-    sudo ldconfig
+    sudo ldconfig && \
+    rm -rf /Fast-CDR.zip  /Fast-CDR 
 
 # 安装Fast-RTPS
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-RTPS.zip && \
-    unzip Fast-RTPS.zip && \
-    ls
+    unzip Fast-RTPS.zip
 RUN cd Fast-RTPS && \
     mkdir RTPS_build && \
     cd RTPS_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON ../ && \
     make -j8 && \
     sudo make install && \
-    sudo ldconfig
+    sudo ldconfig && \
+    rm -rf F/ast-RTPS.zip /Fast-RTPS 
 
 RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/bash.bashrc && \
     echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
@@ -159,8 +160,7 @@ RUN echo "\n    Begin install OpenCV...\n" && \
     unzip opencv.zip && \
     unzip opencv_contrib.zip && \
     mv opencv-3.4.6 opencv && \
-    mv opencv_contrib-3.4.6 opencv_contrib && \
-    ls
+    mv opencv_contrib-3.4.6 opencv_contrib
 
 RUN cd /opencv/opencv && \
     mkdir build && \
@@ -199,7 +199,7 @@ RUN echo '/usr/local/lib' | sudo tee -a /etc/ld.so.conf.d/opencv.conf && \
     printf "#OpenCV\nPKG_CONFIG_PATH=\$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig\nexport PKG_CONFIG_PATH\n">>/etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc" && \
     pkg-config --modversion opencv && \
-    rm -rf /opencv /opencv_contrib
+    rm -rf /opencv /opencv_contrib /opencv.zip /opencv_contrib.zip
 
 # caffe所需依赖
 RUN apt-get update 
@@ -232,7 +232,6 @@ RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 mesa-commo
 RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.tar.xz && \
     tar -xvJf qt-everywhere-src-5.12.0.tar.xz
 RUN cd qt-everywhere-src-5.12.0 && \
-    ls -l && \
     ./configure -confirm-license \
     -prefix /opt/qt512 -opensource -release -shared -glib -fontconfig -qt-zlib -qt-libpng -qt-libjpeg \
     -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests -skip qtmacextras \
@@ -245,10 +244,10 @@ RUN echo "export PATH=/opt/qt512/bin:\$PATH">>/etc/bash.bashrc && \
     echo "export QMAKESPEC=/opt/qt512/mkspecs/linux-g++" >> /etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc"
 
-# COPY qt-installer-nonintaractive.qs /qt-noninteractive.qs
+# COPY qt-installer-nonintaractive.qs /scripts/qt-noninteractive.qs
 # RUN curl -O https://download.qt.io/archive/qt/5.12/5.12.0/qt-opensource-linux-x64-5.12.0.run && \
 #     chmod +x qt-opensource-linux-x64-5.12.0.run && \
-#     ./qt-opensource-linux-x64-5.12.0.run --script /qt-noninteractive.qs --platform minimal 
+#     ./qt-opensource-linux-x64-5.12.0.run --script /scripts/qt-noninteractive.qs --platform minimal 
 # ARG QT_VERSION=5.12.0
 # ENV DEBIAN_FRONTEND=noninteractive \
 #     QT_PATH=/opt/Qt \
@@ -261,8 +260,7 @@ RUN apt-get install -y libx11-dev libxext-dev libxtst-dev libxrender-dev libxmu-
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/VTK-8.1.2.tar.gz && \
     curl -L -O  http://118.31.19.101:8080/software/utility/VTKData-8.1.2.tar.gz && \
     tar -xvzf VTK-8.1.2.tar.gz && \
-    tar -xvzf VTKData-8.1.2.tar.gz && \
-    ls
+    tar -xvzf VTKData-8.1.2.tar.gz
 RUN cd VTK-8.1.2 && \
     mkdir build && \
     cd build && \
@@ -284,8 +282,7 @@ RUN mkdir /opt/qt512/plugins/designer && \
 RUN apt-get install -y libeigen3-dev libflann-dev libboost-dev mpi-default-dev openmpi-bin openmpi-common libopenni-dev libopenni2-dev \
     libsm-dev uuid-dev libflann-dev libusb-1.0-0-dev libusb-dev libudev-dev libqhull* 
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/pcl-pcl-1.9.0.tar.gz && \
-    tar -xvzf pcl-pcl-1.9.0.tar.gz && \
-    ls
+    tar -xvzf pcl-pcl-1.9.0.tar.gz
 RUN cd pcl-pcl-1.9.0 && \
     mkdir build && \
     cd build && \
@@ -336,11 +333,11 @@ RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple -r /scripts/ai_requir
     /bin/bash -c "source /etc/bash.bashrc"
 
 # 安装apex
-RUN git clone https://github.com/NVIDIA/apex && \
+RUN curl -O http://118.31.19.101:8080/software/gpu/apex.zip && \
+    unzip apex.zip && \
     cd apex && \
-    git checkout f3a960f80244cf9e80558ab30f7f7e8cbf03c0a0 && \
-    pip3 install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" && \
-    rm -rf /apex
+    pip3 install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./ && \
+    rm -rf /apex /apex.zip
 
 
 COPY add_user.sh /scripts/
