@@ -202,7 +202,7 @@ RUN curl -L -O http://download.qt.io/archive/qt/5.12/5.12.0/single/qt-everywhere
 RUN tar -xvJf qt-everywhere-src-5.12.0.tar.xz && \
     ls
 RUN cd qt-everywhere-src-5.12.0 && \ 
-    ./configure -confirm-license -prefix /qt-everywhere-src-5.12.0/qtbase -opensource -confirm-license -gstreamer 1.0 -egl -icu -glib -fontconfig -qt-zlib -qt-pcre -qt-libpng -qt-libjpeg -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests
+    ./configure -v -confirm-license -prefix /qt-everywhere-src-5.12.0/qtbase -opensource -confirm-license -gstreamer 1.0 -egl -icu -glib -fontconfig -qt-zlib -qt-pcre -qt-libpng -qt-libjpeg -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests
 
 # RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.zip 
 # RUN unzip -a qt-everywhere-src-5.12.0.zip
