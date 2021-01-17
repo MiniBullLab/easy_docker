@@ -19,16 +19,16 @@ RUN apt-get install -y libssl-dev && \
     ./bootstrap && \
     make && \
     sudo make install && \
-    cmake --version
+    cmake --version && \
+    rm -rf /v3.14.0.tar.gz  /CMake-3.14.0
 
 RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     apt update
 
 # 安装protobuf
-RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip 
-RUN unzip v3.3.0.zip 
+RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip && \
+    unzip v3.3.0.zip 
 RUN cd protobuf-3.3.0/ && \
-    ls && \
     ./autogen.sh && \
     ./configure --prefix=/usr/local && \
     make && \ 
@@ -36,54 +36,91 @@ RUN cd protobuf-3.3.0/ && \
     sudo make install && \
     echo "export LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc" && \
-    sudo ldconfig
-RUN pkg-config --cflags --libs protobuf
+    sudo ldconfig && \
+    pkg-config --cflags --libs protobuf && \
+    rm -rf /v3.3.0.zip /protobuf-3.3.0
 
 # 安装googletest
-RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-RUN tar -vxf release-1.10.0.tar.gz
-RUN ls
+RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
+    tar -vxf release-1.10.0.tar.gz
 RUN cd googletest-release-1.10.0 && \
     mkdir google_test_build && \
     cd google_test_build/ && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON -G "Unix Makefiles" ../ && \
     make -j8 && \
     sudo make install && \
-    sudo ldconfig
+    sudo ldconfig && \
+    rm -rf /release-1.10.0.tar.gz /googletest-release-1.10.0
 
 # 安装gflags
-RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz
-RUN tar -vxf v2.2.0.tar.gz
-RUN ls
+RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz && \
+    tar -vxf v2.2.0.tar.gz
 RUN cd gflags-2.2.0 && \
     mkdir gflags_build && \
     cd gflags_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=gflags ../ && \
     make -j8 && \
     sudo make install && \
-    sudo ldconfig
+    sudo ldconfig && \
+    rm -rf /v2.2.0.tar.gz /gflags-2.2.0
 
 # 安装glog
-RUN curl -L -O https://github.com/google/glog/archive/v0.3.5.tar.gz
-RUN tar -vxf v0.3.5.tar.gz
-RUN ls
+RUN curl -L -O https://github.com/google/glog/archive/v0.3.5.tar.gz && \
+    tar -vxf v0.3.5.tar.gz
 RUN cd glog-0.3.5 && \
     ./configure && \
     make -j8 && \
     sudo make install && \
-    sudo ldconfig
+    sudo ldconfig && \
+    rm -rf /v0.3.5.tar.gz /glog-0.3.5
 
 # 安装poco
-RUN curl -L -O https://github.com/pocoproject/poco/archive/poco-1.8.0-release.tar.gz
-RUN tar -vxf poco-1.8.0-release.tar.gz
-RUN ls
+RUN curl -L -O https://github.com/pocoproject/poco/archive/poco-1.8.0-release.tar.gz && \
+    tar -vxf poco-1.8.0-release.tar.gz
 RUN cd poco-poco-1.8.0-release && \
     mkdir cmake-build && \
     cd cmake-build && \
     cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && \
     cmake --build . --config Releases && \
     sudo cmake --build . --target install && \
-    sudo ldconfig
+    sudo ldconfig && \
+    rm -rf /poco-1.8.0-release.tar.gz /poco-poco-1.8.0-release 
+
+# 安装foonathan_memory_vendor
+# RUN curl -L -O  http://118.31.19.101:8080/software/utility/foonathan_memory_vendor-master.zip && \
+#     unzip foonathan_memory_vendor-master.zip && \
+#     ls
+# RUN cd foonathan_memory_vendor-master && \
+#     mkdir build && \
+#     cd build && \
+#     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON .. && \
+#     make -j8 && \
+#     sudo make install && \
+#     sudo ldconfig
+
+# 安装Fast-CDR
+RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-CDR.zip && \
+    unzip Fast-CDR.zip
+RUN cd Fast-CDR && \
+    mkdir CDR_build && \
+    cd CDR_build/ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON ../ && \
+    make -j8 && \
+    sudo make install && \
+    sudo ldconfig && \
+    rm -rf /Fast-CDR.zip  /Fast-CDR 
+
+# 安装Fast-RTPS
+RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-RTPS.zip && \
+    unzip Fast-RTPS.zip
+RUN cd Fast-RTPS && \
+    mkdir RTPS_build && \
+    cd RTPS_build/ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON ../ && \
+    make -j8 && \
+    sudo make install && \
+    sudo ldconfig && \
+    rm -rf F/ast-RTPS.zip /Fast-RTPS 
 
 RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/bash.bashrc && \
     echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
@@ -123,8 +160,7 @@ RUN echo "\n    Begin install OpenCV...\n" && \
     unzip opencv.zip && \
     unzip opencv_contrib.zip && \
     mv opencv-3.4.6 opencv && \
-    mv opencv_contrib-3.4.6 opencv_contrib && \
-    ls
+    mv opencv_contrib-3.4.6 opencv_contrib
 
 RUN cd /opencv/opencv && \
     mkdir build && \
@@ -163,9 +199,10 @@ RUN echo '/usr/local/lib' | sudo tee -a /etc/ld.so.conf.d/opencv.conf && \
     printf "#OpenCV\nPKG_CONFIG_PATH=\$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig\nexport PKG_CONFIG_PATH\n">>/etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc" && \
     pkg-config --modversion opencv && \
-    rm -rf /opencv /opencv_contrib
+    rm -rf /opencv /opencv_contrib /opencv.zip /opencv_contrib.zip
 
 # caffe所需依赖
+RUN apt-get update 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
     apt-get install -y libleveldb-dev libsnappy-dev libhdf5-serial-dev \
     liblmdb-dev python3-scipy libopenblas-dev python3-skimage
@@ -191,31 +228,26 @@ RUN echo "\n    Begin install caffe..." && \
 # Qt5安装
 RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 mesa-common-dev libglu1-mesa-dev libglib2.0-0 freeglut3-dev
 # RUN add-apt-repository -y ppa:beineri/opt-qt-5.12.0-bionic
-# RUN apt-get update && apt-get -y install \
-#     qt512-meta-full\
-#     qt512websockets
-# RUN echo "source /opt/qt512/bin/qt512-env.sh" >> /etc/profile
-# RUN echo "export QMAKESPEC=/opt/qt512/mkspecs/linux-g++" >> /etc/profile
+# RUN apt-get update && apt-get -y install qt512-meta-full
+RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.tar.xz && \
+    tar -xvJf qt-everywhere-src-5.12.0.tar.xz
+RUN cd qt-everywhere-src-5.12.0 && \
+    ./configure -confirm-license \
+    -prefix /opt/qt512 -opensource -release -shared -glib -fontconfig -qt-zlib -qt-libpng -qt-libjpeg \
+    -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests -skip qtmacextras \
+    -skip qtandroidextras && \
+    make -j8 && \
+    sudo make install && \
+    rm -rf /qt-everywhere-src-5.12.0 /qt-everywhere-src-5.12.0.tar.xz
+RUN echo "export PATH=/opt/qt512/bin:\$PATH">>/etc/bash.bashrc && \
+    echo "export LD_LIBRARY_PATH=/opt/qt512/lib:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    echo "export QMAKESPEC=/opt/qt512/mkspecs/linux-g++" >> /etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc"
 
-RUN curl -L -O http://download.qt.io/archive/qt/5.12/5.12.0/single/qt-everywhere-src-5.12.0.tar.xz && \
-    ls
-RUN tar -xvJf qt-everywhere-src-5.12.0.tar.xz && \
-    ls
-RUN cd qt-everywhere-src-5.12.0 && \ 
-    ./configure -v -confirm-license -prefix /qt-everywhere-src-5.12.0/qtbase -opensource -confirm-license -gstreamer 1.0 -egl -icu -glib -fontconfig -qt-zlib -qt-pcre -qt-libpng -qt-libjpeg -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests
-
-# RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.zip 
-# RUN unzip -a qt-everywhere-src-5.12.0.zip
-# RUN cd qt-everywhere-src-5.12.0 && \
-#     pwd && \
-#     ls -a | grep configure && \
-#     ./configure -confirm-license -prefix /qt-everywhere-src-5.12.0/qtbase -opensource -confirm-license -gstreamer 1.0 -egl -icu -glib -fontconfig -qt-zlib -qt-pcre -qt-libpng -qt-libjpeg -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests
-
-
-# COPY qt-installer-nonintaractive.qs /qt-noninteractive.qs
+# COPY qt-installer-nonintaractive.qs /scripts/qt-noninteractive.qs
 # RUN curl -O https://download.qt.io/archive/qt/5.12/5.12.0/qt-opensource-linux-x64-5.12.0.run && \
 #     chmod +x qt-opensource-linux-x64-5.12.0.run && \
-#     ./qt-opensource-linux-x64-5.12.0.run --script /qt-noninteractive.qs --platform minimal 
+#     ./qt-opensource-linux-x64-5.12.0.run --script /scripts/qt-noninteractive.qs --platform minimal 
 # ARG QT_VERSION=5.12.0
 # ENV DEBIAN_FRONTEND=noninteractive \
 #     QT_PATH=/opt/Qt \
@@ -223,46 +255,92 @@ RUN cd qt-everywhere-src-5.12.0 && \
 # ENV QT_DESKTOP ${QT_PATH}/${QT_VERSION}/${QT_BIN_PACKAGE}
 # ENV PATH $QT_DESKTOP/bin:$PATH
 
-# # amba安装
-# RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple onnx==1.5 && \
-#     pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
-#     pip3 install -i https://mirrors.aliyun.com/pypi/simple scipy==1.5.2 && \
-#     pip3 install -i https://mirrors.aliyun.com/pypi/simple scikit-image
-# RUN echo "\n    Begin install Ambarella...\n" && \
-#     mkdir amba && \
-#     cd /amba && \
-#     curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.zip && \
-#     unzip Ambarella_Toolchain_CNNGen_Ubuntu-18.04.zip && \
-#     cd /amba/Ubuntu-18.04/ && \
-#     ./ubuntuToolChain-2.1.7-20190815.ubuntu-18.04 && \
-#     rm -rf /amba && \
-#     echo "\n    Install Ambarella success\n"
+# 安装VTK
+RUN apt-get install -y libx11-dev libxext-dev libxtst-dev libxrender-dev libxmu-dev libxmuu-dev libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev
+RUN curl -L -O  http://118.31.19.101:8080/software/utility/VTK-8.1.2.tar.gz && \
+    curl -L -O  http://118.31.19.101:8080/software/utility/VTKData-8.1.2.tar.gz && \
+    tar -xvzf VTK-8.1.2.tar.gz && \
+    tar -xvzf VTKData-8.1.2.tar.gz
+RUN cd VTK-8.1.2 && \
+    mkdir build && \
+    cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
+      -DVTK_QT_VERSION:STRING=5 \
+      -DQT_QMAKE_EXECUTABLE:PATH=/opt/qt512/bin/qmake \
+      -DVTK_Group_Qt:BOOL=ON \
+      -DCMAKE_PREFIX_PATH:PATH=/opt/qt512/lib/cmake  \
+      -DCMAKE_BUILD_TYPE=RELEASE \
+      -DBUILD_SHARED_LIBS:BOOL=ON .. && \
+    make -j8 && \
+    sudo make install && \
+    sudo ldconfig && \
+    rm -rf /VTK-8.1.2 /VTK-8.1.2.tar.gz /VTKData-8.1.2.tar.gz
+RUN mkdir /opt/qt512/plugins/designer && \
+    cp /usr/local/plugins/designer/libQVTKWidgetPlugin.so /opt/qt512/plugins/designer/
 
-# # 安装PyTorch
-# RUN echo "\n    Begin install PyTorch..." && \
-#     pip3 uninstall torch && \
-#     curl -O http://118.31.19.101:8080/software/easyai/torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
-#     pip3 install torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
-#     rm torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
-#     echo "\n    Install PyTorch success\n"
+# 安装PCL
+RUN apt-get install -y libeigen3-dev libflann-dev libboost-dev mpi-default-dev openmpi-bin openmpi-common libopenni-dev libopenni2-dev \
+    libsm-dev uuid-dev libflann-dev libusb-1.0-0-dev libusb-dev libudev-dev libqhull* 
+RUN curl -L -O  http://118.31.19.101:8080/software/utility/pcl-pcl-1.9.0.tar.gz && \
+    tar -xvzf pcl-pcl-1.9.0.tar.gz
+RUN cd pcl-pcl-1.9.0 && \
+    mkdir build && \
+    cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
+        -DCMAKE_BUILD_TYPE=None -DCMAKE_INSTALL_PREFIX=/usr \
+        -DBuild_visualization=ON \
+        -DBUILD_GPU=ON -DBUILD_apps=ON -DBUILD_examples=ON \
+        -D WITH_QT=ON \
+        -D WITH_CUDA=ON \
+        -D PCL_SHARED_LIBS=ON \
+        -D PCL_QT_VERSION=5 \
+        -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
+        -D VTK_DIR=/usr/local/lib/cmake/vtk-8.1 .. && \
+    make -j8 && \
+    sudo make install && \
+    sudo ldconfig && \
+    rm -rf /pcl-pcl-1.9.0 /pcl-pcl-1.9.0.tar.gz
 
-# # 安装easy_ai
-# RUN echo "\n    Begin install easy_ai..." && \
-#     curl -O http://118.31.19.101:8080/software/easyai/easyai-0.3-py2.py3-none-any.whl  \
-#     -O http://118.31.19.101:8080/software/easyai/easy_converter-0.2-py2.py3-none-any.whl  \
-#     -O http://118.31.19.101:8080/software/easyai/easy_tools-0.2-py2.py3-none-any.whl && \ 
-#     pip3 install -i https://mirrors.aliyun.com/pypi/simple easyai-0.3-py2.py3-none-any.whl && \
-#     pip3 install -i https://mirrors.aliyun.com/pypi/simple easy_converter-0.2-py2.py3-none-any.whl && \
-#     pip3 install -i https://mirrors.aliyun.com/pypi/simple easy_tools-0.2-py2.py3-none-any.whl && \
-#     rm easyai-0.3-py2.py3-none-any.whl && \
-#     rm easy_converter-0.2-py2.py3-none-any.whl && \
-#     rm easy_tools-0.2-py2.py3-none-any.whl && \
-#     echo "export PYTHONPATH=/easy/easy_ai:\$PYTHONPATH">>/etc/bash.bashrc && \
-#     /bin/bash -c "source /etc/bash.bashrc" && \
-#     echo "\n    Install easy_ai success\n"
+# amba安装
+RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple onnx==1.5 && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple scipy==1.5.2 && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple scikit-image
+RUN echo "\n    Begin install Ambarella...\n" && \
+    mkdir amba && \
+    cd /amba && \
+    curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.zip && \
+    unzip Ambarella_Toolchain_CNNGen_Ubuntu-18.04.zip && \
+    cd /amba/Ubuntu-18.04/ && \
+    ./ubuntuToolChain-2.1.7-20190815.ubuntu-18.04 && \
+    rm -rf /amba && \
+    echo "\n    Install Ambarella success\n"
 
-# RUN echo "export PATH=/usr/local/lib/python3.6/dist-packages/easy_tools/train_scripts:\$PATH">>/etc/bash.bashrc && \
-#     /bin/bash -c "source /etc/bash.bashrc"
+# 安装PyTorch
+RUN echo "\n    Begin install PyTorch..." && \
+    pip3 uninstall torch && \
+    curl -O http://118.31.19.101:8080/software/easyai/torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
+    pip3 install torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
+    rm torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
+    echo "\n    Install PyTorch success\n"
+
+# 安装easy_ai依赖库
+COPY ai_requirements.txt convert_requirements.txt tools_requirements.txt /scripts/
+RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple -r /scripts/ai_requirements.txt && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple -r /scripts/convert_requirements.txt && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple -r /scripts/tools_requirements.txt && \
+    echo "export PYTHONPATH=/easy_ai/easy_ai:\$PYTHONPATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc"
+
+# 安装apex
+RUN curl -O http://118.31.19.101:8080/software/gpu/apex.zip && \
+    unzip apex.zip && \
+    cd apex && \
+    pip3 install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./ && \
+    rm -rf /apex /apex.zip
+
+
+COPY add_user.sh /scripts/
 
 RUN mkdir /easy_ai
 WORKDIR /easy_ai
