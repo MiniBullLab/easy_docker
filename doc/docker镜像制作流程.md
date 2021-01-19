@@ -37,8 +37,11 @@ docker rmi $(docker images -q)
 # 进入到easy_docker的docker目录
 $ cd easy_docker/docker
 
-# docker镜像编译
-$ make build
+# docker镜像编译(make + 要编译的镜像名)
+# 编译runtime镜像
+$ make runtime
+# 编译workspace镜像
+$ make workspace
 
 # docker镜像commit
 docker ps
