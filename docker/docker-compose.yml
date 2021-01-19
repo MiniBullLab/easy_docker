@@ -1,14 +1,10 @@
 version: '3'
 
 services:
-    # runtime:
-    #   build:
-    #     context: ./workspace
-    #   tty: true
-    # ubuntu:
-    #   build:
-    #     context: ./ubuntu
-    #   tty: true
+    runtime:
+      build:
+        context: ./runtime
+      tty: true
     workspace:
       build:
         context: ./workspace
