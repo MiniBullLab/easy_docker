@@ -8,7 +8,6 @@ services:
     ai:
       build:
         context: ./ai
-      depends_on: runtime
       tty: true
     # workspace:
     #   build:
