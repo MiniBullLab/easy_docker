@@ -5,7 +5,13 @@ services:
       build:
         context: ./runtime
       tty: true
-    workspace:
+    ai:
       build:
-        context: ./workspace
+        context: ./ai
+      container_name: easy_ai
+      depends_on: runtime
       tty: true
+    # workspace:
+    #   build:
+    #     context: ./workspace
+    #   tty: true
