@@ -4,7 +4,7 @@ runtime:
 	docker-compose build runtime
 
 ai:
-    docker-compose build ai
+	docker-compose build ai
 
 workspace:
 	docker-compose build workspace
