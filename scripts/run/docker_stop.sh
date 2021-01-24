@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMAGE_NAME=easy_runtime
+IMAGE_NAME=easy_ai
 
 function main() {
    local user_name
