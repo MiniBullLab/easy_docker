@@ -9,7 +9,7 @@ services:
       build:
         context: ./ai
       tty: true
-    # workspace:
-    #   build:
-    #     context: ./workspace
-    #   tty: true
+    workspace:
+      build:
+        context: ./workspace
+      tty: true
