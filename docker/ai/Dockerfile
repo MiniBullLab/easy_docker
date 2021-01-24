@@ -1,4 +1,4 @@
-FROM vitah/easy_runtime:0.0.1-ubuntu18.04
+FROM vitah/easy_runtime:0.0.1-ubuntu18.04-cuda10.0devel
 
 # 安装easy_ai
 RUN echo "\n    Begin install easy_ai..." && \
