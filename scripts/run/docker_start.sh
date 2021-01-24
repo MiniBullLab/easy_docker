@@ -8,12 +8,12 @@ ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
 
 easy_path=/home/${USER}/easy_data
 
-IMAGE_NAME=easy_runtime
+IMAGE_NAME=easy_ai
 DOCKER_CMD=docker
 
 # 运行环境检测失败，打印错误码并且退出
 function envCheckFailedAndExit() {
-   echo "EasyAI runtime environment error."
+   echo "EasyAI environment error."
    echo "Error msg: $1"
    exit 1
 }
@@ -54,24 +54,24 @@ function checkDockerPermission() {
 
 # 检测运行环境
 function checkRuntimeEnvironment() {
-   echo "Begin check EasyAI runtime environment..."
+   echo "Begin check EasyAI environment..."
    checkDockerInstall
    checkDockerPermission
    checkDockerIsRunning
    checkNvidiaDocker
-   echo "EasyAI runtime environment OK"
+   echo "EasyAI environment OK"
    echo ""
 }
 
 # 启动加密狗
 function startSenseshield() {
    echo "Begin start senseshield..."
-   docker exec "$RUNTIME_DOCKER" sudo /usr/lib/senseshield/senseshield
-   ps_result=$(docker exec "$RUNTIME_DOCKER" ps -aux | grep senseshield)
+   docker exec "$CONTAINER_NAME" sudo /usr/lib/senseshield/senseshield
+   ps_result=$(docker exec "$CONTAINER_NAME" ps -aux | grep senseshield)
    if [ -z "$ps_result" ]; then
       echo "Start senseshield failed."
-      docker stop "$RUNTIME_DOCKER" 1>/dev/null
-      docker rm -v -f "$RUNTIME_DOCKER" 1>/dev/null
+      docker stop "$CONTAINER_NAME" 1>/dev/null
+      docker rm -v -f "$CONTAINER_NAME" 1>/dev/null
       exit 1
    fi
    echo "Start senseshield success."
@@ -83,7 +83,7 @@ function createDockerUser() {
    if [ "${USER}" != "root" ]; then
       echo ""
       echo "Current user is not root, begin to create docker user..."
-      docker exec "${RUNTIME_DOCKER}" bash -c '/scripts/add_user.sh'
+      docker exec "${CONTAINER_NAME}" bash -c '/scripts/add_user.sh'
       # shellcheck disable=SC2181
       if [ $? == 0 ]; then
          echo "Create docker user success."
@@ -111,20 +111,20 @@ function main() {
       mkdir "$easy_path"
    fi
 
-   RUNTIME_DOCKER="easy_runtime_${USER_NAME}"
-   docker ps -a --format "{{.Names}}" | grep "$RUNTIME_DOCKER" 1>/dev/null
+   CONTAINER_NAME="${IMAGE_NAME}_${USER_NAME}"
+   docker ps -a --format "{{.Names}}" | grep "$CONTAINER_NAME" 1>/dev/null
    # shellcheck disable=SC2181
    if [ $? == 0 ]; then
-      echo "${RUNTIME_DOCKER} is running, stop and remove..."
-      docker stop "$RUNTIME_DOCKER" 1>/dev/null
-      docker rm -v -f "$RUNTIME_DOCKER" 1>/dev/null
-      echo "${RUNTIME_DOCKER} stop and remove success"
+      echo "${CONTAINER_NAME} is running, stop and remove..."
+      docker stop "$CONTAINER_NAME" 1>/dev/null
+      docker rm -v -f "$CONTAINER_NAME" 1>/dev/null
+      echo "${CONTAINER_NAME} stop and remove success"
       echo ""
    fi
 
-   echo "Starting docker container ${RUNTIME_DOCKER} ..."
+   echo "Starting docker container ${CONTAINER_NAME} ..."
 
-   ${DOCKER_CMD} run -it --shm-size="2g" --gpus=all -d --privileged --name "$RUNTIME_DOCKER" \
+   ${DOCKER_CMD} run -it --shm-size="2g" --gpus=all -d --privileged --name "$CONTAINER_NAME" \
       -e DOCKER_IMG=$IMAGE_NAME \
       -e DOCKER_USER="$USER_NAME" \
       -e DOCKER_USER_ID="$USER_ID" \
@@ -135,7 +135,7 @@ function main() {
       /bin/bash
    # shellcheck disable=SC2181
    if [ $? -ne 0 ]; then
-      echo "Failed to start docker container \"${RUNTIME_DOCKER}\" based on image: $IMAGE_NAME"
+      echo "Failed to start docker container \"${CONTAINER_NAME}\" based on image: $IMAGE_NAME"
       exit 1
    fi
 
