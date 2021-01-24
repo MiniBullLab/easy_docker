@@ -8,7 +8,6 @@ services:
     ai:
       build:
         context: ./ai
-      container_name: easy_ai
       depends_on: runtime
       tty: true
     # workspace:
