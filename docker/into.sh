@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-AI_IMAGE=ai
-WORKSPACE_IMAGE=workspace
+AI_IMAGE=easy_ai
+WORKSPACE_IMAGE=easy_workspace
 
 if [ "$1" = "workspace" ]; then
     IMAGE_NAME=$WORKSPACE_IMAGE
