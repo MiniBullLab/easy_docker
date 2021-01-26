@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-AI_IMAGE=ai
-WORKSPACE_IMAGE=workspace
+AI_IMAGE=easy_ai
+WORKSPACE_IMAGE=easy_workspace
 IMAGE_NAME=easy_ai
 
 function main() {
