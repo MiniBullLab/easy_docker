@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+AI_IMAGE=ai
+WORKSPACE_IMAGE=workspace
 CONTAINER_NAME=${IMAGE_NAME}_$USER
 
 if [ "$1" = "workspace" ]; then
