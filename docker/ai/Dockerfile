@@ -23,5 +23,5 @@ RUN curl -o senseshield.deb http://118.31.19.101:8080/software/dongle/senseshiel
     dpkg -i senseshield.deb && \
     rm senseshield.deb
 
-RUN mkdir /easy_ai
-WORKDIR /easy_ai
+RUN mkdir /easy_data
+WORKDIR /easy_data
