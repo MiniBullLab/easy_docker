@@ -100,9 +100,9 @@ function createDockerUser() {
 
 function main() {
    if [ "$1" = "workspace" ]; then
-      IMAGE_NAME=$AI_IMAGE
-   else
       IMAGE_NAME=$WORKSPACE_IMAGE
+   else
+      IMAGE_NAME=$AI_IMAGE
    fi
 
    GRP_ID=$(id -g)
