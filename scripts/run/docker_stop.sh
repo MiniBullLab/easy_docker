@@ -3,6 +3,12 @@
 IMAGE_NAME=easy_ai
 
 function main() {
+   if [ "$1" = "workspace" ]; then
+      IMAGE_NAME=$AI_IMAGE
+   else
+      IMAGE_NAME=$WORKSPACE_IMAGE
+   fi
+
    local user_name
    user_name=$(whoami)
    local runtime_docker_name="${IMAGE_NAME}_${user_name}"
@@ -16,4 +22,4 @@ function main() {
    fi
 }
 
-main
+main "$1"

@@ -8,8 +8,11 @@ ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
 
 easy_path=/home/${USER}/easy_data
 
-IMAGE_NAME=easy_ai
+AI_IMAGE=easy_ai
+WORKSPACE_IMAGE=easy_workspace
 DOCKER_CMD=docker
+
+IMAGE_NAME=AI_IMAGE
 
 # 运行环境检测失败，打印错误码并且退出
 function envCheckFailedAndExit() {
@@ -96,6 +99,12 @@ function createDockerUser() {
 }
 
 function main() {
+   if [ "$1" = "workspace" ]; then
+      IMAGE_NAME=$AI_IMAGE
+   else
+      IMAGE_NAME=$WORKSPACE_IMAGE
+   fi
+
    GRP_ID=$(id -g)
    GRP_NAME=$(id -g -n)
    USER_ID=$(id -u)
@@ -146,4 +155,4 @@ function main() {
    echo "Now you can enter with: bash docker_into.sh"
 }
 
-main
+main "$1"
