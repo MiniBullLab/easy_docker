@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip
 
-RUN apt-get install -y autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev
+RUN apt-get install -y autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev libglew-dev
 # 安装Cmake
 RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake && \
