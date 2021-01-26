@@ -149,7 +149,9 @@ function main() {
    fi
 
    createDockerUser
-   startSenseshield
+   if [ $IMAGE_NAME = $AI_IMAGE ]; then
+      startSenseshield
+   fi
 
    echo "Finished setting up EasyAi docker environment."
    echo "Now you can enter with: bash docker_into.sh"
