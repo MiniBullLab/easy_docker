@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip
 
-RUN apt-get install -y autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev libglew-dev
+RUN apt-get install -y autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev
 # 安装Cmake
 RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake && \
@@ -141,6 +141,7 @@ RUN  echo "\n    Begin install cudnn..." && \
     echo "\n    Install cudnn success\n"
 
 # opencv依赖
+RUN apt-get purge -y libopencv*
 RUN apt-get install -y libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev
 # 处理图像所需的包
 RUN apt-get install -y python-dev python-numpy python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev
@@ -150,7 +151,6 @@ RUN apt-get install -y libxvidcore-dev libx264-dev
 # 优化opencv功能
 RUN apt-get install -y libatlas-base-dev gfortran libeigen3-dev
 RUN apt-get install -y ffmpeg
-RUN apt-get purge -y libopencv*
 
 RUN echo "\n    Begin install OpenCV...\n" && \
     mkdir opencv && \
@@ -225,8 +225,10 @@ RUN echo "\n    Begin install caffe..." && \
     rm -rf /opt/caffe.zip && \
     echo "\n    Install caffe success"
 
+RUN apt-get install -y libglu1-mesa-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev
+
 # Qt5安装
-RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 mesa-common-dev libglu1-mesa-dev libglib2.0-0 freeglut3-dev
+RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 libglib2.0-0
 # RUN add-apt-repository -y ppa:beineri/opt-qt-5.12.0-bionic
 # RUN apt-get update && apt-get -y install qt512-meta-full
 RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.tar.xz && \
@@ -256,7 +258,8 @@ RUN echo "export PATH=/opt/qt512/bin:\$PATH">>/etc/bash.bashrc && \
 # ENV PATH $QT_DESKTOP/bin:$PATH
 
 # 安装VTK
-RUN apt-get install -y libx11-dev libxext-dev libxtst-dev libxrender-dev libxmu-dev libxmuu-dev libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev
+RUN apt-get purge -y libvtk*
+RUN apt-get install -y libx11-dev libxext-dev libxtst-dev libxrender-dev libxmu-dev libxmuu-dev
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/VTK-8.1.2.tar.gz && \
     curl -L -O  http://118.31.19.101:8080/software/utility/VTKData-8.1.2.tar.gz && \
     tar -xvzf VTK-8.1.2.tar.gz && \
@@ -265,12 +268,12 @@ RUN cd VTK-8.1.2 && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DVTK_QT_VERSION:STRING=5 \
-    -DQT_QMAKE_EXECUTABLE:PATH=/opt/qt512/bin/qmake \
-    -DVTK_Group_Qt:BOOL=ON \
-    -DCMAKE_PREFIX_PATH:PATH=/opt/qt512/lib/cmake  \
-    -DCMAKE_BUILD_TYPE=RELEASE \
-    -DBUILD_SHARED_LIBS:BOOL=ON .. && \
+      -DVTK_QT_VERSION:STRING=5 \
+      -DQT_QMAKE_EXECUTABLE:PATH=/opt/qt512/bin/qmake \
+      -DVTK_Group_Qt:BOOL=ON \
+      -DCMAKE_PREFIX_PATH:PATH=/opt/qt512/lib/cmake  \
+      -DCMAKE_BUILD_TYPE=RELEASE \
+      -DBUILD_SHARED_LIBS:BOOL=ON .. && \
     make -j8 && \
     sudo make install && \
     sudo ldconfig && \
@@ -279,7 +282,7 @@ RUN mkdir /opt/qt512/plugins/designer && \
     cp /usr/local/plugins/designer/libQVTKWidgetPlugin.so /opt/qt512/plugins/designer/
 
 # 安装PCL
-RUN apt-get install -y libeigen3-dev libflann-dev libboost-dev mpi-default-dev openmpi-bin openmpi-common libopenni-dev libopenni2-dev \
+RUN apt-get install -y libglew-dev libeigen3-dev libflann-dev libboost-dev mpi-default-dev openmpi-bin openmpi-common libopenni-dev libopenni2-dev \
     libsm-dev uuid-dev libflann-dev libusb-1.0-0-dev libusb-dev libudev-dev libqhull* 
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/pcl-pcl-1.9.0.tar.gz && \
     tar -xvzf pcl-pcl-1.9.0.tar.gz
@@ -287,15 +290,15 @@ RUN cd pcl-pcl-1.9.0 && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DCMAKE_BUILD_TYPE=None -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBuild_visualization=ON \
-    -DBUILD_GPU=ON -DBUILD_apps=ON -DBUILD_examples=ON \
-    -D WITH_QT=ON \
-    -D WITH_CUDA=ON \
-    -D PCL_SHARED_LIBS=ON \
-    -D PCL_QT_VERSION=5 \
-    -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
-    -D VTK_DIR=/usr/local/lib/cmake/vtk-8.1 .. && \
+        -DCMAKE_BUILD_TYPE=None \
+        -DBuild_visualization=ON \
+        -DBUILD_GPU=ON -DBUILD_apps=ON -DBUILD_examples=ON \
+        -D WITH_QT=ON \
+        -D WITH_CUDA=ON \
+        -D PCL_SHARED_LIBS=ON \
+        -D PCL_QT_VERSION=5 \
+        -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
+        -D VTK_DIR=/usr/local/lib/cmake/vtk-8.1 .. && \
     make -j8 && \
     sudo make install && \
     sudo ldconfig && \
