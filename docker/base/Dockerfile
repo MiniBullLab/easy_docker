@@ -53,6 +53,3 @@ RUN apt-get install -y libglew-dev libeigen3-dev libflann-dev libboost-dev \
 RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/bash.bashrc && \
     echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc"
-
-RUN mkdir /easy_data
-WORKDIR /easy_data
