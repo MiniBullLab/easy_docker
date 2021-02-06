@@ -3,10 +3,10 @@ ENV LANG C.UTF-8
 
 RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 
-RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     # 系统所需依赖更新
-    apt-get update && apt-get install -y software-properties-common && \
-    apt-get update && \
     apt-get install -y git wget sudo vim unzip curl axel gcc g++ \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip
@@ -17,7 +17,6 @@ RUN apt-get install -y autoconf automake libtool pkg-config \
 # 安装Cmake
 RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake
-
 
 # opencv依赖
 RUN apt-get purge -y libopencv* && \
