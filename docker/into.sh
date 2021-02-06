@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-AI_IMAGE=easy_ai
+AI_IMAGE=easy_runtime
 WORKSPACE_IMAGE=easy_workspace
 
 if [ "$1" = "workspace" ]; then

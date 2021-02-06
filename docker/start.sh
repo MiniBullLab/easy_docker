@@ -8,7 +8,7 @@ ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
 
 easy_path=/home/${USER}/easy_data
 
-AI_IMAGE=easy_ai
+AI_IMAGE=easy_runtime
 WORKSPACE_IMAGE=easy_workspace
 DOCKER_CMD=docker
 
