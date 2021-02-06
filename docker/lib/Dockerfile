@@ -1,20 +1,8 @@
-FROM vitah/easy_base:1.0
-
-# 安装Cmake
-RUN apt-get install -y libssl-dev && \
-    apt-get remove -y cmake && \
-    curl -L -O https://github.com/Kitware/CMake/archive/v3.14.0.tar.gz && \
-    tar -vxf v3.14.0.tar.gz && \
-    cd CMake-3.14.0/ && \
-    ./bootstrap && \
-    make && \
-    sudo make install && \
-    cmake --version && \
-    rm -rf /v3.14.0.tar.gz  /CMake-3.14.0
+FROM vitah/eays_base:1.0
 
 # 安装protobuf
 RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip && \
-    unzip v3.3.0.zip && \
+    unzip v3.3.0.zip  && \
     cd protobuf-3.3.0/ && \
     ./autogen.sh && \
     ./configure --prefix=/usr/local && \
@@ -97,19 +85,22 @@ RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-RTPS.zip && \
     sudo ldconfig && \
     rm -rf F/ast-RTPS.zip /Fast-RTPS 
 
-# cudnn安装
-RUN  echo "\n    Begin install cudnn..." && \
-    dpkg --purge libcudnn7-doc && \
-    dpkg --purge libcudnn7-dev && \
-    dpkg --purge libcudnn7 && \
-    curl -o libcudnn.deb http://118.31.19.101:8080/software/gpu/libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb  \ 
-    -o libcudnn-dev.deb http://118.31.19.101:8080/software/gpu/libcudnn7-dev_7.5.1.10-1+cuda10.0_amd64.deb \
-    -o libcudnn-doc.deb http://118.31.19.101:8080/software/gpu/libcudnn7-doc_7.5.1.10-1+cuda10.0_amd64.deb && \
-    dpkg -i libcudnn.deb && \
-    dpkg -i libcudnn-dev.deb && \
-    dpkg -i libcudnn-doc.deb && \
-    rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb && \
-    echo "\n    Install cudnn success\n"
+RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/bash.bashrc && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc"
+
+# opencv依赖
+RUN apt-get purge -y libopencv* && \
+    apt-get install -y libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev && \
+    # 处理图像所需的包
+    apt-get install -y python-dev python-numpy python3-numpy libtbb2 \
+    libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev && \
+    apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev liblapacke-dev && \
+    # 处理视频所需的包
+    apt-get install -y libxvidcore-dev libx264-dev && \
+    # 优化opencv功能
+    apt-get install -y libatlas-base-dev gfortran libeigen3-dev && \
+    apt-get install -y ffmpeg
 
 RUN echo "\n    Begin install OpenCV...\n" && \
     mkdir opencv && \
@@ -120,7 +111,6 @@ RUN echo "\n    Begin install OpenCV...\n" && \
     unzip opencv_contrib.zip && \
     mv opencv-3.4.6 opencv && \
     mv opencv_contrib-3.4.6 opencv_contrib
-
 RUN cd /opencv/opencv && \
     mkdir build && \
     cd build && \
@@ -138,6 +128,7 @@ RUN cd /opencv/opencv && \
     -D WITH_CUDA=ON \
     -D WITH_TBB=ON \
     -D WITH_EIGEN=ON \
+    # -D WITH_QT=ON \
     -D WITH_OPENCL=OFF \
     -D WITH_OPENGL=ON \
     -D WITH_OPENCL_SVM=OFF \
@@ -159,6 +150,12 @@ RUN echo '/usr/local/lib' | sudo tee -a /etc/ld.so.conf.d/opencv.conf && \
     pkg-config --modversion opencv && \
     rm -rf /opencv /opencv_contrib /opencv.zip /opencv_contrib.zip
 
+# caffe所需依赖
+RUN apt-get update 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
+    apt-get install -y libleveldb-dev libsnappy-dev libhdf5-serial-dev \
+    liblmdb-dev python3-scipy libopenblas-dev python3-skimage
+
 # caffe安装
 RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple scikit-image==0.17.2 && \
@@ -177,9 +174,11 @@ RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
     rm -rf /opt/caffe.zip && \
     echo "\n    Install caffe success"
 
+# Qt5安装
+RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 libglib2.0-0
 RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.tar.xz && \
-    tar -xvJf qt-everywhere-src-5.12.0.tar.xz && \
-    cd qt-everywhere-src-5.12.0 && \
+    tar -xvJf qt-everywhere-src-5.12.0.tar.xz
+RUN cd qt-everywhere-src-5.12.0 && \
     ./configure -confirm-license \
     -prefix /opt/qt512 -opensource -release -shared -glib -fontconfig -qt-zlib -qt-libpng -qt-libjpeg \
     -qt-xcb -opengl desktop -make libs -nomake tools -nomake examples -nomake tests -skip qtmacextras \
@@ -193,11 +192,13 @@ RUN echo "export PATH=/opt/qt512/bin:\$PATH">>/etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc"
 
 # 安装VTK
+RUN apt-get purge -y libvtk*
+RUN apt-get install -y libx11-dev libxext-dev libxtst-dev libxrender-dev libxmu-dev libxmuu-dev
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/VTK-8.1.2.tar.gz && \
     curl -L -O  http://118.31.19.101:8080/software/utility/VTKData-8.1.2.tar.gz && \
     tar -xvzf VTK-8.1.2.tar.gz && \
-    tar -xvzf VTKData-8.1.2.tar.gz && \
-    cd VTK-8.1.2 && \
+    tar -xvzf VTKData-8.1.2.tar.gz
+RUN cd VTK-8.1.2 && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
@@ -215,9 +216,11 @@ RUN mkdir /opt/qt512/plugins/designer && \
     cp /usr/local/plugins/designer/libQVTKWidgetPlugin.so /opt/qt512/plugins/designer/
 
 # 安装PCL
+RUN apt-get install -y libglew-dev libeigen3-dev libflann-dev libboost-dev mpi-default-dev openmpi-bin openmpi-common libopenni-dev libopenni2-dev \
+    libsm-dev uuid-dev libflann-dev libusb-1.0-0-dev libusb-dev libudev-dev libqhull* 
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/pcl-pcl-1.9.0.tar.gz && \
-    tar -xvzf pcl-pcl-1.9.0.tar.gz && \
-    cd pcl-pcl-1.9.0 && \
+    tar -xvzf pcl-pcl-1.9.0.tar.gz
+RUN cd pcl-pcl-1.9.0 && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
@@ -239,8 +242,8 @@ RUN curl -L -O  http://118.31.19.101:8080/software/utility/pcl-pcl-1.9.0.tar.gz 
 RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple onnx==1.5 && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple scipy==1.5.2 && \
-    pip3 install -i https://mirrors.aliyun.com/pypi/simple scikit-image && \
-    echo "\n    Begin install Ambarella...\n" && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple scikit-image
+RUN echo "\n    Begin install Ambarella...\n" && \
     mkdir amba && \
     cd /amba && \
     curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.zip && \
@@ -257,10 +260,3 @@ RUN echo "\n    Begin install PyTorch..." && \
     pip3 install torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
     rm torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
     echo "\n    Install PyTorch success\n"
-
-# 安装apex
-RUN curl -O http://118.31.19.101:8080/software/gpu/apex.zip && \
-    unzip apex.zip && \
-    cd apex && \
-    pip3 install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./ && \
-    rm -rf /apex /apex.zip
