@@ -104,14 +104,14 @@ RUN apt-get purge -y libopencv* && \
 
 RUN echo "\n    Begin install OpenCV...\n" && \
     mkdir opencv && \
-    cd /opencv && \
+    cd opencv/ && \
     curl -o opencv.zip http://118.31.19.101:8080/software/utility/opencv-3.4.6.zip  && \
     curl -o opencv_contrib.zip http://118.31.19.101:8080/software/utility/opencv_contrib-3.4.6.zip && \
     unzip opencv.zip && \
     unzip opencv_contrib.zip && \
     mv opencv-3.4.6 opencv && \
     mv opencv_contrib-3.4.6 opencv_contrib
-RUN cd /opencv/opencv && \
+RUN cd opencv/opencv/ && \
     mkdir build && \
     cd build && \
     cmake \
