@@ -1,6 +1,10 @@
 version: '3'
 
 services:
+    base:
+      build:
+        context: ./base
+      tty: true
     runtime:
       build:
         context: ./runtime
