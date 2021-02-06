@@ -276,12 +276,12 @@ RUN cd VTK-8.1.2 && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
-      -DVTK_QT_VERSION:STRING=5 \
-      -DQT_QMAKE_EXECUTABLE:PATH=/opt/qt512/bin/qmake \
-      -DVTK_Group_Qt:BOOL=ON \
-      -DCMAKE_PREFIX_PATH:PATH=/opt/qt512/lib/cmake  \
-      -DCMAKE_BUILD_TYPE=RELEASE \
-      -DBUILD_SHARED_LIBS:BOOL=ON .. && \
+    -DVTK_QT_VERSION:STRING=5 \
+    -DQT_QMAKE_EXECUTABLE:PATH=/opt/qt512/bin/qmake \
+    -DVTK_Group_Qt:BOOL=ON \
+    -DCMAKE_PREFIX_PATH:PATH=/opt/qt512/lib/cmake  \
+    -DCMAKE_BUILD_TYPE=RELEASE \
+    -DBUILD_SHARED_LIBS:BOOL=ON .. && \
     make -j8 && \
     sudo make install && \
     sudo ldconfig && \
@@ -298,15 +298,15 @@ RUN cd pcl-pcl-1.9.0 && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
-        -DCMAKE_BUILD_TYPE=None \
-        -DBuild_visualization=ON \
-        -DBUILD_GPU=ON -DBUILD_apps=ON -DBUILD_examples=ON \
-        -D WITH_QT=ON \
-        -D WITH_CUDA=ON \
-        -D PCL_SHARED_LIBS=ON \
-        -D PCL_QT_VERSION=5 \
-        -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
-        -D VTK_DIR=/usr/local/lib/cmake/vtk-8.1 .. && \
+    -DCMAKE_BUILD_TYPE=None \
+    -DBuild_visualization=ON \
+    -DBUILD_GPU=ON -DBUILD_apps=ON -DBUILD_examples=ON \
+    -D WITH_QT=ON \
+    -D WITH_CUDA=ON \
+    -D PCL_SHARED_LIBS=ON \
+    -D PCL_QT_VERSION=5 \
+    -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
+    -D VTK_DIR=/usr/local/lib/cmake/vtk-8.1 .. && \
     make -j8 && \
     sudo make install && \
     sudo ldconfig && \
@@ -359,7 +359,7 @@ RUN curl -O http://118.31.19.101:8080/software/gpu/nvidia_opengl.zip && \
     ln -s libGLX_nvidia.so.440.82 libGLX_indirect.so.0 && \
     rm -rf /nvidia_opengl.zip /nvidia_opengl
 
-OPY add_user.sh /scripts/
+COPY add_user.sh /scripts/
 
 RUN mkdir /easy_data
 WORKDIR /easy_data
