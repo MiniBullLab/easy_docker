@@ -47,5 +47,3 @@ RUN  echo "\n    Begin install cudnn..." && \
     dpkg -i libcudnn-doc.deb && \
     rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb && \
     echo "\n    Install cudnn success\n"
-
-RUN cmake --version
