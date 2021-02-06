@@ -1,4 +1,4 @@
-FROM vitah/eays_base:1.0
+FROM vitah/easy_base:1.0
 
 # 安装protobuf
 RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip && \
