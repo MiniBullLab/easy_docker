@@ -9,9 +9,7 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     apt-get install -y git wget sudo vim unzip curl axel gcc g++ \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip && \
-    apt-get install -y autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev && \
-    # opengl
-    apt-get install -y libglu1-mesa-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev
+    apt-get install -y autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev
 
 # 设置系统编码
 RUN apt-get install -y language-pack-zh-han* language-pack-kde-zh-han*
