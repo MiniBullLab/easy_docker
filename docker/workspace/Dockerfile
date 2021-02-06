@@ -363,7 +363,3 @@ COPY add_user.sh /scripts/
 
 RUN mkdir /easy_data
 WORKDIR /easy_data
-COPY add_user.sh /scripts/
-
-RUN mkdir /easy_data
-WORKDIR /easy_data
