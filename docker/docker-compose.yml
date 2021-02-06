@@ -5,6 +5,10 @@ services:
       build:
         context: ./base
       tty: true
+    lib:
+      build:
+        context: ./lib
+      tty: true
     runtime:
       build:
         context: ./runtime
