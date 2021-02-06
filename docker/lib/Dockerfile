@@ -85,10 +85,6 @@ RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-RTPS.zip && \
     sudo ldconfig && \
     rm -rf F/ast-RTPS.zip /Fast-RTPS 
 
-RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/bash.bashrc && \
-    echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
-    /bin/bash -c "source /etc/bash.bashrc"
-
 # opencv依赖
 RUN apt-get purge -y libopencv* && \
     apt-get install -y libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev && \
