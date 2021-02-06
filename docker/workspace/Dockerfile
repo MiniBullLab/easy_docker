@@ -1,5 +1,4 @@
 FROM nvidia/cuda:10.0-devel-ubuntu18.04
-ENV LANG C.UTF-8
 
 RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 
@@ -11,6 +10,14 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip
 
 RUN apt-get install -y autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev
+
+# 设置系统编码
+RUN apt-get install -y language-pack-zh-han* language-pack-kde-zh-han*
+RUN locale-gen zh_CN.UTF-8 && \
+    echo "export LANG=\"zh_CN.UTF-8\"" >> /etc/default/locale && \
+    echo "export LANGUAGE=\"zh_CN:zh:en_US:en\"" >> /etc/default/locale && locale
+ENV LANG C.utf8
+
 # 安装Cmake
 RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake && \
@@ -269,12 +276,12 @@ RUN cd VTK-8.1.2 && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DVTK_QT_VERSION:STRING=5 \
-    -DQT_QMAKE_EXECUTABLE:PATH=/opt/qt512/bin/qmake \
-    -DVTK_Group_Qt:BOOL=ON \
-    -DCMAKE_PREFIX_PATH:PATH=/opt/qt512/lib/cmake  \
-    -DCMAKE_BUILD_TYPE=RELEASE \
-    -DBUILD_SHARED_LIBS:BOOL=ON .. && \
+      -DVTK_QT_VERSION:STRING=5 \
+      -DQT_QMAKE_EXECUTABLE:PATH=/opt/qt512/bin/qmake \
+      -DVTK_Group_Qt:BOOL=ON \
+      -DCMAKE_PREFIX_PATH:PATH=/opt/qt512/lib/cmake  \
+      -DCMAKE_BUILD_TYPE=RELEASE \
+      -DBUILD_SHARED_LIBS:BOOL=ON .. && \
     make -j8 && \
     sudo make install && \
     sudo ldconfig && \
@@ -291,15 +298,15 @@ RUN cd pcl-pcl-1.9.0 && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DCMAKE_BUILD_TYPE=None \
-    -DBuild_visualization=ON \
-    -DBUILD_GPU=ON -DBUILD_apps=ON -DBUILD_examples=ON \
-    -D WITH_QT=ON \
-    -D WITH_CUDA=ON \
-    -D PCL_SHARED_LIBS=ON \
-    -D PCL_QT_VERSION=5 \
-    -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
-    -D VTK_DIR=/usr/local/lib/cmake/vtk-8.1 .. && \
+        -DCMAKE_BUILD_TYPE=None \
+        -DBuild_visualization=ON \
+        -DBUILD_GPU=ON -DBUILD_apps=ON -DBUILD_examples=ON \
+        -D WITH_QT=ON \
+        -D WITH_CUDA=ON \
+        -D PCL_SHARED_LIBS=ON \
+        -D PCL_QT_VERSION=5 \
+        -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-10.0 \
+        -D VTK_DIR=/usr/local/lib/cmake/vtk-8.1 .. && \
     make -j8 && \
     sudo make install && \
     sudo ldconfig && \
@@ -343,8 +350,19 @@ RUN curl -O http://118.31.19.101:8080/software/gpu/apex.zip && \
     pip3 install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./ && \
     rm -rf /apex /apex.zip
 
+# nvidia opengl
+RUN curl -O http://118.31.19.101:8080/software/gpu/nvidia_opengl.zip && \
+    unzip nvidia_opengl.zip && \
+    cp nvidia_opengl/* /usr/lib/x86_64-linux-gnu/ && \
+    cd /usr/lib/x86_64-linux-gnu/ && \
+    rm libGLX_indirect.so.0 && \
+    ln -s libGLX_nvidia.so.440.82 libGLX_indirect.so.0 && \
+    rm -rf /nvidia_opengl.zip /nvidia_opengl
 
+OPY add_user.sh /scripts/
 
+RUN mkdir /easy_data
+WORKDIR /easy_data
 COPY add_user.sh /scripts/
 
 RUN mkdir /easy_data
