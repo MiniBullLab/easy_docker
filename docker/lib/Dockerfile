@@ -2,8 +2,8 @@ FROM vitah/easy_base:1.0
 
 # 安装protobuf
 RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip && \
-    unzip v3.3.0.zip  && \
-    cd protobuf-3.3.0/ && \
+    unzip v3.3.0.zip 
+RUN cd protobuf-3.3.0/ && \
     ./autogen.sh && \
     ./configure --prefix=/usr/local && \
     make && \ 
@@ -17,8 +17,8 @@ RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip &&
 
 # 安装googletest
 RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
-    tar -vxf release-1.10.0.tar.gz && \
-    cd googletest-release-1.10.0 && \
+    tar -vxf release-1.10.0.tar.gz
+RUN cd googletest-release-1.10.0 && \
     mkdir google_test_build && \
     cd google_test_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON -G "Unix Makefiles" ../ && \
@@ -29,8 +29,8 @@ RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.g
 
 # 安装gflags
 RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz && \
-    tar -vxf v2.2.0.tar.gz && \
-    cd gflags-2.2.0 && \
+    tar -vxf v2.2.0.tar.gz
+RUN cd gflags-2.2.0 && \
     mkdir gflags_build && \
     cd gflags_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=gflags ../ && \
@@ -41,8 +41,8 @@ RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz && \
 
 # 安装glog
 RUN curl -L -O https://github.com/google/glog/archive/v0.3.5.tar.gz && \
-    tar -vxf v0.3.5.tar.gz && \
-    cd glog-0.3.5 && \
+    tar -vxf v0.3.5.tar.gz
+RUN cd glog-0.3.5 && \
     ./configure && \
     make -j8 && \
     sudo make install && \
@@ -51,8 +51,8 @@ RUN curl -L -O https://github.com/google/glog/archive/v0.3.5.tar.gz && \
 
 # 安装poco
 RUN curl -L -O https://github.com/pocoproject/poco/archive/poco-1.8.0-release.tar.gz && \
-    tar -vxf poco-1.8.0-release.tar.gz && \
-    cd poco-poco-1.8.0-release && \
+    tar -vxf poco-1.8.0-release.tar.gz
+RUN cd poco-poco-1.8.0-release && \
     mkdir cmake-build && \
     cd cmake-build && \
     cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && \
@@ -61,10 +61,22 @@ RUN curl -L -O https://github.com/pocoproject/poco/archive/poco-1.8.0-release.ta
     sudo ldconfig && \
     rm -rf /poco-1.8.0-release.tar.gz /poco-poco-1.8.0-release 
 
+# 安装foonathan_memory_vendor
+# RUN curl -L -O  http://118.31.19.101:8080/software/utility/foonathan_memory_vendor-master.zip && \
+#     unzip foonathan_memory_vendor-master.zip && \
+#     ls
+# RUN cd foonathan_memory_vendor-master && \
+#     mkdir build && \
+#     cd build && \
+#     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON .. && \
+#     make -j8 && \
+#     sudo make install && \
+#     sudo ldconfig
+
 # 安装Fast-CDR
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-CDR.zip && \
-    unzip Fast-CDR.zip && \
-    cd Fast-CDR && \
+    unzip Fast-CDR.zip
+RUN cd Fast-CDR && \
     mkdir CDR_build && \
     cd CDR_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON ../ && \
@@ -75,8 +87,8 @@ RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-CDR.zip && \
 
 # 安装Fast-RTPS
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-RTPS.zip && \
-    unzip Fast-RTPS.zip && \
-    cd Fast-RTPS && \
+    unzip Fast-RTPS.zip
+RUN cd Fast-RTPS && \
     mkdir RTPS_build && \
     cd RTPS_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON ../ && \
@@ -86,28 +98,28 @@ RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-RTPS.zip && \
     rm -rf F/ast-RTPS.zip /Fast-RTPS 
 
 # opencv依赖
-RUN apt-get purge -y libopencv* && \
-    apt-get install -y libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev && \
-    # 处理图像所需的包
-    apt-get install -y python-dev python-numpy python3-numpy libtbb2 \
-    libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev && \
-    apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev liblapacke-dev && \
-    # 处理视频所需的包
-    apt-get install -y libxvidcore-dev libx264-dev && \
-    # 优化opencv功能
-    apt-get install -y libatlas-base-dev gfortran libeigen3-dev && \
-    apt-get install -y ffmpeg
+RUN apt-get purge -y libopencv*
+RUN apt-get install -y libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev
+# 处理图像所需的包
+RUN apt-get install -y python-dev python-numpy python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff5-dev libjasper-dev libdc1394-22-dev
+RUN apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev liblapacke-dev
+# 处理视频所需的包
+RUN apt-get install -y libxvidcore-dev libx264-dev
+# 优化opencv功能
+RUN apt-get install -y libatlas-base-dev gfortran libeigen3-dev
+RUN apt-get install -y ffmpeg
 
 RUN echo "\n    Begin install OpenCV...\n" && \
     mkdir opencv && \
-    cd opencv/ && \
+    cd /opencv && \
     curl -o opencv.zip http://118.31.19.101:8080/software/utility/opencv-3.4.6.zip  && \
     curl -o opencv_contrib.zip http://118.31.19.101:8080/software/utility/opencv_contrib-3.4.6.zip && \
     unzip opencv.zip && \
     unzip opencv_contrib.zip && \
     mv opencv-3.4.6 opencv && \
     mv opencv_contrib-3.4.6 opencv_contrib
-RUN cd opencv/opencv/ && \
+
+RUN cd /opencv/opencv && \
     mkdir build && \
     cd build && \
     cmake \
@@ -147,7 +159,7 @@ RUN echo '/usr/local/lib' | sudo tee -a /etc/ld.so.conf.d/opencv.conf && \
     rm -rf /opencv /opencv_contrib /opencv.zip /opencv_contrib.zip
 
 # caffe所需依赖
-RUN apt-get update 
+# RUN apt-get update 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
     apt-get install -y libleveldb-dev libsnappy-dev libhdf5-serial-dev \
     liblmdb-dev python3-scipy libopenblas-dev python3-skimage
@@ -155,8 +167,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tz
 # caffe安装
 RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple scikit-image==0.17.2 && \
-    pip3 install -i https://mirrors.aliyun.com/pypi/simple python-dateutil==2.7.3 && \
-    echo "\n    Begin install caffe..." && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple python-dateutil==2.7.3
+RUN echo "\n    Begin install caffe..." && \
     cd /opt && \
     curl -o caffe.zip http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip && \
     unzip caffe.zip && \
@@ -170,8 +182,12 @@ RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
     rm -rf /opt/caffe.zip && \
     echo "\n    Install caffe success"
 
+RUN apt-get install -y libglu1-mesa-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev
+
 # Qt5安装
 RUN apt-get install -y libfontconfig libdbus-1-3 libx11-6 libx11-xcb1 libglib2.0-0
+# RUN add-apt-repository -y ppa:beineri/opt-qt-5.12.0-bionic
+# RUN apt-get update && apt-get -y install qt512-meta-full
 RUN curl -O http://118.31.19.101:8080/software/utility/qt-everywhere-src-5.12.0.tar.xz && \
     tar -xvJf qt-everywhere-src-5.12.0.tar.xz
 RUN cd qt-everywhere-src-5.12.0 && \
@@ -186,6 +202,17 @@ RUN echo "export PATH=/opt/qt512/bin:\$PATH">>/etc/bash.bashrc && \
     echo "export LD_LIBRARY_PATH=/opt/qt512/lib:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
     echo "export QMAKESPEC=/opt/qt512/mkspecs/linux-g++" >> /etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc"
+
+# COPY qt-installer-nonintaractive.qs /scripts/qt-noninteractive.qs
+# RUN curl -O https://download.qt.io/archive/qt/5.12/5.12.0/qt-opensource-linux-x64-5.12.0.run && \
+#     chmod +x qt-opensource-linux-x64-5.12.0.run && \
+#     ./qt-opensource-linux-x64-5.12.0.run --script /scripts/qt-noninteractive.qs --platform minimal 
+# ARG QT_VERSION=5.12.0
+# ENV DEBIAN_FRONTEND=noninteractive \
+#     QT_PATH=/opt/Qt \
+#     QT_BIN_PACKAGE=gcc_64
+# ENV QT_DESKTOP ${QT_PATH}/${QT_VERSION}/${QT_BIN_PACKAGE}
+# ENV PATH $QT_DESKTOP/bin:$PATH
 
 # 安装VTK
 RUN apt-get purge -y libvtk*
@@ -256,3 +283,10 @@ RUN echo "\n    Begin install PyTorch..." && \
     pip3 install torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
     rm torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
     echo "\n    Install PyTorch success\n"
+
+# 安装apex
+RUN curl -O http://118.31.19.101:8080/software/gpu/apex.zip && \
+    unzip apex.zip && \
+    cd apex && \
+    pip3 install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./ && \
+    rm -rf /apex /apex.zip
