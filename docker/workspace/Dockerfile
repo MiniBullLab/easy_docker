@@ -210,7 +210,7 @@ RUN echo '/usr/local/lib' | sudo tee -a /etc/ld.so.conf.d/opencv.conf && \
     rm -rf /opencv /opencv_contrib /opencv.zip /opencv_contrib.zip
 
 # caffe所需依赖
-RUN apt-get update 
+# RUN apt-get update 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
     apt-get install -y libleveldb-dev libsnappy-dev libhdf5-serial-dev \
     liblmdb-dev python3-scipy libopenblas-dev python3-skimage
