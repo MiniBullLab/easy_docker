@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo yum install xorg-x11-server-utils
 #docker-ce
 uname -r
 sudo yum update

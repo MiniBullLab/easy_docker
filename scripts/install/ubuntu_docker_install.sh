@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo apt install -y x11-xserver-utils
 #docker-ce
 sudo apt-get remove docker docker-engine docker.io containerd runc
 sudo apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
