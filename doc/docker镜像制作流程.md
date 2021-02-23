@@ -32,7 +32,7 @@ docker rm $(docker ps -a -q)
 docker rmi $(docker images -q)
 ```
 
-`git clone` easy_docker项目到本地，然后：
+`git clone https://github.com/MiniBullLab/easy_docker.git` 项目到本地，然后：
 ```shell
 # 进入到easy_docker的docker目录
 $ cd easy_docker/docker
