@@ -38,11 +38,11 @@ RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip &&
     unzip v3.3.0.zip 
 RUN cd protobuf-3.3.0/ && \
     ./autogen.sh && \
-    ./configure --prefix=/usr/local && \
+    ./configure --prefix=/usr/local/cyberRT/third_party && \
     make && \ 
     make check && \
     sudo make install && \
-    echo "export LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/protobuf/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
     pkg-config --cflags --libs protobuf && \
@@ -54,9 +54,11 @@ RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.g
 RUN cd googletest-release-1.10.0 && \
     mkdir google_test_build && \
     cd google_test_build/ && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON -G "Unix Makefiles" ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party -DBUILD_SHARED_LIBS=ON -G "Unix Makefiles" ../ && \
     make -j8 && \
     sudo make install && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/gtest/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
     rm -rf /release-1.10.0.tar.gz /googletest-release-1.10.0
 
@@ -66,9 +68,11 @@ RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz && \
 RUN cd gflags-2.2.0 && \
     mkdir gflags_build && \
     cd gflags_build/ && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=gflags ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=gflags ../ && \
     make -j8 && \
     sudo make install && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/gflags/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
     rm -rf /v2.2.0.tar.gz /gflags-2.2.0
 
@@ -76,9 +80,14 @@ RUN cd gflags-2.2.0 && \
 RUN curl -L -O https://github.com/google/glog/archive/v0.3.5.tar.gz && \
     tar -vxf v0.3.5.tar.gz
 RUN cd glog-0.3.5 && \
-    ./configure && \
-    make -j8 && \
-    sudo make install && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party \
+          -DBUILD_SHARED_LIBS=ON \
+          -Dgflags_DIR=/usr/local/cyberRT/third_party/gflags/lib/gflags/lib/cmake/gflags
+          -H . -B build -G "Unix Makefiles" && \
+    cmake --build build && \
+    sudo cmake --build build --target install && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/glog/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
     rm -rf /v0.3.5.tar.gz /glog-0.3.5
 
@@ -88,9 +97,11 @@ RUN curl -L -O https://github.com/pocoproject/poco/archive/poco-1.8.0-release.ta
 RUN cd poco-poco-1.8.0-release && \
     mkdir cmake-build && \
     cd cmake-build && \
-    cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && \
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party && \
     cmake --build . --config Releases && \
     sudo cmake --build . --target install && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/Poco/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
     rm -rf /poco-1.8.0-release.tar.gz /poco-poco-1.8.0-release 
 
@@ -112,9 +123,11 @@ RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-CDR.zip && \
 RUN cd Fast-CDR && \
     mkdir CDR_build && \
     cd CDR_build/ && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party -DBUILD_SHARED_LIBS=ON ../ && \
     make -j8 && \
     sudo make install && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/fastcdr/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
     rm -rf /Fast-CDR.zip  /Fast-CDR 
 
@@ -124,9 +137,11 @@ RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-RTPS.zip && \
 RUN cd Fast-RTPS && \
     mkdir RTPS_build && \
     cd RTPS_build/ && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party -DBUILD_SHARED_LIBS=ON ../ && \
     make -j8 && \
     sudo make install && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/fastrtps/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
     rm -rf F/ast-RTPS.zip /Fast-RTPS 
 
