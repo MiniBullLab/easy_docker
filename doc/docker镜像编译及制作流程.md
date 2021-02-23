@@ -37,13 +37,11 @@ cd easy_docker/docker
 3. 目前有2个镜像，easy_ai和easy_workspace，在docker 目录，运行 build.sh 脚本
 
 命令： ./build.sh 镜像名 （镜像名为 ai 或者 workspace ，如果不指定镜像名，默认选择 ai 镜像）
-$ cd docker/
 
-# 编译ai镜像
-$ ./build.sh ai
-
-$ 编译workspace镜像
-$ /.build.sh workspace
+    * 编译ai镜像
+        ./build.sh ai
+    * 编译workspace镜像
+        /.build.sh workspace
 
 ### docker修改镜像保存（非必要步骤）
 ```
