@@ -73,7 +73,7 @@ RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz && \
 RUN cd gflags-2.2.0 && \
     mkdir gflags_build && \
     cd gflags_build/ && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party/gflags -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=gflags ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party/gflags -DBUILD_SHARED_LIBS=ON  ../ && \
     make -j8 && \
     sudo make install && \
     echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/gflags/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
@@ -361,7 +361,7 @@ RUN echo "\n    Begin install Ambarella Toolchain...\n" && \
     ./ubuntuToolChain-201808 && \
     rm -rf /amba && \
     echo "\n    Install Ambarella Toolchain success\n"
-ADD http://118.31.19.101:8080/software/amba/cv22_linux_sdk.tar.gz /opt/
+# ADD http://118.31.19.101:8080/software/amba/cv22_linux_sdk.tar.gz /opt/
 
 # 安装PyTorch
 RUN echo "\n    Begin install PyTorch..." && \
