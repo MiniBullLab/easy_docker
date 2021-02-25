@@ -38,15 +38,20 @@ RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip &&
     unzip v3.3.0.zip 
 RUN cd protobuf-3.3.0/ && \
     ./autogen.sh && \
-    ./configure --prefix=/usr/local/cyberRT/third_party && \
+    ./configure --prefix=/usr/local/cyberRT/third_party/protobuf && \
     make && \ 
     make check && \
     sudo make install && \
-    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/protobuf/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/protobuf/lib:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    echo "export PATH=/usr/local/cyberRT/third_party/protobuf/bin:\$PATH">>/etc/bash.bashrc && \
+    echo '/usr/local/cyberRT/third_party/protobuf/lib' | sudo tee -a /etc/ld.so.conf.d/protobuf.conf && \
+    printf "#protobuf\nPKG_CONFIG_PATH=\$PKG_CONFIG_PATH:/usr/local/cyberRT/third_party/protobuf/lib/pkgconfig\nexport PKG_CONFIG_PATH\n">>/etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
-    pkg-config --cflags --libs protobuf && \
+    # protoc --version && \
+    # pkg-config --cflags --libs protobuf && \
     rm -rf /v3.3.0.zip /protobuf-3.3.0
+ENV PATH="/usr/local/cyberRT/third_party/protobuf/bin:${PATH}"
 
 # 安装googletest
 RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
@@ -54,7 +59,7 @@ RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.g
 RUN cd googletest-release-1.10.0 && \
     mkdir google_test_build && \
     cd google_test_build/ && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party -DBUILD_SHARED_LIBS=ON -G "Unix Makefiles" ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party/gtest -DBUILD_SHARED_LIBS=ON -G "Unix Makefiles" ../ && \
     make -j8 && \
     sudo make install && \
     echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/gtest/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
@@ -68,7 +73,7 @@ RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz && \
 RUN cd gflags-2.2.0 && \
     mkdir gflags_build && \
     cd gflags_build/ && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=gflags ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party/gflags -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=gflags ../ && \
     make -j8 && \
     sudo make install && \
     echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/gflags/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
@@ -80,10 +85,10 @@ RUN cd gflags-2.2.0 && \
 RUN curl -L -O https://github.com/google/glog/archive/v0.3.5.tar.gz && \
     tar -vxf v0.3.5.tar.gz
 RUN cd glog-0.3.5 && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party \
+    cmake .  -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party/glog \
           -DBUILD_SHARED_LIBS=ON \
-          -Dgflags_DIR=/usr/local/cyberRT/third_party/gflags/lib/gflags/lib/cmake/gflags
-          -H . -B build -G "Unix Makefiles" && \
+          -Dgflags_DIR=/usr/local/cyberRT/third_party/gflags/lib/gflags/lib/cmake/gflags \
+          -B build -G "Unix Makefiles" && \
     cmake --build build && \
     sudo cmake --build build --target install && \
     echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/glog/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
@@ -97,7 +102,7 @@ RUN curl -L -O https://github.com/pocoproject/poco/archive/poco-1.8.0-release.ta
 RUN cd poco-poco-1.8.0-release && \
     mkdir cmake-build && \
     cd cmake-build && \
-    cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party && \
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party/Poco && \
     cmake --build . --config Releases && \
     sudo cmake --build . --target install && \
     echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/Poco/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
@@ -123,7 +128,7 @@ RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-CDR.zip && \
 RUN cd Fast-CDR && \
     mkdir CDR_build && \
     cd CDR_build/ && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party -DBUILD_SHARED_LIBS=ON ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party/fastcdr -DBUILD_SHARED_LIBS=ON ../ && \
     make -j8 && \
     sudo make install && \
     echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/fastcdr/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
@@ -137,7 +142,7 @@ RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-RTPS.zip && \
 RUN cd Fast-RTPS && \
     mkdir RTPS_build && \
     cd RTPS_build/ && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party -DBUILD_SHARED_LIBS=ON ../ && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party/fastrtps -DBUILD_SHARED_LIBS=ON ../ && \
     make -j8 && \
     sudo make install && \
     echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/fastrtps/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
@@ -236,7 +241,7 @@ RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple python-dateutil==2.7.3
 RUN echo "\n    Begin install caffe..." && \
     cd /opt && \
-    curl -o caffe.zip http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip && \
+    curl -o caffe.zip http://118.31.19.101:8080/software/amba/docker_caffe.zip && \
     unzip caffe.zip && \
     cd /opt/caffe/python && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple -r requirements.txt && \
@@ -350,15 +355,13 @@ RUN echo "\n    Begin install Ambarella Toolchain...\n" && \
     mkdir amba && \
     cd /amba && \
     curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_Linaro_2018.08.zip && \
-    # curl -O http://118.31.19.101:8080/software/amba/cv22_linux_sdk.tar.gz && \
-    # sudo tar -xvzf cv22_linux_sdk.tar.gz && \
-    # mv cv22_linux_sdk /opt/cv22_linux_sdk && \
     unzip Ambarella_Toolchain_Linaro_2018.08.zip && \
     cd Ambarella_Toolchain_Linaro_2018.08 && \
     chmod +x ubuntuToolChain-201808 && \
     ./ubuntuToolChain-201808 && \
     rm -rf /amba && \
     echo "\n    Install Ambarella Toolchain success\n"
+ADD http://118.31.19.101:8080/software/amba/cv22_linux_sdk.tar.gz /opt/
 
 # 安装PyTorch
 RUN echo "\n    Begin install PyTorch..." && \
