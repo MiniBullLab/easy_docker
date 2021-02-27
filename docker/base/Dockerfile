@@ -25,14 +25,14 @@ ENV LANG C.utf8
 # 安装Cmake
 RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake && \
-    curl -L -O https://github.com/Kitware/CMake/archive/v3.14.0.tar.gz && \
-    tar -vxf v3.14.0.tar.gz && \
+    curl -L -O http://118.31.19.101:8080/software/utility/cmake-3.14.0.tar.gz && \
+    tar -vxf cmake-3.14.0.tar.gz && \
     cd CMake-3.14.0/ && \
     ./bootstrap && \
     make && \
     sudo make install && \
     cmake --version && \
-    rm -rf /v3.14.0.tar.gz  /CMake-3.14.0
+    rm -rf /cmake-3.14.0.tar.gz  /CMake-3.14.0
 
 RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/bash.bashrc && \
     echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
