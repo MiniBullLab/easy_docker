@@ -52,4 +52,5 @@ RUN  echo "\n    Begin install cudnn..." && \
     rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb && \
     echo "\n    Install cudnn success\n"
 
-RUN echo "Build base image success. ${CACHE_DATETIME}"
+RUN echo "Build base image success." \
+    $(date -u +%Y-%m-%dT%H:%M:%SZ)
