@@ -9,7 +9,7 @@ BASE_IMAGE_NAME_VERSION=0.1
 LIB_IMAGE_NAME_VERSION=0.1
 
 function main() {
-   docker-compose build "$BASE_IMAGE" --build-arg CACHEBUST=$(date +%s)
+   docker-compose build "$BASE_IMAGE"
 }
 
 main

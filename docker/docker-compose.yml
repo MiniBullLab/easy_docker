@@ -4,6 +4,8 @@ services:
     base:
       build:
         context: ./base
+      args:
+        CACHE_DATE: '$(date +%s)'
       tty: true
     lib:
       build:

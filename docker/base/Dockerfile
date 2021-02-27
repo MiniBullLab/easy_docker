@@ -1,6 +1,6 @@
 FROM nvidia/cuda:10.0-devel-ubuntu18.04
 
-ARG CACHEBUST=1
+ARG CACHE_DATE=1
 
 RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 
@@ -50,4 +50,4 @@ RUN  echo "\n    Begin install cudnn..." && \
     rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb && \
     echo "\n    Install cudnn success\n"
 
-RUN echo "Build base success. ${CACHEBUST}"
+RUN echo "Build base success. ${CACHE_DATE}"
