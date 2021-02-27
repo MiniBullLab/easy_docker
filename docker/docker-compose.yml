@@ -4,8 +4,8 @@ services:
     base:
       build:
         context: ./base
-        args:
-          CACHE_DATETIME: "${CACHE_DATETIME}"
+        # args:
+        #   CACHE_DATETIME: "${CACHE_DATETIME}"
       tty: true
     lib:
       build:

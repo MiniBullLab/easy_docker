@@ -1,7 +1,5 @@
 FROM nvidia/cuda:10.0-devel-ubuntu18.04
 
-ARG CACHE_DATETIME=1
-
 RUN echo 'Begin build base image...'
 
 RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
