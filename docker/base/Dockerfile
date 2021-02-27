@@ -2,6 +2,8 @@ FROM nvidia/cuda:10.0-devel-ubuntu18.04
 
 ARG CACHE_DATETIME=1
 
+RUN echo 'Begin build base image...'
+
 RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 
 # 系统所需依赖更新
@@ -50,4 +52,4 @@ RUN  echo "\n    Begin install cudnn..." && \
     rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb && \
     echo "\n    Install cudnn success\n"
 
-RUN echo "Build base success. $CACHE_DATETIME"
+RUN echo "Build base image success. $CACHE_DATETIME"
