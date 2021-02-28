@@ -1,9 +1,9 @@
 FROM vitah/easy_base:1.0.0
 
 # 安装protobuf
-RUN curl -L -O https://github.com/protocolbuffers/protobuf/archive/v3.3.0.zip && \
-    unzip v3.3.0.zip 
-RUN cd protobuf-3.3.0/ && \
+RUN curl -L -O http://118.31.19.101:8080/software/docker/protobuf-3.3.0.zip && \
+    unzip protobuf-3.3.0.zip && \
+    cd protobuf-3.3.0/ && \
     ./autogen.sh && \
     ./configure --prefix=/usr/local && \
     make && \ 
@@ -13,7 +13,7 @@ RUN cd protobuf-3.3.0/ && \
     /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
     pkg-config --cflags --libs protobuf && \
-    rm -rf /v3.3.0.zip /protobuf-3.3.0
+    rm -rf /protobuf-3.3.0.zip /protobuf-3.3.0
 
 # 安装googletest
 RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
