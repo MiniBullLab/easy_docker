@@ -16,50 +16,50 @@ RUN curl -L -O http://118.31.19.101:8080/software/docker/protobuf-easy-3.3.0.zip
     rm -rf /protobuf-3.3.0.zip /protobuf-3.3.0
 
 # 安装googletest
-RUN curl -L -O https://github.com/google/googletest/archive/release-1.10.0.tar.gz && \
-    tar -vxf release-1.10.0.tar.gz
-RUN cd googletest-release-1.10.0 && \
+RUN curl -L -O http://118.31.19.101:8080/software/docker/googletest-release-1.10.0.tar.gz && \
+    tar -vxf googletest-release-1.10.0.tar.gz && \
+    cd googletest-release-1.10.0 && \
     mkdir google_test_build && \
     cd google_test_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON -G "Unix Makefiles" ../ && \
     make -j8 && \
     sudo make install && \
     sudo ldconfig && \
-    rm -rf /release-1.10.0.tar.gz /googletest-release-1.10.0
+    rm -rf /googletest-release-1.10.0.tar.gz /googletest-release-1.10.0
 
 # 安装gflags
-RUN curl -L -O  https://github.com/gflags/gflags/archive/v2.2.0.tar.gz && \
-    tar -vxf v2.2.0.tar.gz
-RUN cd gflags-2.2.0 && \
+RUN curl -L -O  http://118.31.19.101:8080/software/docker/gflags-2.2.0.tar.gz && \
+    tar -vxf gflags-2.2.0.tar.gz && \
+    cd gflags-2.2.0 && \
     mkdir gflags_build && \
     cd gflags_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON  -DGFLAGS_NAMESPACE=gflags ../ && \
     make -j8 && \
     sudo make install && \
     sudo ldconfig && \
-    rm -rf /v2.2.0.tar.gz /gflags-2.2.0
+    rm -rf /gflags-2.2.0.tar.gz /gflags-2.2.0
 
 # 安装glog
-RUN curl -L -O https://github.com/google/glog/archive/v0.3.5.tar.gz && \
-    tar -vxf v0.3.5.tar.gz
-RUN cd glog-0.3.5 && \
+RUN curl -L -O http://118.31.19.101:8080/software/docker/glog-0.3.5.tar.gz && \
+    tar -vxf glog-0.3.5.tar.gz && \
+    cd glog-0.3.5 && \
     ./configure && \
     make -j8 && \
     sudo make install && \
     sudo ldconfig && \
-    rm -rf /v0.3.5.tar.gz /glog-0.3.5
+    rm -rf /glog-0.3.5.tar.gz /glog-0.3.5
 
 # 安装poco
-RUN curl -L -O https://github.com/pocoproject/poco/archive/poco-1.8.0-release.tar.gz && \
-    tar -vxf poco-1.8.0-release.tar.gz
-RUN cd poco-poco-1.8.0-release && \
+RUN curl -L -O http://118.31.19.101:8080/software/docker/poco-poco-1.8.0-release.tar.gz && \
+    tar -vxf poco-poco-1.8.0-release.tar.gz && \
+    cd poco-poco-1.8.0-release && \
     mkdir cmake-build && \
     cd cmake-build && \
     cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && \
     cmake --build . --config Releases && \
     sudo cmake --build . --target install && \
     sudo ldconfig && \
-    rm -rf /poco-1.8.0-release.tar.gz /poco-poco-1.8.0-release 
+    rm -rf /poco-poco-1.8.0-release.tar.gz /poco-poco-1.8.0-release 
 
 # 安装foonathan_memory_vendor
 # RUN curl -L -O  http://118.31.19.101:8080/software/utility/foonathan_memory_vendor-master.zip && \
