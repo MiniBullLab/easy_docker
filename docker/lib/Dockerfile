@@ -3,7 +3,7 @@ FROM vitah/easy_base:1.0.0
 # 安装protobuf
 RUN curl -L -O http://118.31.19.101:8080/software/docker/protobuf-easy-3.3.0.zip && \
     unzip protobuf-easy-3.3.0.zip && \
-    cd protobuf-easy-3.3.0/ && \
+    cd protobuf-3.3.0/ && \
     ./autogen_easy.sh && \
     ./configure --prefix=/usr/local && \
     make && \ 
