@@ -188,7 +188,7 @@ RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple python-dateutil==2.7.3
 RUN echo "\n    Begin install caffe..." && \
     cd /opt && \
-    curl -o caffe.zip http://118.31.19.101:8080/software/amba/caffe_ubuntu18.04.zip && \
+    curl -o caffe.zip http://118.31.19.101:8080/software/amba/docker_caffe.zip && \
     unzip caffe.zip && \
     cd /opt/caffe/python && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple -r requirements.txt && \
