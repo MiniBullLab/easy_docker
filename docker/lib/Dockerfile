@@ -13,7 +13,7 @@ RUN curl -L -O http://118.31.19.101:8080/software/docker/protobuf-easy-3.3.0.zip
     /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
     pkg-config --cflags --libs protobuf && \
-    rm -rf /protobuf-3.3.0.zip /protobuf-3.3.0
+    rm -rf /protobuf-easy-3.3.0.zip /protobuf-3.3.0
 
 # 安装googletest
 RUN curl -L -O http://118.31.19.101:8080/software/docker/googletest-release-1.10.0.tar.gz && \
