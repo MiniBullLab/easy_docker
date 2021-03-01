@@ -84,8 +84,8 @@ RUN curl -L -O http://118.31.19.101:8080/software/docker/poco-poco-1.8.0-release
 
 # 安装Fast-CDR
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-CDR.zip && \
-    unzip Fast-CDR.zip
-RUN cd Fast-CDR && \
+    unzip Fast-CDR.zip && \
+    cd Fast-CDR && \
     mkdir CDR_build && \
     cd CDR_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party/fastcdr -DBUILD_SHARED_LIBS=ON ../ && \
@@ -98,8 +98,8 @@ RUN cd Fast-CDR && \
 
 # 安装Fast-RTPS
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-RTPS.zip && \
-    unzip Fast-RTPS.zip
-RUN cd Fast-RTPS && \
+    unzip Fast-RTPS.zip && \
+    cd Fast-RTPS && \
     mkdir RTPS_build && \
     cd RTPS_build/ && \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local/cyberRT/third_party/fastrtps -DBUILD_SHARED_LIBS=ON ../ && \
