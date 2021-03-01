@@ -6,13 +6,17 @@ RUN curl -L -O http://118.31.19.101:8080/software/docker/protobuf-easy-3.3.0.zip
     cd protobuf-3.3.0/ && \
     ./autogen_easy.sh && \
     ./configure --prefix=/usr/local/cyberRT/third_party/protobuf && \
-    make && \
+    make && \ 
     make check && \
     sudo make install && \
-    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/protobuf/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/protobuf/lib:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    echo "export PATH=/usr/local/cyberRT/third_party/protobuf/bin:\$PATH">>/etc/bash.bashrc && \
+    echo '/usr/local/cyberRT/third_party/protobuf/lib' | sudo tee -a /etc/ld.so.conf.d/protobuf.conf && \
+    printf "#protobuf\nPKG_CONFIG_PATH=\$PKG_CONFIG_PATH:/usr/local/cyberRT/third_party/protobuf/lib/pkgconfig\nexport PKG_CONFIG_PATH\n">>/etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc" && \
     sudo ldconfig && \
-    pkg-config --cflags --libs protobuf && \
+    # protoc --version && \
+    # pkg-config --cflags --libs protobuf && \
     rm -rf /protobuf-easy-3.3.0.zip /protobuf-3.3.0
 ENV PATH="/usr/local/cyberRT/third_party/protobuf/bin:${PATH}"
 
