@@ -6,7 +6,7 @@ RUN curl -L -O http://118.31.19.101:8080/software/docker/protobuf-easy-3.3.0.zip
     cd protobuf-3.3.0/ && \
     ./autogen_easy.sh && \
     ./configure --prefix=/usr/local/cyberRT/third_party/protobuf && \
-    make && \ 
+    make && \
     make check && \
     sudo make install && \
     echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/protobuf/lib/:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
@@ -14,6 +14,7 @@ RUN curl -L -O http://118.31.19.101:8080/software/docker/protobuf-easy-3.3.0.zip
     sudo ldconfig && \
     pkg-config --cflags --libs protobuf && \
     rm -rf /protobuf-easy-3.3.0.zip /protobuf-3.3.0
+ENV PATH="/usr/local/cyberRT/third_party/protobuf/bin:${PATH}"
 
 # 安装googletest
 RUN curl -L -O http://118.31.19.101:8080/software/docker/googletest-release-1.10.0.tar.gz && \
