@@ -279,7 +279,7 @@ RUN cd pcl-pcl-1.9.0 && \
     sudo ldconfig && \
     rm -rf /pcl-pcl-1.9.0 /pcl-pcl-1.9.0.tar.gz
 
-# amba安装
+# amba CNN安装
 RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple onnx==1.5 && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple scipy==1.5.2 && \
@@ -294,6 +294,21 @@ RUN echo "\n    Begin install Ambarella...\n" && \
     rm -rf /amba && \
     echo "\n    Install Ambarella success\n"
 
+# amba下位机编译安装
+RUN apt-get install -y gnupg flex bison gperf \
+    zlib1g-dev mtd-utils fakeroot genext2fs gawk subversion \
+    unixodbc texinfo gcc-multilib g++-multilib autoconf libsqlite3-dev graphviz libc6-i386 libssl-dev
+RUN echo "\n    Begin install Ambarella Toolchain...\n" && \
+    mkdir amba && \
+    cd /amba && \
+    curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_Linaro_2018.08.zip && \
+    unzip Ambarella_Toolchain_Linaro_2018.08.zip && \
+    cd Ambarella_Toolchain_Linaro_2018.08 && \
+    chmod +x ubuntuToolChain-201808 && \
+    ./ubuntuToolChain-201808 && \
+    rm -rf /amba && \
+    echo "\n    Install Ambarella Toolchain success\n"
+
 # 安装PyTorch
 RUN echo "\n    Begin install PyTorch..." && \
     pip3 uninstall torch && \
@@ -301,10 +316,3 @@ RUN echo "\n    Begin install PyTorch..." && \
     pip3 install torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
     rm torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
     echo "\n    Install PyTorch success\n"
-
-# 安装apex
-RUN curl -O http://118.31.19.101:8080/software/gpu/apex.zip && \
-    unzip apex.zip && \
-    cd apex && \
-    pip3 install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./ && \
-    rm -rf /apex /apex.zip
