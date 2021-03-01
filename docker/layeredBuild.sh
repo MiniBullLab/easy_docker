@@ -11,8 +11,9 @@ LIB_IMAGE_VERSION=1.0.0
 LIB_IMAGE=lib
 LIB_IMAGE_FULL=$IMAGE_PREFIX$LIB_IMAGE
 
-WORKSPACE_IMAGE_NAME=workspace
-RUNTIME_IMAGE_NAME=runtime
+WORKSPACE_IMAGE_VERSION=1.0.0
+WORKSPACE_IMAGE=workspace
+WORKSPACE_IMAGE_FULL=$IMAGE_PREFIX$WORKSPACE_IMAGE
 
 function dockerLogin() {
    result=$(docker login)
@@ -31,6 +32,12 @@ function main() {
    docker-compose build $LIB_IMAGE
    docker tag $LIB_IMAGE_FULL $DOCKER_USER/$LIB_IMAGE_FULL:$LIB_IMAGE_VERSION
    echo "Build lib image success."
+
+   echo "Begin build workspace image..."
+   docker-compose build $LIB_IMAGE
+   docker tag $WORKSPACE_IMAGE_FULL$DOCKER_USER/$WORKSPACE_IMAGE_FULL:$WORKSPACE_IMAGE_VERSION
+   echo "Build workspace image success."
+
 }
 
 main
