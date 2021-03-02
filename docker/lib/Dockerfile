@@ -75,18 +75,6 @@ RUN curl -L -O http://118.31.19.101:8080/software/docker/poco-poco-1.8.0-release
     sudo ldconfig && \
     rm -rf /poco-poco-1.8.0-release.tar.gz /poco-poco-1.8.0-release 
 
-# 安装foonathan_memory_vendor
-# RUN curl -L -O  http://118.31.19.101:8080/software/utility/foonathan_memory_vendor-master.zip && \
-#     unzip foonathan_memory_vendor-master.zip && \
-#     ls
-# RUN cd foonathan_memory_vendor-master && \
-#     mkdir build && \
-#     cd build && \
-#     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON .. && \
-#     make -j8 && \
-#     sudo make install && \
-#     sudo ldconfig
-
 # 安装Fast-CDR
 RUN curl -L -O  http://118.31.19.101:8080/software/utility/Fast-CDR.zip && \
     unzip Fast-CDR.zip && \
@@ -220,17 +208,6 @@ RUN echo "export PATH=/opt/qt512/bin:\$PATH">>/etc/bash.bashrc && \
     echo "export LD_LIBRARY_PATH=/opt/qt512/lib:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
     echo "export QMAKESPEC=/opt/qt512/mkspecs/linux-g++" >> /etc/bash.bashrc && \
     /bin/bash -c "source /etc/bash.bashrc"
-
-# COPY qt-installer-nonintaractive.qs /scripts/qt-noninteractive.qs
-# RUN curl -O https://download.qt.io/archive/qt/5.12/5.12.0/qt-opensource-linux-x64-5.12.0.run && \
-#     chmod +x qt-opensource-linux-x64-5.12.0.run && \
-#     ./qt-opensource-linux-x64-5.12.0.run --script /scripts/qt-noninteractive.qs --platform minimal 
-# ARG QT_VERSION=5.12.0
-# ENV DEBIAN_FRONTEND=noninteractive \
-#     QT_PATH=/opt/Qt \
-#     QT_BIN_PACKAGE=gcc_64
-# ENV QT_DESKTOP ${QT_PATH}/${QT_VERSION}/${QT_BIN_PACKAGE}
-# ENV PATH $QT_DESKTOP/bin:$PATH
 
 # 安装VTK
 RUN apt-get purge -y libvtk*
