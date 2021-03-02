@@ -39,12 +39,12 @@ function main() {
 
    echo "Begin build runtime image..."
    docker-compose build $RUNTIME_IMAGE
-   docker tag $RUNTIME_IMAGE_FULL $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_IMAGE_VERSION
+   #docker tag $RUNTIME_IMAGE_FULL $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_IMAGE_VERSION
    echo "Build runtime image success."
 
    echo "Begin build workspace image..."
    docker-compose build $WORKSPACE_IMAGE
-   docker tag $WORKSPACE_IMAGE_FULL $DOCKER_USER/$WORKSPACE_IMAGE_FULL:$WORKSPACE_IMAGE_VERSION
+   #docker tag $WORKSPACE_IMAGE_FULL $DOCKER_USER/$WORKSPACE_IMAGE_FULL:$WORKSPACE_IMAGE_VERSION
    echo "Build workspace image success."
 
 }
