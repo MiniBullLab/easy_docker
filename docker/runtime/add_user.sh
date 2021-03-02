@@ -10,8 +10,8 @@ echo "Add user success."
 
 usermod -aG sudo "$DOCKER_USER"
 echo '%sudo ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
-cp -r /etc/skel/. /home/${DOCKER_USER}
+cp -r /etc/skel/. /home/"${DOCKER_USER}"
 
 # Set user files ownership to current user, such as .bashrc, .profile, etc.
-chown ${DOCKER_USER}:${DOCKER_GRP} /home/${DOCKER_USER}
-ls -ad /home/${DOCKER_USER}/.??* | xargs chown -R ${DOCKER_USER}:${DOCKER_GRP}
+chown "${DOCKER_USER}":"${DOCKER_GRP}" /home/"${DOCKER_USER}"
+ls -ad /home/"${DOCKER_USER}"/.??* | xargs chown -R "${DOCKER_USER}":"${DOCKER_GRP}"
