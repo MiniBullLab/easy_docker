@@ -4,8 +4,6 @@ services:
     base:
       build:
         context: ./base
-        # args:
-        #   CACHE_DATETIME: "${CACHE_DATETIME}"
       tty: true
     lib:
       build:
@@ -14,10 +12,6 @@ services:
     runtime:
       build:
         context: ./runtime
-      tty: true
-    ai:
-      build:
-        context: ./ai
       tty: true
     workspace:
       build:
