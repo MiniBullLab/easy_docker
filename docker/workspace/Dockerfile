@@ -24,10 +24,6 @@ RUN curl -O http://118.31.19.101:8080/software/gpu/nvidia_opengl.zip && \
     ln -s libGLX_nvidia.so.440.82 libGLX_indirect.so.0 && \
     rm -rf /nvidia_opengl.zip /nvidia_opengl
 
-RUN curl -o senseshield.deb http://118.31.19.101:8080/software/dongle/senseshield-2.3.0.45988-x86_64.deb && \
-    dpkg -i senseshield.deb && \
-    rm senseshield.deb
-
 COPY add_user.sh /scripts/
 
 RUN mkdir /easy_data
