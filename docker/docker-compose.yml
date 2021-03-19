@@ -6,7 +6,7 @@ services:
         context: ./base
       tty: true
     ai_lib:
-      build: :
+      build:
         context: ./ai_lib
       tty: true
     lib:
