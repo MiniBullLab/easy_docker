@@ -46,7 +46,6 @@ function main() {
    docker-compose build $WORKSPACE_IMAGE
    #docker tag $WORKSPACE_IMAGE_FULL $DOCKER_USER/$WORKSPACE_IMAGE_FULL:$WORKSPACE_IMAGE_VERSION
    echo "Build workspace image success."
-
 }
 
 main

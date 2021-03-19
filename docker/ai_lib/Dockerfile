@@ -1,7 +1,8 @@
 FROM vitah/easy_base:1.0.0
 
 # caffe所需依赖
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
     apt-get install -y libleveldb-dev libsnappy-dev libhdf5-serial-dev \
     liblmdb-dev python3-scipy libopenblas-dev python3-skimage
 
