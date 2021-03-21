@@ -11,7 +11,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tz
     libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler \
     libatlas-base-dev libboost-all-dev libgflags-dev libgoogle-glog-dev \
     liblmdb-dev libcv-dev python3-dev python3-numpy python3-scipy \
-    libopenblas-dev libopencv-dev python3-skimagee
+    libopenblas-dev libopencv-dev python3-skimage
 
 # caffe安装
 RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
