@@ -6,6 +6,8 @@ RUN apt-get update && \
     apt-get install -y libleveldb-dev libsnappy-dev libhdf5-serial-dev \
     liblmdb-dev python3-scipy libopenblas-dev python3-skimage
 
+RUN add-apt-repository --yes ppa:timsc/opencv-3.4
+
 # caffe安装
 RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple numpy==1.16.6 && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple scikit-image==0.17.2 && \
