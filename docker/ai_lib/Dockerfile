@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y software-properties-common && \
 
 # caffe依赖
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
-    apt-get install -y build-essential pkg-config libprotobuf-dev \
+    apt-get install -y software-properties-common python3-pip \
+    build-essential pkg-config libprotobuf-dev \
     libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler \
     libatlas-base-dev libboost-all-dev libgflags-dev libgoogle-glog-dev \
     liblmdb-dev libcv-dev python3-dev python3-numpy python3-scipy \
