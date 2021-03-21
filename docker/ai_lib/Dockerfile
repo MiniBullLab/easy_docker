@@ -18,6 +18,26 @@ RUN apt-get install -y libxvidcore-dev libx264-dev
 RUN apt-get install -y libatlas-base-dev gfortran libeigen3-dev
 RUN apt-get install -y ffmpeg
 
+# 安装protobuf
+RUN curl -L -O http://118.31.19.101:8080/software/docker/protobuf-easy-3.3.0.zip && \
+    unzip protobuf-easy-3.3.0.zip && \
+    cd protobuf-3.3.0/ && \
+    ./autogen_easy.sh && \
+    ./configure --prefix=/usr/local/cyberRT/third_party/protobuf && \
+    make && \ 
+    make check && \
+    sudo make install && \
+    echo "export LD_LIBRARY_PATH=/usr/local/cyberRT/third_party/protobuf/lib:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+    echo "export PATH=/usr/local/cyberRT/third_party/protobuf/bin:\$PATH">>/etc/bash.bashrc && \
+    echo '/usr/local/cyberRT/third_party/protobuf/lib' | sudo tee -a /etc/ld.so.conf.d/protobuf.conf && \
+    printf "#protobuf\nPKG_CONFIG_PATH=\$PKG_CONFIG_PATH:/usr/local/cyberRT/third_party/protobuf/lib/pkgconfig\nexport PKG_CONFIG_PATH\n">>/etc/bash.bashrc && \
+    /bin/bash -c "source /etc/bash.bashrc" && \
+    sudo ldconfig && \
+    # protoc --version && \
+    # pkg-config --cflags --libs protobuf && \
+    rm -rf /protobuf-easy-3.3.0.zip /protobuf-3.3.0
+ENV PATH="/usr/local/cyberRT/third_party/protobuf/bin:${PATH}"
+
 RUN echo "\n    Begin install OpenCV...\n" && \
     mkdir opencv && \
     cd /opencv && \
