@@ -11,6 +11,10 @@ LIB_IMAGE_VERSION=1.0.0
 LIB_IMAGE=lib
 LIB_IMAGE_FULL=$IMAGE_PREFIX$LIB_IMAGE
 
+AI_LIB_IMAGE_VERSION=1.0.0
+AI_LIB_IMAGE=lib
+AI_LIB_IMAGE_FULL=$IMAGE_PREFIX$AI_LIB_IMAGE
+
 WORKSPACE_IMAGE_VERSION=1.0.0
 WORKSPACE_IMAGE=workspace
 WORKSPACE_IMAGE_FULL=$IMAGE_PREFIX$WORKSPACE_IMAGE
@@ -33,19 +37,8 @@ function main() {
    echo "Build base image success."
 
    echo "Begin build lib image..."
-   docker-compose build $LIB_IMAGE
-   docker tag $LIB_IMAGE_FULL $DOCKER_USER/$LIB_IMAGE_FULL:$LIB_IMAGE_VERSION
+   docker-compose build $AI_LIB_IMAGE
    echo "Build lib image success."
-
-   echo "Begin build runtime image..."
-   docker-compose build $RUNTIME_IMAGE
-   #docker tag $RUNTIME_IMAGE_FULL $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_IMAGE_VERSION
-   echo "Build runtime image success."
-
-   echo "Begin build workspace image..."
-   docker-compose build $WORKSPACE_IMAGE
-   #docker tag $WORKSPACE_IMAGE_FULL $DOCKER_USER/$WORKSPACE_IMAGE_FULL:$WORKSPACE_IMAGE_VERSION
-   echo "Build workspace image success."
 }
 
 main
