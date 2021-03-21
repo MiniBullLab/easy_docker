@@ -5,7 +5,10 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     apt-get update
 
 # caffe依赖
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
+RUN export LC_ALL="en_US.UTF-8" && \
+    export LC_CTYPE="en_US.UTF-8" && \
+    dpkg-reconfigure locales && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
     apt-get install -y software-properties-common python3-pip \
     build-essential pkg-config libprotobuf-dev \
     libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler \
