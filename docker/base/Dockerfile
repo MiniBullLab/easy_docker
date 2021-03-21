@@ -14,15 +14,15 @@ RUN apt-get update && apt-get install -y software-properties-common && \
     apt-get install -y autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev
 
 # 设置系统编码
-RUN apt-get install -y language-pack-zh-han* language-pack-kde-zh-han*
-RUN locale-gen zh_CN.UTF-8 && \
-    echo "export LANG=\"zh_CN.UTF-8\"" >> /etc/default/locale && \
-    echo "export LANGUAGE=\"zh_CN:zh:en_US:en\"" >> /etc/default/locale && locale
-ENV LANG C.utf8
+# RUN apt-get install -y language-pack-zh-han* language-pack-kde-zh-han*
+# RUN locale-gen zh_CN.UTF-8 && \
+#     echo "export LANG=\"zh_CN.UTF-8\"" >> /etc/default/locale && \
+#     echo "export LANGUAGE=\"zh_CN:zh:en_US:en\"" >> /etc/default/locale && locale
+# ENV LANG C.utf8
 
-RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/bash.bashrc && \
-    echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
-    /bin/bash -c "source /etc/bash.bashrc"
+# RUN echo "export PATH=/usr/local/cuda/bin:\$PATH">>/etc/bash.bashrc && \
+#     echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+#     /bin/bash -c "source /etc/bash.bashrc"
 
 # 安装Cmake
 RUN apt-get install -y libssl-dev && \
