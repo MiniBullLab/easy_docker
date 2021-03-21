@@ -2,7 +2,7 @@ FROM vitah/easy_base:1.0.0
 
 RUN apt-get update && apt-get install -y software-properties-common && \
     add-apt-repository --yes ppa:timsc/opencv-3.4 && \
-    apt-get -y update
+    apt-get -y update --fix-missing
 
 # caffe依赖
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
