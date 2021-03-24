@@ -293,3 +293,7 @@ RUN echo "\n    Begin install PyTorch..." && \
     pip3 install torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
     rm torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
     echo "\n    Install PyTorch success\n"
+
+RUN curl -o senseshield.deb http://118.31.19.101:8080/software/dongle/senseshield-2.3.0.45988-x86_64.deb && \
+    dpkg -i senseshield.deb && \
+    rm senseshield.deb
