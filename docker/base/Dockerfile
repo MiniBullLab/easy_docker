@@ -1,6 +1,4 @@
-FROM nvidia/cuda:10.0-devel-ubuntu18.04
-
-RUN echo 'Begin build base image...'
+FROM nvidia/cuda:10.0-runtime-ubuntu18.04
 
 RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 
@@ -49,5 +47,3 @@ RUN  echo "\n    Begin install cudnn..." && \
     dpkg -i libcudnn-doc.deb && \
     rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb && \
     echo "\n    Install cudnn success\n"
-
-RUN echo "Build base image success."
