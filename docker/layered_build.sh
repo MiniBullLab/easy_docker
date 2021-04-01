@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DOCKER_USER=vitah
+DOCKER_USER=minbull
 IMAGE_PREFIX=easy_
 
 BASE_IMAGE_VERSION=1.0.0
@@ -16,10 +16,7 @@ AI_LIB_IMAGE=lib
 AI_LIB_IMAGE_FULL=$IMAGE_PREFIX$AI_LIB_IMAGE
 
 WORKSPACE_IMAGE=workspace
-WORKSPACE_IMAGE_FULL=$IMAGE_PREFIX$WORKSPACE_IMAGE
-
 RUNTIME_IMAGE=runtime
-RUNTIME_IMAGE_FULL=$IMAGE_PREFIX$RUNTIME_IMAGE
 
 function dockerLogin() {
    result=$(docker login)
@@ -51,7 +48,6 @@ function main() {
    echo "Begin build workspace image..."
    docker-compose build $WORKSPACE_IMAGE
    echo "Build workspace image success."
-
 }
 
 main
