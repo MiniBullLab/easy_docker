@@ -1,4 +1,4 @@
-FROM vitah/easy_ai_lib:latest
+FROM minbull/easy_ai_lib:latest
 
 # 安装easy_ai
 RUN echo "\n    Begin install easy_ai..." && \
