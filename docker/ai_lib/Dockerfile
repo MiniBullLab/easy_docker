@@ -1,4 +1,4 @@
-FROM minbull/easy_base:latest
+FROM easy_base:latest
 
 RUN apt-get update && apt-get install -y software-properties-common && \
     add-apt-repository --yes ppa:timsc/opencv-3.4 && \
