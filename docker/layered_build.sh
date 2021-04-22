@@ -38,7 +38,7 @@ function main() {
 
    echo "Begin build ai_lib image..."
    docker-compose build $AI_LIB_IMAGE
-   docker tag $AI_LIB_IMAGE_FULL $DOCKER_USER/$AI_LIB_IMAGE_FULL:$AI_LIB_IMAGE_VERSION
+   # docker tag $AI_LIB_IMAGE_FULL $DOCKER_USER/$AI_LIB_IMAGE_FULL:$AI_LIB_IMAGE_VERSION
    echo "Build ai_lib image success."
 
    # echo "Begin build runtime image..."
