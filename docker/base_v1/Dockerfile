@@ -9,7 +9,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
     apt-get install -y --no-install-recommends git wget sudo vim unzip curl axel gcc g++ \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip && \
-    apt-get install -y --no-install-recommends autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev
+    apt-get install -y --no-install-recommends autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev && \
+    # cmake依赖
+    apt-get install -y --no-install-recommends libssl-dev && \
+    rm -rf /var/lib/apt/lists/*
+
 
 # 设置系统编码
 # RUN apt-get install -y language-pack-zh-han* language-pack-kde-zh-han*
@@ -23,8 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
 #     /bin/bash -c "source /etc/bash.bashrc"
 
 # 安装Cmake
-RUN apt-get install -y libssl-dev && \
-    apt-get remove -y cmake && \
+RUN apt-get remove -y cmake && \
     curl -L -O http://118.31.19.101:8080/software/utility/cmake-3.14.0.tar.gz && \
     tar -vxf cmake-3.14.0.tar.gz && \
     cd cmake-3.14.0/ && \
@@ -35,8 +38,7 @@ RUN apt-get install -y libssl-dev && \
     rm -rf /cmake-3.14.0.tar.gz  /cmake-3.14.0
 
 # cudnn安装
-RUN  echo "\n    Begin install cudnn..." && \
-    dpkg --purge libcudnn7-doc && \
+RUN dpkg --purge libcudnn7-doc && \
     dpkg --purge libcudnn7-dev && \
     dpkg --purge libcudnn7 && \
     curl -o libcudnn.deb http://118.31.19.101:8080/software/gpu/libcudnn7_7.5.1.10-1+cuda10.0_amd64.deb  \ 
@@ -45,5 +47,4 @@ RUN  echo "\n    Begin install cudnn..." && \
     dpkg -i libcudnn.deb && \
     dpkg -i libcudnn-dev.deb && \
     dpkg -i libcudnn-doc.deb && \
-    rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb && \
-    echo "\n    Install cudnn success\n"
+    rm libcudnn.deb libcudnn-dev.deb libcudnn-doc.deb
