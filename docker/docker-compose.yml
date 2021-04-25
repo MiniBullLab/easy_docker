@@ -1,6 +1,10 @@
 version: '3'
 
 services:
+    base_v1:
+      build:
+        context: ./base_v1
+      tty: true
     base:
       build:
         context: ./base
