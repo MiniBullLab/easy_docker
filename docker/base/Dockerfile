@@ -3,14 +3,13 @@ FROM nvidia/cuda:10.0-devel-ubuntu18.04
 RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 
 # 系统所需依赖更新
-RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common && \
+RUN apt-get update && apt-get install -y software-properties-common && \
     add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     apt-get update && \
-    apt-get install -y --no-install-recommends git wget sudo vim unzip curl axel gcc g++ \
+    apt-get install -y git wget sudo vim unzip curl axel gcc g++ \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip && \
-    apt-get install -y --no-install-recommends autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev
 
 # 设置系统编码
 # RUN apt-get install -y language-pack-zh-han* language-pack-kde-zh-han*
