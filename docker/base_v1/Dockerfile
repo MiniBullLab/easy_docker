@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
 #     /bin/bash -c "source /etc/bash.bashrc"
 
 # 安装Cmake
-RUN apt-get install -y libssl-dev && \
+RUN apt-get install -y libssl1.0-dev && \
     apt-get remove -y cmake && \
     curl -L -O http://118.31.19.101:8080/software/utility/cmake-3.14.0.tar.gz && \
     tar -vxf cmake-3.14.0.tar.gz && \
