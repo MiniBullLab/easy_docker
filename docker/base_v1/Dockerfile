@@ -9,8 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
     apt-get install -y --no-install-recommends git wget sudo vim unzip curl axel gcc g++ \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip && \
-    apt-get install -y --no-install-recommends autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev
 
 # 设置系统编码
 # RUN apt-get install -y language-pack-zh-han* language-pack-kde-zh-han*
@@ -24,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
 #     /bin/bash -c "source /etc/bash.bashrc"
 
 # 安装Cmake
-RUN apt-get install -y libssl1.0.0 && \
+RUN apt-get install -y libssl-dev && \
     apt-get remove -y cmake && \
     curl -L -O http://118.31.19.101:8080/software/utility/cmake-3.14.0.tar.gz && \
     tar -vxf cmake-3.14.0.tar.gz && \
