@@ -9,13 +9,13 @@ services:
       build:
         context: ./base
       tty: true
-    ai_lib:
+    runtime_lib:
       build:
-        context: ./ai_lib
+        context: ./runtime_lib
       tty: true
-    lib:
+    workspace_lib:
       build:
-        context: ./lib
+        context: ./workspace_lib
       tty: true
     runtime:
       build:
