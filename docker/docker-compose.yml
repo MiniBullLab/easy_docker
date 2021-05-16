@@ -1,10 +1,6 @@
 version: '3'
 
 services:
-    cmake:
-      build:
-        context: ./cmake
-      tty: true
     base_v1:
       build:
         context: ./base_v1
