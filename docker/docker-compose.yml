@@ -5,10 +5,6 @@ services:
       build:
         context: ./cmake
       tty: true
-    no_cmake:
-      build:
-        context: ./no_cmake
-      tty: true
     base_v1:
       build:
         context: ./base_v1

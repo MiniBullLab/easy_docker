@@ -1,6 +1,5 @@
-FROM nvidia/cuda:10.0-devel-ubuntu18.04
+FROM nvidia/cuda:10.0-devel-ubuntu18.04 as cmake-builder
 
-# 安装Cmake
 RUN apt-get update && \
     apt-get install -y curl sudo
 RUN apt-get remove -y cmake && \
@@ -11,5 +10,14 @@ RUN apt-get remove -y cmake && \
     ./bootstrap && \
     make && \
     sudo make install && \
-    cmake --version && \
     rm -rf /cmake-3.14.0.tar.gz  /cmake-3.14.0
+RUN cmake --version
+
+FROM nvidia/cuda:10.0-devel-ubuntu18.04
+RUN apt-get remove -y cmake
+RUN apt-get update && \
+    apt-get install -y curl sudo
+COPY --from=cmake-builder /usr/local/bin/cmake /usr/local/bin/
+COPY --from=cmake-builder /usr/local/bin/cpack /usr/local/bin/
+COPY --from=cmake-builder /usr/local/bin/ctest /usr/local/bin/
+RUN cmake --version
