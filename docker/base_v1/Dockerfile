@@ -1,17 +1,31 @@
+FROM nvidia/cuda:10.0-devel-ubuntu18.04 as cmake-builder
+
+RUN apt-get update && \
+    apt-get install -y curl sudo
+RUN apt-get remove -y cmake && \
+    apt-get install -y --no-install-recommends libssl-dev && \
+    curl -L -O http://118.31.19.101:8080/software/utility/cmake-3.14.0.tar.gz && \
+    tar -vxf cmake-3.14.0.tar.gz && \
+    cd cmake-3.14.0/ && \
+    ./bootstrap && \
+    make && \
+    sudo make install && \
+    rm -rf /cmake-3.14.0.tar.gz  /cmake-3.14.
+
+
 FROM nvidia/cuda:10.0-devel-ubuntu18.04
 
 RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 
 # 系统所需依赖更新
-RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common && \
+RUN apt-get remove cmake && \
+    apt-get update && apt-get install -y --no-install-recommends software-properties-common && \
     add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     apt-get update && \
     apt-get install -y --no-install-recommends git wget sudo vim unzip curl axel gcc g++ \
     libsm6 libxext6 libxrender-dev libglib2.0-0 python3-pip && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip && \
     apt-get install -y --no-install-recommends autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev && \
-    # cmake依赖
-    apt-get install -y --no-install-recommends libssl-dev && \
     rm -rf /var/lib/apt/lists/*
 
 
@@ -26,16 +40,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
 #     echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
 #     /bin/bash -c "source /etc/bash.bashrc"
 
-# 安装Cmake
-RUN apt-get remove -y cmake && \
-    curl -L -O http://118.31.19.101:8080/software/utility/cmake-3.14.0.tar.gz && \
-    tar -vxf cmake-3.14.0.tar.gz && \
-    cd cmake-3.14.0/ && \
-    ./bootstrap && \
-    make && \
-    sudo make install && \
-    cmake --version && \
-    rm -rf /cmake-3.14.0.tar.gz  /cmake-3.14.0
+COPY --from=cmake-builder /usr/local/bin/cmake /usr/local/bin/
+COPY --from=cmake-builder /usr/local/bin/cpack /usr/local/bin/
+COPY --from=cmake-builder /usr/local/bin/ctest /usr/local/bin/
 
 # cudnn安装
 RUN dpkg --purge libcudnn7-doc && \
