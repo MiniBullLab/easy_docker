@@ -12,13 +12,12 @@ RUN apt-get remove -y cmake && \
     sudo make install && \
     rm -rf /cmake-3.14.0.tar.gz  /cmake-3.14.
 
-
 FROM nvidia/cuda:10.0-devel-ubuntu18.04
 
 RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 
 # 系统所需依赖更新
-RUN apt-get remove cmake && \
+RUN apt-get remove cmake  && \
     apt-get update && apt-get install -y --no-install-recommends software-properties-common && \
     add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" && \
     apt-get update && \
@@ -27,7 +26,6 @@ RUN apt-get remove cmake && \
     pip3 install install -i https://mirrors.aliyun.com/pypi/simple --upgrade pip && \
     apt-get install -y --no-install-recommends autoconf automake libtool pkg-config build-essential libasio-dev libtinyxml2-dev libncurses5-dev libboost-all-dev && \
     rm -rf /var/lib/apt/lists/*
-
 
 # 设置系统编码
 # RUN apt-get install -y language-pack-zh-han* language-pack-kde-zh-han*
@@ -40,9 +38,7 @@ RUN apt-get remove cmake && \
 #     echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
 #     /bin/bash -c "source /etc/bash.bashrc"
 
-COPY --from=cmake-builder /usr/local/bin/cmake /usr/local/bin/
-COPY --from=cmake-builder /usr/local/bin/cpack /usr/local/bin/
-COPY --from=cmake-builder /usr/local/bin/ctest /usr/local/bin/
+COPY --from=cmake-builder /usr/local/bin/* /usr/local/bin/
 
 # cudnn安装
 RUN dpkg --purge libcudnn7-doc && \
