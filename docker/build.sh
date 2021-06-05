@@ -59,9 +59,9 @@ function buildWorkspace() {
 
 function main() {
    if [ "$1" = "workspace" ]; then
-      buildRuntime
-   else
       buildWorkspace
+   else
+      buildRuntime
    fi
 }
 main "$1"
