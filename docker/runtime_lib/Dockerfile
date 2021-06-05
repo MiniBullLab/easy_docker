@@ -1,4 +1,4 @@
-FROM minbull/easy_base:1.0.0
+FROM easy_base:latest
 
 RUN apt-get update && apt-get install -y software-properties-common && \
     # 加入opencv软件源
