@@ -1,4 +1,4 @@
-FROM easy_base:latest
+FROM minbull/easy_base:1.0.0
 
 RUN apt-get update && apt-get install -y software-properties-common && \
     # 加入opencv软件源
@@ -8,14 +8,14 @@ RUN apt-get update && apt-get install -y software-properties-common && \
 # caffe依赖
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
     apt-get install -y software-properties-common python3-pip \
-    build-essential pkg-config \ 
+    # build-essential pkg-config \ 
     # caffe必备
     libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler \
     # 相关依赖库
     libatlas-base-dev libboost-all-dev libgflags-dev libgoogle-glog-dev \
     liblmdb-dev libcv-dev python3-dev \ 
     # opencv有关
-    python3-numpy python3-scipy \
+    # python3-numpy python3-scipy \
     # 并行计算库
     libopenblas-dev \ 
     libopencv-dev python3-skimage
