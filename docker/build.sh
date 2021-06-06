@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-DOCKER_USER=minbull
-IMAGE_PREFIX=easy_
+DOCKER_USER=vitah
+IMAGE_PREFIX=ai_
 
 BASE_IMAGE_VERSION=1.0.0
 BASE_IMAGE=base
