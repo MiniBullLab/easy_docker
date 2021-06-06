@@ -19,7 +19,7 @@ WORKSPACE_IMAGE=workspace
 
 RUNTIME_VERSION=1.0.0
 RUNTIME_IMAGE=runtime
-RUNTIME_IMAGE_FULL=$IMAGE_PREFIX$RUNTIME_IMAGE
+RUNTIME_IMAGE_FULL=ai_runtime
 
 function dockerLogin() {
    result=$(docker login)
