@@ -16,7 +16,10 @@ AI_LIB_IMAGE=runtime_lib
 AI_LIB_IMAGE_FULL=$IMAGE_PREFIX$AI_LIB_IMAGE
 
 WORKSPACE_IMAGE=workspace
+
+RUNTIME_VERSION=1.0.0
 RUNTIME_IMAGE=runtime
+RUNTIME_IMAGE_FULL=$IMAGE_PREFIX$RUNTIME_IMAGE
 
 function dockerLogin() {
    result=$(docker login)
@@ -38,6 +41,7 @@ function buildRuntime() {
 
    echo "Begin build runtime image..."
    docker-compose build $RUNTIME_IMAGE
+   docker tag $RUNTIME_IMAGE_FULL $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION
    echo "Build runtime image success."
 }
 
