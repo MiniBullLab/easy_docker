@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y software-properties-common && \
 # caffe依赖
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
     apt-get install -y software-properties-common python3-pip \
-    pip uninstall setuptools \
-    pip install setuptools \
+    pip3 uninstall setuptools \
+    pip3 install setuptools \
     # build-essential pkg-config \ 
     # caffe必备
     libprotobuf-dev libleveldb-dev libsnappy-dev libhdf5-serial-dev protobuf-compiler \
