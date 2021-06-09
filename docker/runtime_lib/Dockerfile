@@ -15,7 +15,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tz
     libatlas-base-dev libboost-all-dev libgflags-dev libgoogle-glog-dev \
     liblmdb-dev libcv-dev python3-dev \ 
     # opencv有关
-    # python3-numpy python3-scipy \
+    python3-numpy python3-scipy \
     # 并行计算库
     libopenblas-dev \ 
     libopencv-dev python3-skimage
