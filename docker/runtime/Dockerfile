@@ -22,6 +22,7 @@ RUN chmod +x /usr/local/lib/python3.6/dist-packages/easy_tools/train_scripts/* &
 RUN curl -o senseshield.deb http://118.31.19.101:8080/software/dongle/senseshield-2.3.0.45988-x86_64.deb && \
     dpkg -i senseshield.deb && \
     rm senseshield.deb
+COPY add_user.sh /scripts/
 
 RUN mkdir /easy_data
 WORKDIR /easy_data
