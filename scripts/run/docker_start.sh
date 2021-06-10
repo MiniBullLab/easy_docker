@@ -8,7 +8,9 @@ ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
 
 easy_path=/home/${USER}/easy_data
 
+DOCKER_USER=vitah
 AI_IMAGE=ai_runtime
+AI_IMAGE_VERSION=1.0.0
 WORKSPACE_IMAGE=easy_workspace
 DOCKER_CMD=docker
 
@@ -143,7 +145,7 @@ function main() {
       -e DOCKER_GRP="$GRP_NAME" \
       -e DOCKER_GRP_ID="$GRP_ID" \
       -v "${easy_path}":/easy_data \
-      $IMAGE_NAME \
+      "$DOCKER_USER/$IMAGE_NAME:$IMAGE_VERSION" \
       /bin/bash
    # shellcheck disable=SC2181
    if [ $? -ne 0 ]; then
