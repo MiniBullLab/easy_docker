@@ -150,7 +150,7 @@ function main() {
 
    ${DOCKER_CMD} run -it --shm-size="2g" --gpus=all -d --privileged --name "$CONTAINER_NAME" \
       -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
-      -e DOCKER_IMG=$IMAGE_NAME \
+      -e DOCKER_IMG="$DOCKER_USER/$IMAGE_NAME" \
       -e DOCKER_USER="$USER_NAME" \
       -e DOCKER_USER_ID="$USER_ID" \
       -e DOCKER_GRP="$GRP_NAME" \
