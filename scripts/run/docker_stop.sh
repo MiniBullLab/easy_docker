@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-AI_IMAGE=easy_runtime
+AI_IMAGE=ai_runtime
 WORKSPACE_IMAGE=easy_workspace
-IMAGE_NAME=easy_runtime
+IMAGE_NAME=ai_runtime
 
 function main() {
    if [ "$1" = "workspace" ]; then
