@@ -12,7 +12,6 @@ DOCKER_USER=vitah
 AI_IMAGE=ai_runtime
 AI_IMAGE_VERSION=1.0.0
 WORKSPACE_IMAGE=easy_workspace
-DOCKER_CMD=docker
 
 IMAGE_NAME=AI_IMAGE
 
@@ -114,7 +113,7 @@ function main() {
    if [ "$1" = "workspace" ]; then
       IMAGE_NAME=$WORKSPACE_IMAGE
    else
-      IMAGE_NAME=$AI_IMAGE
+      IMAGE_NAME=$DOCKER_USER/$AI_IMAGE
       pullRuntimeImageToLocal
    fi
 
@@ -150,13 +149,13 @@ function main() {
 
    ${DOCKER_CMD} run -it --shm-size="2g" --gpus=all -d --privileged --name "$CONTAINER_NAME" \
       -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
-      -e DOCKER_IMG="$DOCKER_USER/$IMAGE_NAME:$IMAGE_VERSION" \
+      -e DOCKER_IMG="$IMAGE_NAME" \
       -e DOCKER_USER="$USER_NAME" \
       -e DOCKER_USER_ID="$USER_ID" \
       -e DOCKER_GRP="$GRP_NAME" \
       -e DOCKER_GRP_ID="$GRP_ID" \
       -v "${easy_path}":/easy_data \
-      "$DOCKER_USER/$IMAGE_NAME:$IMAGE_VERSION" \
+      "$IMAGE_NAME" \
       /bin/bash
    # shellcheck disable=SC2181
    if [ $? -ne 0 ]; then
