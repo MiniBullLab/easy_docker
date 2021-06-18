@@ -113,7 +113,7 @@ function main() {
    if [ "$1" = "workspace" ]; then
       IMAGE_NAME=$WORKSPACE_IMAGE
    else
-      IMAGE_NAME=$DOCKER_USER/$AI_IMAGE
+      IMAGE_NAME=$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION
       pullRuntimeImageToLocal
    fi
 
