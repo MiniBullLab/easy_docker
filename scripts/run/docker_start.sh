@@ -32,6 +32,16 @@ function checkDockerInstall() {
    fi
 }
 
+function pullRuntimeImageToLocal() {
+   docker image ls | grep "$AI_IMAGE_VERSION" | grep "$DOCKER_USER/$AI_IMAGE" 1>/dev/null 2>&1
+   # shellcheck disable=SC2181
+   if [ $? != 0 ]; then
+      echo "Image $$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION not exist, begin pull..."
+      docker pull "$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION"
+      echo "Pull image $$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION success."
+   fi
+}
+
 # 检测nvidia-docker是否安装
 function checkNvidiaDocker() {
    nvidia-docker -v | grep 'Docker version' 1>/dev/null 2>&1
@@ -105,6 +115,7 @@ function main() {
       IMAGE_NAME=$WORKSPACE_IMAGE
    else
       IMAGE_NAME=$AI_IMAGE
+      pullRuntimeImageToLocal
    fi
 
    GRP_ID=$(id -g)
