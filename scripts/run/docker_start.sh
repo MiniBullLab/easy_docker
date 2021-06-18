@@ -36,7 +36,7 @@ function pullRuntimeImageToLocal() {
    docker image ls | grep "$AI_IMAGE_VERSION" | grep "$DOCKER_USER/$AI_IMAGE" 1>/dev/null 2>&1
    # shellcheck disable=SC2181
    if [ $? != 0 ]; then
-      echo "Image $$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION not exist, begin pull..."
+      echo "Image $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION not exist, begin pull..."
       docker pull "$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION"
       echo "Pull image $$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION success."
    fi
