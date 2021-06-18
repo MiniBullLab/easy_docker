@@ -112,8 +112,10 @@ function createDockerUser() {
 function main() {
    if [ "$1" = "workspace" ]; then
       IMAGE_NAME=$WORKSPACE_IMAGE
+      FULL_IMAGE_NAME=$WORKSPACE_IMAGE
    else
-      IMAGE_NAME=$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION
+      IMAGE_NAME=$AI_IMAGE
+      FULL_IMAGE_NAME=$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION
       pullRuntimeImageToLocal
    fi
 
@@ -155,11 +157,11 @@ function main() {
       -e DOCKER_GRP="$GRP_NAME" \
       -e DOCKER_GRP_ID="$GRP_ID" \
       -v "${easy_path}":/easy_data \
-      "$IMAGE_NAME" \
+      "$FULL_IMAGE_NAME" \
       /bin/bash
    # shellcheck disable=SC2181
    if [ $? -ne 0 ]; then
-      echo "Failed to start docker container \"${CONTAINER_NAME}\" based on image: $IMAGE_NAME"
+      echo "Failed to start docker container \"${CONTAINER_NAME}\" based on image: $FULL_IMAGE_NAME"
       exit 1
    fi
 
