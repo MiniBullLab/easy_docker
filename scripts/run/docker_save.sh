@@ -11,7 +11,9 @@ function saveRuntimeImage() {
    if [ $? != 0 ]; then
       echo "Image $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION not exist!"
    else
+      echo "Image $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION is saving..."
       docker save -o $SAVED_FILE_NAME $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION
+      echo "Image $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION saved success, file is: $SAVED_FILE_NAME"
    fi
 }
 
