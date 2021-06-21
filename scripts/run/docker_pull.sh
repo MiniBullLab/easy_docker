@@ -38,6 +38,8 @@ function pullRuntimeImageToLocal() {
       echo "Image $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION not exist, begin pull..."
       docker pull "$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION"
       echo "Pull image $$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION success."
+   else
+      echo "Runtime image existed"
    fi
 }
 
