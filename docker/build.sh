@@ -41,7 +41,7 @@ function buildRuntime() {
 
    echo "Begin build runtime image..."
    docker-compose build $RUNTIME_IMAGE
-   docker tag easy_runtime $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION
+   docker tag $RUNTIME_IMAGE_FULL $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION
    echo "Build runtime image success."
 }
 
