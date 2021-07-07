@@ -11,7 +11,7 @@ easy_path=/home/${USER}/easy_data
 DOCKER_USER=vitah
 AI_IMAGE=ai_runtime
 AI_IMAGE_VERSION=1.0.0
-WORKSPACE_IMAGE=easy_workspace
+WORKSPACE_IMAGE=ai_workspace
 
 IMAGE_NAME=AI_IMAGE
 

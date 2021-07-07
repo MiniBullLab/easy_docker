@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 AI_IMAGE=ai_runtime
-WORKSPACE_IMAGE=easy_workspace
+WORKSPACE_IMAGE=ai_workspace
 IMAGE_NAME=ai_runtime
 
 function main() {
