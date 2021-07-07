@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DOCKER_USER=vitah
+DOCKER_USER=minbull
 IMAGE_PREFIX=ai_
 
 BASE_IMAGE_VERSION=1.0.0
