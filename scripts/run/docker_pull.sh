@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
+EASY_PATH=/home/${USER}/easy_data
 DOCKER_USER=minbull
 IMAGE_PREFIX=ai_
-easy_path=/home/${USER}/easy_data
 
 RUNTIME_VERSION=1.0.0
 RUNTIME_IMAGE=runtime
