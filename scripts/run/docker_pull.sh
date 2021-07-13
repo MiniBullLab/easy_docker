@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
 
+DOCKER_USER=minbull
+IMAGE_PREFIX=ai_
+easy_path=/home/${USER}/easy_data
+
+RUNTIME_VERSION=1.0.0
+RUNTIME_IMAGE=runtime
+RUNTIME_IMAGE_FULL="$IMAGE_PREFIX$RUNTIME_IMAGE"
+
 # 错误码
 ERR_MSG_DOCKER_NOT_INSTALL="Docker not installed."
 ERR_MSG_DOCKER_SOCKET_PERMISSION="Docker socket permission deny."
 ERR_MSG_NVIDIA_DOCKER_NOT_INSTALL="Nvidia docker not installed."
 ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
-
-easy_path=/home/${USER}/easy_data
-
-DOCKER_USER=minbull
-RUNTIME_VERSION=1.0.0
-RUNTIME_IMAGE=runtime
-IMAGE_PREFIX=ai_
-RUNTIME_IMAGE_FULL="$IMAGE_PREFIX$RUNTIME_IMAGE"
-
-WORKSPACE_IMAGE=easy_workspace
-IMAGE_NAME=AI_IMAGE
 
 # 运行环境检测失败，打印错误码并且退出
 function envCheckFailedAndExit() {
@@ -39,7 +36,7 @@ function pullRuntimeImageToLocal() {
    if [ $? != 0 ]; then
       echo "Image $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION not exist, begin pull..."
       docker pull "$DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION"
-      echo "Pull image $$DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION success."
+      echo "Pull image $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION success."
    else
       echo "Runtime image existed"
    fi
