@@ -8,11 +8,13 @@ ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
 
 easy_path=/home/${USER}/easy_data
 
-DOCKER_USER=vitah
-AI_IMAGE=ai_runtime
-AI_IMAGE_VERSION=1.0.0
-WORKSPACE_IMAGE=easy_workspace
+DOCKER_USER=minbull
+RUNTIME_VERSION=1.0.0
+RUNTIME_IMAGE=runtime
+IMAGE_PREFIX=ai_
+RUNTIME_IMAGE_FULL="$IMAGE_PREFIX$RUNTIME_IMAGE"
 
+WORKSPACE_IMAGE=easy_workspace
 IMAGE_NAME=AI_IMAGE
 
 # 运行环境检测失败，打印错误码并且退出
@@ -32,12 +34,12 @@ function checkDockerInstall() {
 }
 
 function pullRuntimeImageToLocal() {
-   docker image ls | grep "$AI_IMAGE_VERSION" | grep "$DOCKER_USER/$AI_IMAGE" 1>/dev/null 2>&1
+   docker image ls | grep "$RUNTIME_VERSION" | grep "$DOCKER_USER/$RUNTIME_IMAGE_FULL" 1>/dev/null 2>&1
    # shellcheck disable=SC2181
    if [ $? != 0 ]; then
-      echo "Image $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION not exist, begin pull..."
-      docker pull "$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION"
-      echo "Pull image $$DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION success."
+      echo "Image $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION not exist, begin pull..."
+      docker pull "$DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION"
+      echo "Pull image $$DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION success."
    else
       echo "Runtime image existed"
    fi
