@@ -1,4 +1,4 @@
-FROM vitah/ai_base:1.0.0
+FROM minbull/ai_base:1.0.0
 
 RUN apt-get update && apt-get install -y software-properties-common && \
     # 加入opencv软件源
