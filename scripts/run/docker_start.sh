@@ -6,9 +6,9 @@ ERR_MSG_DOCKER_SOCKET_PERMISSION="Docker socket permission deny."
 ERR_MSG_NVIDIA_DOCKER_NOT_INSTALL="Nvidia docker not installed."
 ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
 
-easy_path=/home/${USER}/easy_data
+EASY_PATH=/home/${USER}/easy_data
 
-DOCKER_USER=vitah
+DOCKER_USER=minbull
 AI_IMAGE=ai_runtime
 AI_IMAGE_VERSION=1.0.0
 WORKSPACE_IMAGE=ai_workspace
@@ -127,9 +127,9 @@ function main() {
 
    checkRuntimeEnvironment
 
-   if [ ! -d "$easy_path" ]; then
-      echo "easy_path not exist, create dir ${easy_path}"
-      mkdir "$easy_path"
+   if [ ! -d "$EASY_PATH" ]; then
+      echo "easy_path not exist, create dir ${EASY_PATH}"
+      mkdir "$EASY_PATH"
    fi
 
    CONTAINER_NAME="${IMAGE_NAME}_${USER_NAME}"
@@ -154,7 +154,7 @@ function main() {
       -e DOCKER_USER_ID="$USER_ID" \
       -e DOCKER_GRP="$GRP_NAME" \
       -e DOCKER_GRP_ID="$GRP_ID" \
-      -v "${easy_path}":/easy_data \
+      -v "${EASY_PATH}":/easy_data \
       "$FULL_IMAGE_NAME" \
       /bin/bash
    # shellcheck disable=SC2181
