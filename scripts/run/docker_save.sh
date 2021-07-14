@@ -1,19 +1,36 @@
 #!/usr/bin/env bash
 
-DOCKER_USER=vitah
-AI_IMAGE=ai_runtime
-AI_IMAGE_VERSION=1.0.0
-SAVED_FILE_NAME="${DOCKER_USER}_${AI_IMAGE}_${AI_IMAGE_VERSION}.tar"
+EASY_PATH=/home/${USER}/easy_data
+DOCKER_USER=minbull
+IMAGE_PREFIX=ai_
+
+RUNTIME_VERSION=1.0.0
+RUNTIME_IMAGE=runtime
+RUNTIME_IMAGE_FULL="$IMAGE_PREFIX$RUNTIME_IMAGE"
+
+BASE_IMAGE_VERSION=1.0.0
+BASE_IMAGE=base
+BASE_IMAGE_FULL="$IMAGE_PREFIX$BASE_IMAGE"
+
+LIB_IMAGE_VERSION=1.0.0
+LIB_IMAGE=workspace_lib
+LIB_IMAGE_FULL="$IMAGE_PREFIX$LIB_IMAGE"
+
+AI_LIB_IMAGE_VERSION=1.0.0
+AI_LIB_IMAGE=runtime_lib
+AI_LIB_IMAGE_FULL="$IMAGE_PREFIX$AI_LIB_IMAGE"
+
+SAVED_FILE_NAME="${DOCKER_USER}_${RUNTIME_IMAGE_FULL}_${RUNTIME_VERSION}.tar"
 
 function saveRuntimeImage() {
-   docker image ls | grep "$AI_IMAGE_VERSION" | grep "$DOCKER_USER/$AI_IMAGE" 1>/dev/null 2>&1
+   docker image ls | grep "$RUNTIME_IMAGE_FULL" | grep "$DOCKER_USER/$RUNTIME_IMAGE_FULL" 1>/dev/null 2>&1
    # shellcheck disable=SC2181
    if [ $? != 0 ]; then
-      echo "Image $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION not exist!"
+      echo "Image $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION not exist!"
    else
-      echo "Image $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION is saving..."
-      docker save -o $SAVED_FILE_NAME $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION
-      echo "Image $DOCKER_USER/$AI_IMAGE:$AI_IMAGE_VERSION saved success, file is: $SAVED_FILE_NAME"
+      echo "Image $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION is saving..."
+      docker save -o $SAVED_FILE_NAME $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION
+      echo "Image $DOCKER_USER/$RUNTIME_IMAGE_FULL:$RUNTIME_VERSION saved success, file is: $SAVED_FILE_NAME"
    fi
 }
 
