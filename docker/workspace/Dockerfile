@@ -1,4 +1,4 @@
-FROM minbull/ai_workspace_lib:1.0.0
+FROM minbull/ai_workspace_lib:latest
 
 # 安装easy_ai依赖库
 COPY ai_requirements.txt convert_requirements.txt tools_requirements.txt /scripts/
