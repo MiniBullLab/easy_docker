@@ -1,4 +1,4 @@
-FROM minbull/easy_base:1.0.0
+FROM minbull/ai_base:1.0.0
 
 # 安装protobuf
 RUN curl -L -O http://118.31.19.101:8080/software/docker/protobuf-easy-3.3.0.zip && \
