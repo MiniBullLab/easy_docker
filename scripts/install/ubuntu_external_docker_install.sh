@@ -74,12 +74,20 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-cmd="ssclt --online_bind_license_key --license_key D006-5TZE-UKQJ-SV0S"
-sudo docker run -di -v ${easy_path}:/easy_ai --privileged easy_runtime:latest ${cmd}
-sleep 2
-sudo docker ps -l
-docker_id=$(docker ps -l | awk 'NR > 1 {print $1}')
+./docker_start.sh
+if [ $? -ne 0 ]; then
+    echo "Failed to start easy_runtime"
+    exit 1
+fi
+
+sudo docker ps
+docker_id=$(docker ps | awk 'NR > 1 {print $1}')
 echo $docker_id
+cmd="ssclt --online_bind_license_key --license_key WR7Z-E64A-5RQY-QQB1"
+sudo docker exec -di --privileged ${docker_id} ssclt --online_bind_license_key --license_key WR7Z-E64A-5RQY-QQB1
+
+sleep 10
+
 if [ -n "${docker_id}" ]; then
     sudo docker commit --author "lipeijie" --message "update ai_runtime" ${docker_id}  easy_runtime:latest
     sleep 2
@@ -88,5 +96,3 @@ else
 fi
 
 echo "Install Success!"
-
-
