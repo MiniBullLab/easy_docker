@@ -1,4 +1,4 @@
-FROM ai_base:latest
+FROM workspace_base:latest
 
 # 安装protobuf
 RUN curl -L -O http://118.31.19.101:8080/software/docker/protobuf-easy-3.3.0.zip && \

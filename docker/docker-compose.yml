@@ -9,6 +9,10 @@ services:
       build:
         context: ./runtime_lib
       tty: true
+    workspace_base:
+      build:
+        context: ./workspace_base
+      tty: true
     workspace_lib:
       build:
         context: ./workspace_lib

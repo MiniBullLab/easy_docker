@@ -44,7 +44,7 @@ function buildRuntime() {
 
 function buildWorkspace() {
    echo "Begin build base image..."
-   docker-compose build "$BASE_IMAGE"
+   docker-compose build workspace_base
    echo "Build base image success."
 
    echo "Begin build lib image..."
