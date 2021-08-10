@@ -41,7 +41,7 @@ cd easy_docker/docker
     * 编译ai镜像: 
         ./build.sh ai
     * 编译workspace镜像: 
-        /.build.sh workspace
+        ./build.sh workspace
 
 ### docker修改镜像保存（非必要步骤）
 ```
