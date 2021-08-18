@@ -24,5 +24,5 @@ RUN curl -o senseshield.deb http://118.31.19.101:8080/software/dongle/senseshiel
     rm senseshield.deb
 COPY add_user.sh /scripts/
 
-RUN mkdir /easy_data & chmod 777 /easy_data
+RUN mkdir /easy_data
 WORKDIR /easy_data
