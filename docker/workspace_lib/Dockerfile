@@ -264,10 +264,11 @@ RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple onnx==1.5 && \
 RUN echo "\n    Begin install Ambarella...\n" && \
     mkdir amba && \
     cd /amba && \
-    curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_Ubuntu-18.04.zip && \
-    unzip Ambarella_Toolchain_CNNGen_Ubuntu-18.04.zip && \
-    cd /amba/Ubuntu-18.04/ && \
-    ./ubuntuToolChain-2.1.7-20190815.ubuntu-18.04 && \
+    curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_2.2.1_20200928.tar.xz && \
+    xz -d Ambarella_Toolchain_CNNGen_2.2.1_20200928.tar.xz && \
+    tar xvf Ambarella_Toolchain_CNNGen_2.2.1_20200928.tar && \
+    cd /amba/Ambarella_Toolchain_CNNGen_2.2.1_20200928/Ubuntu-18.04/ && \
+    ./ubuntuToolChain-2.2.1-20200928.ubuntu-18.04 && \
     rm -rf /amba && \
     echo "\n    Install Ambarella success\n"
 
@@ -278,11 +279,12 @@ RUN apt-get install -y gnupg flex bison gperf \
 RUN echo "\n    Begin install Ambarella Toolchain...\n" && \
     mkdir amba && \
     cd /amba && \
-    curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_Linaro_2018.08.zip && \
-    unzip Ambarella_Toolchain_Linaro_2018.08.zip && \
-    cd Ambarella_Toolchain_Linaro_2018.08 && \
-    chmod +x ubuntuToolChain-201808 && \
-    ./ubuntuToolChain-201808 && \
+    curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_Linaro_2020.09.tar.xz && \
+    xz -d Ambarella_Toolchain_CNNGen_2.2.1_20200928.tar.xz && \
+    tar xvf Ambarella_Toolchain_CNNGen_2.2.1_20200928.tar && \
+    cd /amba/Ambarella_Toolchain_Linaro_2020.09/ && \
+    chmod +x ubuntuToolChain-linux4.14-202008 && \
+    ./ubuntuToolChain-linux4.14-202008 && \
     rm -rf /amba && \
     echo "\n    Install Ambarella Toolchain success\n"
 
