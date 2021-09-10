@@ -280,8 +280,8 @@ RUN echo "\n    Begin install Ambarella Toolchain...\n" && \
     mkdir amba && \
     cd /amba && \
     curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_Linaro_2020.09.tar.xz && \
-    xz -d Ambarella_Toolchain_CNNGen_2.2.1_20200928.tar.xz && \
-    tar xvf Ambarella_Toolchain_CNNGen_2.2.1_20200928.tar && \
+    xz -d Ambarella_Toolchain_Linaro_2020.09.tar.xz && \
+    tar xvf Ambarella_Toolchain_Linaro_2020.09.tar && \
     cd /amba/Ambarella_Toolchain_Linaro_2020.09/ && \
     chmod +x ubuntuToolChain-linux4.14-202008 && \
     ./ubuntuToolChain-linux4.14-202008 && \
@@ -290,7 +290,7 @@ RUN echo "\n    Begin install Ambarella Toolchain...\n" && \
 
 # 安装PyTorch
 RUN echo "\n    Begin install PyTorch..." && \
-    pip3 uninstall torch && \
+    pip3 uninstall -y torch && \
     curl -O http://118.31.19.101:8080/software/easyai/torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
     pip3 install torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
     rm torch-1.0.1-cp36-cp36m-linux_x86_64.whl && \
