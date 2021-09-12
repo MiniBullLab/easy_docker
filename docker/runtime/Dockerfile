@@ -1,4 +1,4 @@
-FROM minbull/ai_runtime_lib:1.0.0
+FROM minbull/ai_runtime_lib:1.0.1
 
 # 安装easy_ai
 RUN echo "\n    Begin install easy_ai..." && \
