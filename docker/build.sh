@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-EASY_PATH=/home/${USER}/easy_data
 DOCKER_USER=minbull
 IMAGE_PREFIX=ai_
 
@@ -15,8 +14,6 @@ BASE_IMAGE_FULL="$IMAGE_PREFIX$BASE_IMAGE"
 AI_LIB_IMAGE_VERSION=1.0.1
 AI_LIB_IMAGE=runtime_lib
 AI_LIB_IMAGE_FULL="$IMAGE_PREFIX$AI_LIB_IMAGE"
-
-WORKSPACE_IMAGE=workspace
 
 function dockerLogin() {
    result=$(docker login)
