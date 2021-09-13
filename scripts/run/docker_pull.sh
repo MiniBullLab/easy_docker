@@ -7,7 +7,7 @@ ERR_MSG_NVIDIA_DOCKER_NOT_INSTALL="Nvidia docker not installed."
 ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
 
 # shellcheck disable=SC1091
-source ../docker/image_config.sh
+source ../../docker/image_config.sh
 
 # 运行环境检测失败，打印错误码并且退出
 function envCheckFailedAndExit() {
