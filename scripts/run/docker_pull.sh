@@ -1,17 +1,13 @@
 #!/usr/bin/env bash
 
-DOCKER_USER=minbull
-IMAGE_PREFIX=ai_
-
-RUNTIME_VERSION=1.0.1
-RUNTIME_IMAGE=runtime
-RUNTIME_IMAGE_FULL="$IMAGE_PREFIX$RUNTIME_IMAGE"
-
 # 错误码
 ERR_MSG_DOCKER_NOT_INSTALL="Docker not installed."
 ERR_MSG_DOCKER_SOCKET_PERMISSION="Docker socket permission deny."
 ERR_MSG_NVIDIA_DOCKER_NOT_INSTALL="Nvidia docker not installed."
 ERR_MSG_DOCKER_NOT_RUNNING="Docker not running."
+
+# shellcheck disable=SC1091
+source ../../docker/image_config.sh
 
 # 运行环境检测失败，打印错误码并且退出
 function envCheckFailedAndExit() {
