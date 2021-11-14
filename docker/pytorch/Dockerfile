@@ -1,7 +1,7 @@
-
 FROM pytorch/pytorch:1.6.0-cuda10.1-cudnn7-runtime
 
-RUN apt-get update && apt-get install -y software-properties-common && \
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
     # 加入opencv软件源
     add-apt-repository --yes ppa:timsc/opencv-3.4 && \
     apt-get -y update --fix-missing
@@ -62,6 +62,7 @@ RUN chmod +x /usr/local/lib/python3.6/dist-packages/easy_tools/train_scripts/* &
 RUN curl -o senseshield.deb http://118.31.19.101:8080/software/dongle/senseshield-2.3.0.45988-x86_64.deb && \
     dpkg -i senseshield.deb && \
     rm senseshield.deb
+
 COPY add_user.sh /scripts/
 
 RUN mkdir /easy_data
