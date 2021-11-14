@@ -24,6 +24,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tz
 
 RUN echo "\n    Begin install Ambarella...\n" && \
     mkdir amba/ && \
+    ls -a && \
     cd /amba && \
     curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip && \
     unzip Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip && \
