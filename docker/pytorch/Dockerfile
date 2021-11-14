@@ -8,7 +8,7 @@ RUN apt-get update && \
 
 # caffe依赖
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && \
-    apt-get install -y unzip && \
+    apt-get install -y unzip sudo cmake && \
     apt-get install -y software-properties-common python3-pip \
     python-setuptools python3-setuptools \
     # build-essential pkg-config \ 
