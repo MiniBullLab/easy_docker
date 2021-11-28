@@ -26,9 +26,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tz
 RUN echo "\n    Begin install Ambarella...\n" && \
     mkdir /amba && \
     ls -a && \
-    cd /amba && \
-    curl -O http://118.31.19.101:8080/software/amba/Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip && \
-    unzip Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip && \
+    cd /amba
+COPY Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip /amba/
+RUN unzip Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip && \
     cd /amba/Ambarella_Toolchain_CNNGen_2.2.1_20200928/AmbaCaffe_2.2.1.1.800 && \
     ./build_script/build-caffe-ubuntu18.04-cpu caffe && \
     mkdir /opt/caffe && \
@@ -43,11 +43,10 @@ RUN echo "\n    Begin install Ambarella...\n" && \
 
 
 # 安装easy_ai
-RUN echo "\n    Begin install easy_ai..." && \
-    curl -O http://118.31.19.101:8080/software/easyai/easyai-0.3-py2.py3-none-any.whl  \
-    -O http://118.31.19.101:8080/software/easyai/easy_converter-0.2-py2.py3-none-any.whl  \
-    -O http://118.31.19.101:8080/software/easyai/easy_tools-0.2-py2.py3-none-any.whl && \ 
-    pip3 install -i https://mirrors.aliyun.com/pypi/simple easyai-0.3-py2.py3-none-any.whl && \
+COPY easyai-0.3-py2.py3-none-any.whl  /
+COPY easy_converter-0.2-py2.py3-none-any.whl  /
+COPY easy_tools-0.2-py2.py3-none-any.whl /
+RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple easyai-0.3-py2.py3-none-any.whl && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple easy_converter-0.2-py2.py3-none-any.whl && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple easy_tools-0.2-py2.py3-none-any.whl && \
     rm easyai-0.3-py2.py3-none-any.whl && \
