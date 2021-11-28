@@ -47,7 +47,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tz
 COPY easyai-0.3-py2.py3-none-any.whl  /
 COPY easy_converter-0.2-py2.py3-none-any.whl  /
 COPY easy_tools-0.2-py2.py3-none-any.whl /
-RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple easyai-0.3-py2.py3-none-any.whl && \
+RUN ls -a && \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple easyai-0.3-py2.py3-none-any.whl && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple easy_converter-0.2-py2.py3-none-any.whl && \
     pip3 install -i https://mirrors.aliyun.com/pypi/simple easy_tools-0.2-py2.py3-none-any.whl && \
     rm easyai-0.3-py2.py3-none-any.whl && \
