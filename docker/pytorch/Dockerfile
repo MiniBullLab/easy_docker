@@ -23,24 +23,24 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tz
     libopenblas-dev \ 
     libopencv-dev python3-skimage
 
-RUN echo "\n    Begin install Ambarella...\n" && \
-    mkdir /amba && \
-    ls -a && \
-    cd /amba
-COPY Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip /amba/
-RUN cd /amba && \
-    unzip Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip && \
-    cd /amba/Ambarella_Toolchain_CNNGen_2.2.1_20200928/AmbaCaffe_2.2.1.1.800 && \
-    ./build_script/build-caffe-ubuntu18.04-cpu caffe && \
-    mkdir /opt/caffe && \
-    mv caffe-install-cpu/usr/local/* /opt/caffe/ && \
-    cd /amba/Ambarella_Toolchain_CNNGen_2.2.1_20200928/Ubuntu-18.04/ && \
-    ./ubuntuToolChain-2.2.1-20200928.ubuntu-18.04 && \
-    rm -rf /amba && \
-    echo "export PYTHONPATH=/opt/caffe/lib/python3.6/dist-packages:\$PYTHONPATH">>/etc/bash.bashrc && \
-    echo "export LD_LIBRARY_PATH=/opt/caffe/lib:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
-    /bin/bash -c "source /etc/bash.bashrc" && \
-    echo "\n    Install Ambarella success\n"
+# RUN echo "\n    Begin install Ambarella...\n" && \
+#     mkdir /amba && \
+#     ls -a && \
+#     cd /amba
+# COPY Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip /amba/
+# RUN cd /amba && \
+#     unzip Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip && \
+#     cd /amba/Ambarella_Toolchain_CNNGen_2.2.1_20200928/AmbaCaffe_2.2.1.1.800 && \
+#     ./build_script/build-caffe-ubuntu18.04-cpu caffe && \
+#     mkdir /opt/caffe && \
+#     mv caffe-install-cpu/usr/local/* /opt/caffe/ && \
+#     cd /amba/Ambarella_Toolchain_CNNGen_2.2.1_20200928/Ubuntu-18.04/ && \
+#     ./ubuntuToolChain-2.2.1-20200928.ubuntu-18.04 && \
+#     rm -rf /amba && \
+#     echo "export PYTHONPATH=/opt/caffe/lib/python3.6/dist-packages:\$PYTHONPATH">>/etc/bash.bashrc && \
+#     echo "export LD_LIBRARY_PATH=/opt/caffe/lib:\$LD_LIBRARY_PATH">>/etc/bash.bashrc && \
+#     /bin/bash -c "source /etc/bash.bashrc" && \
+#     echo "\n    Install Ambarella success\n"
 
 
 # 安装easy_ai
