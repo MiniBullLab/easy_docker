@@ -28,7 +28,8 @@ RUN echo "\n    Begin install Ambarella...\n" && \
     ls -a && \
     cd /amba
 COPY Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip /amba/
-RUN unzip Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip && \
+RUN cd /amba && \
+    unzip Ambarella_Toolchain_CNNGen_2.2.1_20200928.zip && \
     cd /amba/Ambarella_Toolchain_CNNGen_2.2.1_20200928/AmbaCaffe_2.2.1.1.800 && \
     ./build_script/build-caffe-ubuntu18.04-cpu caffe && \
     mkdir /opt/caffe && \
